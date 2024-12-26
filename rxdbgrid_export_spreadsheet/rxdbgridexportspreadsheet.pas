@@ -64,77 +64,80 @@ type
     FOpenAfterExport: boolean;
     FOptions: TRxDBGridExportSpreadSheetOptions;
     FPageName: string;
-    function ColIndex(ACol:TRxColumn):integer;
+    function ColIndex(ACol: TRxColumn): integer;
     procedure ExpCurRow(AFont: TFont);
     procedure ExpAllRow;
     procedure ExpSelectedRow;
     procedure ExpGrpLine(G: TColumnGroupItem);
-    function InternalGetFileName:string;
+    function InternalGetFileName: string;
   protected
-    FDataSet:TDataSet;
+    FDataSet: TDataSet;
     FWorkbook: TsWorkbook;
     FWorksheet: TsWorksheet;
-    FCurRow : integer;
-    FFirstDataRow : integer;
-    FLastDataRow : integer;
-    FCurCol : integer;
-    scColorBlack:TsColor;
+    FCurRow: integer;
+    FFirstDataRow: integer;
+    FLastDataRow: integer;
+    FCurCol: integer;
+    scColorBlack: TsColor;
 
     procedure DoExportTitle;
     procedure DoExportBody;
     procedure DoExportFooter;
     procedure DoExportColWidth;
-    function DoExecTools:boolean;override;
-    function DoSetupTools:boolean; override;
+    function DoExecTools: boolean; override;
+    function DoSetupTools: boolean; override;
   public
     constructor Create(AOwner: TComponent); override;
   published
-    property FileName:string read FFileName write FFileName;
-    property PageName:string read FPageName write FPageName;
-    property Options:TRxDBGridExportSpreadSheetOptions read FOptions write FOptions;
-    property OpenAfterExport:boolean read FOpenAfterExport write FOpenAfterExport default false;
-    property DefaultExt:TRxSpreadSheetDefaultExt read FDefaultExt write FDefaultExt default rdeOpenDocument;
+    property FileName: string read FFileName write FFileName;
+    property PageName: string read FPageName write FPageName;
+    property Options: TRxDBGridExportSpreadSheetOptions read FOptions write FOptions;
+    property OpenAfterExport: boolean read FOpenAfterExport
+      write FOpenAfterExport default False;
+    property DefaultExt: TRxSpreadSheetDefaultExt
+      read FDefaultExt write FDefaultExt default rdeOpenDocument;
   end;
 
 procedure Register;
 
 const
-  RxSpreadSheetDefaultExtStr : array [TRxSpreadSheetDefaultExt] of string = (
+  RxSpreadSheetDefaultExtStr: array [TRxSpreadSheetDefaultExt] of string = (
     '', //rdeNone,
     '.ods', //rdeOpenDocument,
     '.xls', //rdeExcel,
     '.xlsx'  //rdeExcelX
-  );
+    );
 
 implementation
-uses fpsallformats, LCLType, Forms, math, LazUTF8, rxdconst, rxconst, Controls, LCLIntf,
+
+uses fpsallformats, LCLType, Forms, Math, LazUTF8, rxdconst, rxconst, Controls, LCLIntf,
   RxDBGridExportSpreadSheet_ParamsUnit, rxdbutils, fpsutils, DBGrids;
 
-{$R rxdbgridexportspreadsheet.res}
+  {$R rxdbgridexportspreadsheet.res}
 
 procedure Register;
 begin
-  RegisterComponents('RX DBAware',[TRxDBGridExportSpreadSheet]);
+  RegisterComponents('RX DBAware', [TRxDBGridExportSpreadSheet]);
 end;
 
 const
-  ssAligns : array [TAlignment] of TsHorAlignment = (haLeft, haRight, haCenter);
+  ssAligns: array [TAlignment] of TsHorAlignment = (haLeft, haRight, haCenter);
 
 type
   THackRxDBGrid = class(TRxDBGrid);
 
-{ TRxDBGridExportSpeadSheet }
+  { TRxDBGridExportSpeadSheet }
 
 function TRxDBGridExportSpreadSheet.ColIndex(ACol: TRxColumn): integer;
 var
   C: TRxColumn;
-  i: Integer;
+  i: integer;
 begin
-  Result:=-1;
+  Result := -1;
   if (not Assigned(ACol)) or (not ACol.Visible) then exit;
-  for i:=0 to FRxDBGrid.Columns.Count - 1 do
+  for i := 0 to FRxDBGrid.Columns.Count - 1 do
   begin
-    C:=FRxDBGrid.Columns[i] as TRxColumn;
+    C := FRxDBGrid.Columns[i] as TRxColumn;
     if C.Visible then
       Inc(Result);
     if ACol = C then
@@ -142,37 +145,37 @@ begin
   end;
 end;
 
-procedure TRxDBGridExportSpreadSheet.ExpCurRow(AFont:TFont);
+procedure TRxDBGridExportSpreadSheet.ExpCurRow(AFont: TFont);
 var
-  i, J, L, R: Integer;
+  i, J, L, R: integer;
   C: TRxColumn;
   CT: TRxColumnTitle;
-  S: String;
+  S: string;
   CC: TColor;
   G: TColumnGroupItem;
 begin
-  FCurCol:=0;
+  FCurCol := 0;
 
-  i:=0;
+  i := 0;
 
-  while i<FRxDBGrid.Columns.Count do
+  while i < FRxDBGrid.Columns.Count do
   begin
-    C:=nil;
-    R:=-1;
+    C := nil;
+    R := -1;
     if (rdgColSpanning in FRxDBGrid.OptionsRx) and (ressColSpanning in Options) then
       if FRxDBGrid.IsMerged(I + 1, L, R, C) then
-        FWorksheet.MergeCells(FCurRow, FCurCol, FCurRow, R-1);
+        FWorksheet.MergeCells(FCurRow, FCurCol, FCurRow, R - 1);
 
     if not Assigned(C) then
-      C:=FRxDBGrid.Columns[i] as TRxColumn;
+      C := FRxDBGrid.Columns[i] as TRxColumn;
 
-    CT:=C.Title as TRxColumnTitle;
+    CT := C.Title as TRxColumnTitle;
     if C.Visible then
     begin
       if Assigned(C.Field) then
       begin
         //S:=C.Field.DisplayText;
-        S:=THackRxDBGrid(FRxDBGrid).GetFieldDisplayText(C.Field, C);
+        S := THackRxDBGrid(FRxDBGrid).GetFieldDisplayText(C.Field, C);
         if (C.KeyList.Count > 0) and (C.PickList.Count > 0) then
         begin
           J := C.KeyList.IndexOf(S);
@@ -187,19 +190,20 @@ begin
         if C.Field.DataType in [ftCurrency] then
         begin
           if (C.Field.AsCurrency <> 0) or (not (ressHideZeroValues in FOptions)) then
-            FWorksheet.WriteCurrency(FCurRow, FCurCol, C.Field.AsCurrency, nfCurrency, '')
+            FWorksheet.WriteCurrency(FCurRow, FCurCol, C.Field.AsCurrency,
+              nfCurrency, '');
         end
         else
         if C.Field.DataType in IntegerDataTypes then
         begin
           if (C.Field.AsInteger <> 0) or (not (ressHideZeroValues in FOptions)) then
-            FWorksheet.WriteNumber(FCurRow, FCurCol, C.Field.AsInteger, nfFixed, 0)
+            FWorksheet.WriteNumber(FCurRow, FCurCol, C.Field.AsInteger, nfFixed, 0);
         end
         else
         if C.Field.DataType in NumericDataTypes then
         begin
           if (C.Field.AsFloat <> 0) or (not (ressHideZeroValues in FOptions)) then
-            FWorksheet.WriteNumber(FCurRow, FCurCol, C.Field.AsFloat, nfFixed, 2)
+            FWorksheet.WriteNumber(FCurRow, FCurCol, C.Field.AsFloat, nfFixed, 2);
         end
         else
           FWorksheet.WriteUTF8Text(FCurRow, FCurCol, S);
@@ -207,34 +211,34 @@ begin
 
       if ressExportColors in FOptions then
       begin
-        CC:=C.Color;
+        CC := C.Color;
         if Assigned(RxDBGrid.OnGetCellProps) then
           RxDBGrid.OnGetCellProps(RxDBGrid, C.Field, AFont, CC);
-        if (CC and SYS_COLOR_BASE) = 0  then
+        if (CC and SYS_COLOR_BASE) = 0 then
         begin
           {$IFDEF OLD_fpSPREADSHEET}
-          scColor:=FWorkbook.AddColorToPalette(CC);
-          FWorksheet.WriteBackgroundColor(FCurRow,FCurCol, scColor);
+          scColor := FWorkbook.AddColorToPalette(CC);
+          FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, scColor);
           {$ELSE}
-          FWorksheet.WriteBackgroundColor(FCurRow,FCurCol, CC);
+          FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, CC);
           {$ENDIF}
         end;
       end;
 
-      FWorksheet.WriteBorders(FCurRow,FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
-      FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbNorth, scColorBlack);
-      FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbWest, scColorBlack);
-      FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbEast, scColorBlack);
-      FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbSouth, scColorBlack);
+      FWorksheet.WriteBorders(FCurRow, FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
+      FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbNorth, scColorBlack);
+      FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbWest, scColorBlack);
+      FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbEast, scColorBlack);
+      FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbSouth, scColorBlack);
 
       FWorksheet.WriteHorAlignment(FCurRow, FCurCol, ssAligns[C.Alignment]);
-      inc(FCurCol);
+      Inc(FCurCol);
     end;
 
     if R > -1 then
     begin
-      i:=R-1;
-      FCurCol:=R;
+      i := R - 1;
+      FCurCol := R;
     end;
 
     Inc(i);
@@ -243,7 +247,8 @@ begin
   if RxDBGrid.GroupItems.Active and (ressExportGroupData in Options) then
   begin
 
-    THackRxDBGrid(RxDBGrid).FGroupItemDrawCur:=RxDBGrid.GroupItems.FindGroupItem(RxDBGrid.DataSource.DataSet.Bookmark);
+    THackRxDBGrid(RxDBGrid).FGroupItemDrawCur :=
+      RxDBGrid.GroupItems.FindGroupItem(RxDBGrid.DataSource.DataSet.Bookmark);
     if Assigned(THackRxDBGrid(RxDBGrid).FGroupItemDrawCur) then
       ExpGrpLine(THackRxDBGrid(RxDBGrid).FGroupItemDrawCur);
   end;
@@ -253,12 +258,12 @@ procedure TRxDBGridExportSpreadSheet.ExpAllRow;
 var
   F: TFont;
 begin
-  F:=TFont.Create;
+  F := TFont.Create;
   FDataSet.First;
   while not FDataSet.EOF do
   begin
     ExpCurRow(F);
-    inc(FCurRow);
+    Inc(FCurRow);
     FDataSet.Next;
   end;
   F.Free;
@@ -267,15 +272,15 @@ end;
 procedure TRxDBGridExportSpreadSheet.ExpSelectedRow;
 var
   F: TFont;
-  k: Integer;
+  k: integer;
 begin
-  F:=TFont.Create;
+  F := TFont.Create;
   FDataSet.First;
-  for k:=0 to FRxDBGrid.SelectedRows.Count-1 do
+  for k := 0 to FRxDBGrid.SelectedRows.Count - 1 do
   begin
-    FDataSet.Bookmark:=FRxDBGrid.SelectedRows[k];
+    FDataSet.Bookmark := FRxDBGrid.SelectedRows[k];
     ExpCurRow(F);
-    inc(FCurRow);
+    Inc(FCurRow);
   end;
   F.Free;
 end;
@@ -284,49 +289,49 @@ procedure TRxDBGridExportSpreadSheet.ExpGrpLine(G: TColumnGroupItem);
 var
   C: TRxColumn;
 
-procedure OutGroupCellProps;
-{$IFDEF OLD_fpSPREADSHEET}
-var
-  scColor : TsColor;
-{$ENDIF}
-var
-  FColor: TColor;
-begin
-
-  if C.GroupParam.Color <> clNone then
-    FColor := C.GroupParam.Color
-  else
-  if RxDBGrid.GroupItems.Color <> clNone then
-    FColor := RxDBGrid.GroupItems.Color
-  else
-    FColor := clNone;
-
-  if (FColor <> clNone) and (ressExportColors in FOptions) then
-  begin
-    {$IFDEF OLD_fpSPREADSHEET}
-    if (C.GroupParam.Color and SYS_COLOR_BASE) = 0  then
-    begin
-      scColor:=FWorkbook.AddColorToPalette(C.GroupParam.Color);
-      FWorksheet.WriteBackgroundColor(FCurRow,FCurCol, scColor);}
-    end;
-    {$ELSE}
-    FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, FColor);
+  procedure OutGroupCellProps;
+  {$IFDEF OLD_fpSPREADSHEET}
+  var
+    scColor: TsColor;
     {$ENDIF}
-  end;
-  FWorksheet.WriteBorders(FCurRow, FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
-  FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbNorth, scColorBlack);
-  FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbWest, scColorBlack);
-  FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbEast, scColorBlack);
-  FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbSouth, scColorBlack);
-end;
-
-procedure OutGroupCell(G: TColumnGroupItem);
-var
-  D: Integer;
-  SF: String;
-begin
-  if (C.GroupParam.ValueType <> fvtNon) then
+  var
+    FColor: TColor;
   begin
+
+    if C.GroupParam.Color <> clNone then
+      FColor := C.GroupParam.Color
+    else
+    if RxDBGrid.GroupItems.Color <> clNone then
+      FColor := RxDBGrid.GroupItems.Color
+    else
+      FColor := clNone;
+
+    if (FColor <> clNone) and (ressExportColors in FOptions) then
+    begin
+      {$IFDEF OLD_fpSPREADSHEET}
+      if (C.GroupParam.Color and SYS_COLOR_BASE) = 0 then
+      begin
+        scColor := FWorkbook.AddColorToPalette(C.GroupParam.Color);
+        FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, scColor);//}
+      end;
+      {$ELSE}
+      FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, FColor);
+      {$ENDIF}
+    end;
+    FWorksheet.WriteBorders(FCurRow, FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbNorth, scColorBlack);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbWest, scColorBlack);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbEast, scColorBlack);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbSouth, scColorBlack);
+  end;
+
+  procedure OutGroupCell(G: TColumnGroupItem);
+  var
+    D: integer;
+    SF: string;
+  begin
+    if (C.GroupParam.ValueType <> fvtNon) then
+    begin
 (*    if (ressExportFormula in FOptions) and (Footer.ValueType in [fvtSum, fvtMax, fvtMin]) and (FFirstDataRow <= FLastDataRow) {and (Footer.DisplayFormat = '')} then
     begin
       D:=ColIndex(RxDBGrid.ColumnByFieldName(Footer.FieldName));
@@ -351,133 +356,135 @@ begin
     end
     else *)
       FWorksheet.WriteUTF8Text(FCurRow, FCurCol, C.GroupParam.DisplayText);
-    FWorksheet.WriteHorAlignment(FCurRow, FCurCol, ssAligns[C.GroupParam.Alignment]);
+      FWorksheet.WriteHorAlignment(FCurRow, FCurCol, ssAligns[C.GroupParam.Alignment]);
+    end;
   end;
-end;
 
 var
-  i: Integer;
+  i: integer;
 begin
-  inc(FCurRow);
-  FCurCol:=0;
-  for i:=0 to FRxDBGrid.Columns.Count - 1 do
+  Inc(FCurRow);
+  FCurCol := 0;
+  for i := 0 to FRxDBGrid.Columns.Count - 1 do
   begin
-    C:=FRxDBGrid.Columns[i] as TRxColumn;
+    C := FRxDBGrid.Columns[i] as TRxColumn;
     if C.Visible then
     begin
       OutGroupCellProps;
       OutGroupCell(G);
-      inc(FCurCol);
+      Inc(FCurCol);
     end;
   end;
 end;
 
 function TRxDBGridExportSpreadSheet.InternalGetFileName: string;
 var
-  SExt: String;
+  SExt: string;
 begin
   if FFileName = '' then
     raise Exception.Create(sRxNotDefinedFileName);
 
-  Result:=FFileName;
-  SExt:=ExtractFileExt(FFileName);
+  Result := FFileName;
+  SExt := ExtractFileExt(FFileName);
   if (SExt = '') and (FDefaultExt <> rdeNone) then
-    Result:=Result + RxSpreadSheetDefaultExtStr[FDefaultExt];
+    Result := Result + RxSpreadSheetDefaultExtStr[FDefaultExt];
 end;
 
 procedure TRxDBGridExportSpreadSheet.DoExportTitle;
 var
-  i, k  : Integer;
-  C  : TRxColumn;
-  CT : TRxColumnTitle;
-  CC : TColor;
-{$IFDEF OLD_fpSPREADSHEET}
-  scColor : TsColor;
-{$ENDIF}
-  CB:TsCellBorders;
-  FMaxTitleHeight : integer;
+  i, k: integer;
+  C: TRxColumn;
+  CT: TRxColumnTitle;
+  CC: TColor;
+  {$IFDEF OLD_fpSPREADSHEET}
+  scColor: TsColor;
+  {$ENDIF}
+  CB: TsCellBorders;
+  FMaxTitleHeight: integer;
   P: TMLCaptionItem;
 begin
-  FCurCol:=0;
-  FMaxTitleHeight:=1;
-  for i:=0 to FRxDBGrid.Columns.Count - 1 do
+  FCurCol := 0;
+  FMaxTitleHeight := 1;
+  for i := 0 to FRxDBGrid.Columns.Count - 1 do
   begin
-    C:=FRxDBGrid.Columns[i] as TRxColumn;
-    CT:=C.Title as TRxColumnTitle;
-    FMaxTitleHeight:=Max(FMaxTitleHeight, CT.CaptionLinesCount);
+    C := FRxDBGrid.Columns[i] as TRxColumn;
+    CT := C.Title as TRxColumnTitle;
+    FMaxTitleHeight := Max(FMaxTitleHeight, CT.CaptionLinesCount);
     if C.Visible then
     begin
       if CT.CaptionLinesCount > 0 then
       begin
-        for k:=0 to CT.CaptionLinesCount - 1 do
+        for k := 0 to CT.CaptionLinesCount - 1 do
         begin
-          CC:=C.Title.Color;
-          if (CC and SYS_COLOR_BASE) = 0  then
+          CC := C.Title.Color;
+          if (CC and SYS_COLOR_BASE) = 0 then
           begin
-{$IFDEF OLD_fpSPREADSHEET}
-            scColor:=FWorkbook.AddColorToPalette(CC);
+            {$IFDEF OLD_fpSPREADSHEET}
+            scColor := FWorkbook.AddColorToPalette(CC);
             FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, scColor);
-{$ELSE}
+            {$ELSE}
             FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, CC);
-{$ENDIF}
+            {$ENDIF}
           end;
 
-          CB:=[cbNorth, cbWest, cbEast, cbSouth];
+          CB := [cbNorth, cbWest, cbEast, cbSouth];
 
           FWorksheet.WriteBorderColor(FCurRow + k, FCurCol, cbNorth, scColorBlack);
 
           if not Assigned(CT.CaptionLine(k).Next) then
             FWorksheet.WriteBorderColor(FCurRow + k, FCurCol, cbWest, scColorBlack)
           else
-            CB:=CB - [cbWest];
+            CB := CB - [cbWest];
 
           if not Assigned(CT.CaptionLine(k).Prior) then
             FWorksheet.WriteBorderColor(FCurRow + k, FCurCol, cbEast, scColorBlack)
           else
-            CB:=CB - [cbEast];
+            CB := CB - [cbEast];
 
 
-          FWorksheet.WriteBorderColor(FCurRow + k ,FCurCol, cbSouth, scColorBlack);
+          FWorksheet.WriteBorderColor(FCurRow + k, FCurCol, cbSouth, scColorBlack);
 
           FWorksheet.WriteBorders(FCurRow + k, FCurCol, CB);
 
-          FWorksheet.WriteHorAlignment(FCurRow + k, FCurCol, ssAligns[C.Title.Alignment]);
+          FWorksheet.WriteHorAlignment(FCurRow + k, FCurCol,
+            ssAligns[C.Title.Alignment]);
 
           FWorksheet.WriteUTF8Text(FCurRow + k, FCurCol, CT.CaptionLine(k).Caption);
 
-          if Assigned(CT.CaptionLine(k).Next) and not Assigned(CT.CaptionLine(k).Prior) then
+          if Assigned(CT.CaptionLine(k).Next) and not
+            Assigned(CT.CaptionLine(k).Prior) then
           begin
             //Merge title cell
-            P:=CT.CaptionLine(k);
-            CC:=FCurCol;
+            P := CT.CaptionLine(k);
+            CC := FCurCol;
             while Assigned(P.Next) do
             begin
               Inc(CC);
-              P:=P.Next;
+              P := P.Next;
             end;
-            if CC<>FCurCol then
+            if CC <> FCurCol then
               FWorksheet.MergeCells(FCurRow, FCurCol, FCurRow, CC);
           end;
         end;
       end
       else
       begin
-        CC:=C.Title.Color;
-        if (CC and SYS_COLOR_BASE) = 0  then
+        CC := C.Title.Color;
+        if (CC and SYS_COLOR_BASE) = 0 then
         begin
           {$IFDEF OLD_fpSPREADSHEET}
-          scColor:=FWorkbook.AddColorToPalette(CC);
-          FWorksheet.WriteBackgroundColor( FCurRow, FCurCol, scColor);
+          scColor := FWorkbook.AddColorToPalette(CC);
+          FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, scColor);
           {$ELSE}
-          FWorksheet.WriteBackgroundColor( FCurRow, FCurCol, CC);
+          FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, CC);
           {$ENDIF}
         end;
 
-        FWorksheet.WriteBorders(FCurRow,FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
-        FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbNorth, scColorBlack);
-        FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbWest, scColorBlack);
-        FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbEast, scColorBlack);
-        FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbSouth, scColorBlack);
+        FWorksheet.WriteBorders(FCurRow, FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
+        FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbNorth, scColorBlack);
+        FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbWest, scColorBlack);
+        FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbEast, scColorBlack);
+        FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbSouth, scColorBlack);
 
         FWorksheet.WriteHorAlignment(FCurRow, FCurCol, ssAligns[C.Title.Alignment]);
 
@@ -485,202 +492,208 @@ begin
 
       end;
 
-      inc(FCurCol);
+      Inc(FCurCol);
     end;
   end;
 
 
   if FMaxTitleHeight > 1 then
   begin
-    for i:=0 to FRxDBGrid.Columns.Count-1 do
+    for i := 0 to FRxDBGrid.Columns.Count - 1 do
     begin
-      C:=FRxDBGrid.Columns[i] as TRxColumn;
-      CT:=C.Title as TRxColumnTitle;
+      C := FRxDBGrid.Columns[i] as TRxColumn;
+      CT := C.Title as TRxColumnTitle;
       if CT.CaptionLinesCount < FMaxTitleHeight then
       begin
-        FWorksheet.MergeCells( FCurRow + CT.CaptionLinesCount, I, FCurRow + FMaxTitleHeight - 1, I);
+        FWorksheet.MergeCells(FCurRow + CT.CaptionLinesCount, I,
+          FCurRow + FMaxTitleHeight - 1, I);
       end;
     end;
   end;
 
-  inc(FCurRow, FMaxTitleHeight);
-  FFirstDataRow:=FCurRow;
+  Inc(FCurRow, FMaxTitleHeight);
+  FFirstDataRow := FCurRow;
 end;
 
 procedure TRxDBGridExportSpreadSheet.DoExportBody;
 begin
-  if (dgMultiselect in RxDBGrid.Options) and (RxDBGrid.SelectedRows.Count > 0) and (ressExportSelectedRows in FOptions) then
+  if (dgMultiselect in RxDBGrid.Options) and (RxDBGrid.SelectedRows.Count > 0) and
+    (ressExportSelectedRows in FOptions) then
     ExpSelectedRow
   else
     ExpAllRow;
 
-  FLastDataRow:=FCurRow-1;
+  FLastDataRow := FCurRow - 1;
 end;
 
 procedure TRxDBGridExportSpreadSheet.DoExportFooter;
 var
-  FooterColor:TColor;
+  FooterColor: TColor;
 
-procedure OutFooterCellProps;
-{$IFDEF OLD_fpSPREADSHEET}
-var
-  scColor : TsColor;
-{$ENDIF}
-begin
-  if (FRxDBGrid.FooterOptions.Color and SYS_COLOR_BASE) = 0  then
-  begin
-    {$IFDEF OLD_fpSPREADSHEET}
-    scColor:=FWorkbook.AddColorToPalette(CC);
-    FWorksheet.WriteBackgroundColor(FCurRow,FCurCol, scColor);}
-    {$ELSE}
-    FWorksheet.WriteBackgroundColor(FCurRow,FCurCol, FRxDBGrid.FooterOptions.Color);
+  procedure OutFooterCellProps;
+  {$IFDEF OLD_fpSPREADSHEET}
+  var
+    scColor: TsColor;
     {$ENDIF}
-  end;
-  FWorksheet.WriteBorders(FCurRow,FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
-  FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbNorth, scColorBlack);
-  FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbWest, scColorBlack);
-  FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbEast, scColorBlack);
-  FWorksheet.WriteBorderColor(FCurRow,FCurCol, cbSouth, scColorBlack);
-end;
-
-procedure OutFooterCell(Footer: TRxColumnFooterItem);
-var
-  D: Integer;
-  SF: String;
-begin
-  if (Footer.ValueType <> fvtNon) then
   begin
-    if (ressExportFormula in FOptions) and (Footer.ValueType in [fvtSum, fvtMax, fvtMin]) and (FFirstDataRow <= FLastDataRow) {and (Footer.DisplayFormat = '')} then
-    begin
-      D:=ColIndex(RxDBGrid.ColumnByFieldName(Footer.FieldName));
-
-      if D>=0 then
+    if (FRxDBGrid.FooterOptions.Color and SYS_COLOR_BASE) = 0 then
       begin
-        case Footer.ValueType of
-          fvtSum:SF:='SUM';
-          fvtMax:SF:='MAX';
-          fvtMin:SF:='MIN';
-        else
-          SF:='Error!(';
-        end;
+        {$IFDEF OLD_fpSPREADSHEET}
+        scColor := FWorkbook.AddColorToPalette(CC);
+        FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, scColor);//}
+        {$ELSE}
+        FWorksheet.WriteBackgroundColor(FCurRow, FCurCol, FRxDBGrid.FooterOptions.Color);
+        {$ENDIF}
+      end;
+    FWorksheet.WriteBorders(FCurRow, FCurCol, [cbNorth, cbWest, cbEast, cbSouth]);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbNorth, scColorBlack);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbWest, scColorBlack);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbEast, scColorBlack);
+    FWorksheet.WriteBorderColor(FCurRow, FCurCol, cbSouth, scColorBlack);
+  end;
 
-        FWorksheet.WriteFormula(FCurRow, FCurCol,
-          Format('=%s(%s%d:%s%d)', [SF, GetColString(D), FFirstDataRow+1, GetColString(D), FLastDataRow+1]));
-      end
+  procedure OutFooterCell(Footer: TRxColumnFooterItem);
+  var
+    D: integer;
+    SF: string;
+  begin
+    if (Footer.ValueType <> fvtNon) then
+    begin
+      if (ressExportFormula in FOptions) and (Footer.ValueType in
+        [fvtSum, fvtMax, fvtMin]) and (FFirstDataRow <= FLastDataRow)
+      {and (Footer.DisplayFormat = '')} then
+        begin
+          D := ColIndex(RxDBGrid.ColumnByFieldName(Footer.FieldName));
+
+          if D >= 0 then
+            begin
+              case Footer.ValueType of
+                fvtSum: SF := 'SUM';
+                fvtMax: SF := 'MAX';
+                fvtMin: SF := 'MIN';
+                else
+                  SF := 'Error!(';
+              end;
+
+              FWorksheet.WriteFormula(FCurRow, FCurCol,
+                Format('=%s(%s%d:%s%d)', [SF, GetColString(D), FFirstDataRow + 1,
+                GetColString(D), FLastDataRow + 1]));
+            end
+          else
+            begin
+              FWorksheet.WriteNumber(FCurRow, FCurCol, Footer.NumericValue, nfFixed, 2);
+            end;
+        end
       else
-      begin
-        FWorksheet.WriteNumber(FCurRow, FCurCol, Footer.NumericValue, nfFixed, 2);
-      end;
-    end
-    else
-      FWorksheet.WriteUTF8Text(FCurRow, FCurCol, Footer.DisplayText);
-    FWorksheet.WriteHorAlignment(FCurRow, FCurCol, ssAligns[Footer.Alignment]);
+        FWorksheet.WriteUTF8Text(FCurRow, FCurCol, Footer.DisplayText);
+      FWorksheet.WriteHorAlignment(FCurRow, FCurCol, ssAligns[Footer.Alignment]);
+    end;
   end;
-end;
 
 var
-  i , j: Integer;
-  C : TRxColumn;
+  i, j: integer;
+  C: TRxColumn;
 begin
-  for j:=0 to FRxDBGrid.FooterOptions.RowCount-1 do
-  begin
-    FCurCol:=0;
-    for i:=0 to FRxDBGrid.Columns.Count - 1 do
+  for j := 0 to FRxDBGrid.FooterOptions.RowCount - 1 do
     begin
-      C:=FRxDBGrid.Columns[i] as TRxColumn;
-      if C.Visible then
-      begin
-        OutFooterCellProps;
-        if C.Footers.Count>j then
-          OutFooterCell(C.Footers[j])
-        else
-        if J=0 then
-          OutFooterCell(C.Footer);
-        inc(FCurCol);
-      end;
+      FCurCol := 0;
+      for i := 0 to FRxDBGrid.Columns.Count - 1 do
+        begin
+          C := FRxDBGrid.Columns[i] as TRxColumn;
+          if C.Visible then
+            begin
+              OutFooterCellProps;
+              if C.Footers.Count > j then
+                OutFooterCell(C.Footers[j])
+              else if J = 0 then
+                OutFooterCell(C.Footer);
+              Inc(FCurCol);
+            end;
+        end;
+      Inc(FCurRow);
     end;
-    Inc(FCurRow);
-  end;
 end;
 
 procedure TRxDBGridExportSpreadSheet.DoExportColWidth;
 var
   //FW:integer;
-  C:TRxColumn;
-  i: Integer;
+  C: TRxColumn;
+  i: integer;
 begin
   //FW:=FRxDBGrid.Canvas.TextWidth('W');
-  FCurCol:=0;
-  for i:=0 to FRxDBGrid.Columns.Count - 1 do
-  begin
-    C:=FRxDBGrid.Columns[i] as TRxColumn;
-    if C.Visible then
+  FCurCol := 0;
+  for i := 0 to FRxDBGrid.Columns.Count - 1 do
     begin
-      //FWorksheet.WriteColWidth(FCurCol, Max(C.Width div FW, 20));
-      FWorksheet.WriteColWidth(FCurCol, C.Width, suPoints);
-      inc(FCurCol);
+      C := FRxDBGrid.Columns[i] as TRxColumn;
+      if C.Visible then
+        begin
+          //FWorksheet.WriteColWidth(FCurCol, Max(C.Width div FW, 20));
+          FWorksheet.WriteColWidth(FCurCol, C.Width, suPoints);
+          Inc(FCurCol);
+        end;
     end;
-  end;
 end;
 
 
 constructor TRxDBGridExportSpreadSheet.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FCaption:=sToolsExportSpeadSheet;
-  FOpenAfterExport:=false;
-  FDefaultExt:=rdeOpenDocument;
+  FCaption := sToolsExportSpeadSheet;
+  FOpenAfterExport := False;
+  FDefaultExt := rdeOpenDocument;
 end;
 
 function TRxDBGridExportSpreadSheet.DoExecTools: boolean;
 var
-  P:TBookMark;
-  FPN, FFN: String;
+  P: TBookMark;
+  FPN, FFN: string;
 begin
-  Result:=false;
-  if (not Assigned(FRxDBGrid)) or (not Assigned(FRxDBGrid.DataSource)) or (not Assigned(FRxDBGrid.DataSource.DataSet)) then
+  Result := False;
+  if (not Assigned(FRxDBGrid)) or (not Assigned(FRxDBGrid.DataSource)) or
+    (not Assigned(FRxDBGrid.DataSource.DataSet)) then
     exit;
   if FPageName = '' then
-    FPN:=sPageName
+    FPN := sPageName
   else
-    FPN:=FPageName;
+    FPN := FPageName;
 
-  FFN:=InternalGetFileName;
+  FFN := InternalGetFileName;
 
-  FDataSet:=FRxDBGrid.DataSource.DataSet;
+  FDataSet := FRxDBGrid.DataSource.DataSet;
   FDataSet.DisableControls;
   {$IFDEF NoAutomatedBookmark}
-  P:=FDataSet.GetBookmark;
+  P := FDataSet.GetBookmark;
   {$ELSE}
-  P:=FDataSet.Bookmark;
+  P := FDataSet.Bookmark;
   {$ENDIF}
 
   FWorkbook := TsWorkbook.Create;
   FWorksheet := FWorkbook.AddWorksheet(FPN);
   try
-    scColorBlack:=FRxDBGrid.GridLineColor;
-    FCurRow:=0;
-    FFirstDataRow:=0;
-    FLastDataRow:=-1;
+    scColorBlack := FRxDBGrid.GridLineColor;
+    FCurRow := 0;
+    FFirstDataRow := 0;
+    FLastDataRow := -1;
 
     if ressExportTitle in FOptions then
       DoExportTitle;
     DoExportBody;
 
-    if (ressExportFooter in FOptions) and (RxDBGrid.FooterOptions.Active) and (RxDBGrid.FooterOptions.RowCount>0) then
+    if (ressExportFooter in FOptions) and (RxDBGrid.FooterOptions.Active) and
+      (RxDBGrid.FooterOptions.RowCount > 0) then
       DoExportFooter;
 
     DoExportColWidth;
 
-    FWorkbook.WriteToFile(UTF8ToSys(FFN), true);
-    Result:=true;
+    FWorkbook.WriteToFile(UTF8ToSys(FFN), True);
+    Result := True;
   finally
     FWorkbook.Free;
     {$IFDEF NoAutomatedBookmark}
     FDataSet.GotoBookmark(P);
     FDataSet.FreeBookmark(P);
     {$ELSE}
-    FDataSet.Bookmark:=P;
+    FDataSet.Bookmark := P;
     {$ENDIF}
     FDataSet.EnableControls;
   end;
@@ -691,61 +704,62 @@ end;
 
 function TRxDBGridExportSpreadSheet.DoSetupTools: boolean;
 var
-  F:TRxDBGridExportSpreadSheet_ParamsForm;
+  F: TRxDBGridExportSpreadSheet_ParamsForm;
 begin
-  F:=TRxDBGridExportSpreadSheet_ParamsForm.Create(Application);
-  F.FileNameEdit1.FileName:=FFileName;
-  F.cbOpenAfterExport.Checked:=FOpenAfterExport;
-  F.cbExportColumnFooter.Checked:=ressExportFooter in FOptions;
-  F.cbExportColumnFooter.Enabled:=RxDBGrid.FooterOptions.Active;
+  F := TRxDBGridExportSpreadSheet_ParamsForm.Create(Application);
+  F.FileNameEdit1.FileName := FFileName;
+  F.cbOpenAfterExport.Checked := FOpenAfterExport;
+  F.cbExportColumnFooter.Checked := ressExportFooter in FOptions;
+  F.cbExportColumnFooter.Enabled := RxDBGrid.FooterOptions.Active;
 
-  F.cbExportColumnHeader.Checked:=ressExportTitle in FOptions;
-  F.cbExportCellColors.Checked:=ressExportColors in FOptions;
-  F.cbOverwriteExisting.Checked:=ressOverwriteExisting in FOptions;
+  F.cbExportColumnHeader.Checked := ressExportTitle in FOptions;
+  F.cbExportCellColors.Checked := ressExportColors in FOptions;
+  F.cbOverwriteExisting.Checked := ressOverwriteExisting in FOptions;
 
-  F.cbExportFormula.Checked:=ressExportFormula in FOptions;
-  F.cbExportFormula.Enabled:=RxDBGrid.FooterOptions.Active;
+  F.cbExportFormula.Checked := ressExportFormula in FOptions;
+  F.cbExportFormula.Enabled := RxDBGrid.FooterOptions.Active;
 
-  F.cbExportSelectedRows.Checked:=ressExportSelectedRows in FOptions;
-  F.cbExportSelectedRows.Enabled:=(dgMultiselect in RxDBGrid.Options) and (RxDBGrid.SelectedRows.Count > 0);
-  F.cbHideZeroValues.Checked:=ressHideZeroValues in FOptions;
+  F.cbExportSelectedRows.Checked := ressExportSelectedRows in FOptions;
+  F.cbExportSelectedRows.Enabled :=
+    (dgMultiselect in RxDBGrid.Options) and (RxDBGrid.SelectedRows.Count > 0);
+  F.cbHideZeroValues.Checked := ressHideZeroValues in FOptions;
 
-  F.cbMergeCells.Checked:=ressColSpanning in FOptions;
+  F.cbMergeCells.Checked := ressColSpanning in FOptions;
 
-  F.cbExportGrpData.Checked:=ressExportGroupData in FOptions;
-  F.cbExportGrpData.Enabled:=RxDBGrid.GroupItems.Active;
+  F.cbExportGrpData.Checked := ressExportGroupData in FOptions;
+  F.cbExportGrpData.Enabled := RxDBGrid.GroupItems.Active;
 
 
-  F.edtPageName.Text:=FPageName;
+  F.edtPageName.Text := FPageName;
 
-  Result:=F.ShowModal = mrOk;
+  Result := F.ShowModal = mrOk;
   if Result then
   begin
-    FOpenAfterExport:=F.cbOpenAfterExport.Checked;
-    FFileName:=F.FileNameEdit1.FileName;
-    FPageName:=F.edtPageName.Text;
+    FOpenAfterExport := F.cbOpenAfterExport.Checked;
+    FFileName := F.FileNameEdit1.FileName;
+    FPageName := F.edtPageName.Text;
 
-    FOptions:=[];
+    FOptions := [];
     if F.cbExportColumnFooter.Checked then
-      FOptions :=FOptions + [ressExportFooter];
+      FOptions := FOptions + [ressExportFooter];
     if F.cbExportColumnHeader.Checked then
-      FOptions :=FOptions + [ressExportTitle];
+      FOptions := FOptions + [ressExportTitle];
     if F.cbExportCellColors.Checked then
-      FOptions :=FOptions + [ressExportColors];
+      FOptions := FOptions + [ressExportColors];
     if F.cbOverwriteExisting.Checked then
-      FOptions :=FOptions + [ressOverwriteExisting];
+      FOptions := FOptions + [ressOverwriteExisting];
     if F.cbExportFormula.Checked then
-      FOptions :=FOptions + [ressExportFormula];
+      FOptions := FOptions + [ressExportFormula];
     if F.cbExportSelectedRows.Enabled and F.cbExportSelectedRows.Checked then
-      FOptions :=FOptions + [ressExportSelectedRows];
+      FOptions := FOptions + [ressExportSelectedRows];
     if F.cbHideZeroValues.Checked then
-      FOptions:=FOptions + [ressHideZeroValues];
+      FOptions := FOptions + [ressHideZeroValues];
 
     if F.cbMergeCells.Checked then
-      FOptions:=FOptions + [ressColSpanning];
+      FOptions := FOptions + [ressColSpanning];
 
     if F.cbExportGrpData.Checked then
-      FOptions:=FOptions + [ressExportGroupData];
+      FOptions := FOptions + [ressExportGroupData];
 
   end;
   F.Free;

@@ -47,35 +47,35 @@ type
   private
     FEditFormat: string;
     FFocusedDisplay: boolean;
-    FBeepOnError: Boolean;
-    FCheckOnExit: Boolean;
-    FDecimalPlaces: Cardinal;
+    FBeepOnError: boolean;
+    FCheckOnExit: boolean;
+    FDecimalPlaces: cardinal;
     FDisplayFormat: string;
-//    FFormatOnEditing: Boolean;
-    FFormatting: Boolean;
-    FMaxValue: Extended;
-    FMinValue: Extended;
-    FValue: Extended;
-    FFocused: Boolean;
-    FZeroEmpty: Boolean;
-    function GetAsInteger: Longint;
+    //    FFormatOnEditing: Boolean;
+    FFormatting: boolean;
+    FMaxValue: extended;
+    FMinValue: extended;
+    FValue: extended;
+    FFocused: boolean;
+    FZeroEmpty: boolean;
+    function GetAsInteger: longint;
     function GetIsNull: boolean;
     function GetText: string;
-    function GetValue: Extended;
-    procedure SetAsInteger(const AValue: Longint);
-    procedure SetBeepOnError(const AValue: Boolean);
-    procedure SetDecimalPlaces(const AValue: Cardinal);
+    function GetValue: extended;
+    procedure SetAsInteger(const AValue: longint);
+    procedure SetBeepOnError(const AValue: boolean);
+    procedure SetDecimalPlaces(const AValue: cardinal);
     procedure SetDisplayFormat(const AValue: string);
     procedure SetEditFormat(AValue: string);
-//    procedure SetFormatOnEditing(const AValue: Boolean);
-    procedure SetMaxValue(const AValue: Extended);
-    procedure SetMinValue(const AValue: Extended);
+    //    procedure SetFormatOnEditing(const AValue: Boolean);
+    procedure SetMaxValue(const AValue: extended);
+    procedure SetMinValue(const AValue: extended);
     procedure SetText(const AValue: string);
-    procedure SetValue(const AValue: Extended);
-    procedure SetZeroEmpty(const AValue: Boolean);
+    procedure SetValue(const AValue: extended);
+    procedure SetZeroEmpty(const AValue: boolean);
     function TextToValText(const AValue: string): string;
-    function CheckValue(NewValue: Extended; RaiseOnError: Boolean): Extended;
-//    procedure SetFocused(Value: Boolean);
+    function CheckValue(NewValue: extended; RaiseOnError: boolean): extended;
+    //    procedure SetFocused(Value: Boolean);
   protected
     //messages
 {    procedure CMEnabledChanged(var Message: TLMessage); message CM_ENABLEDCHANGED;
@@ -85,49 +85,48 @@ type
     procedure WMSetFocus(var Message: TLMSetFocus); message LM_SETFOCUS;
     procedure WMKillFocus(var Message: TLMKillFocus); message LM_KILLFOCUS;
 
-//    procedure CMFontChanged(var Message: TLMessage); message CM_FONTCHANGED;
-//    procedure WMPaint(var Message: TLMPaint); message LM_PAINT;
+    //    procedure CMFontChanged(var Message: TLMessage); message CM_FONTCHANGED;
+    //    procedure WMPaint(var Message: TLMPaint); message LM_PAINT;
     procedure WMPaste(var Message: TLMessage); message LM_PASTE;
-//    procedure GetSel(var ASelStart: Integer; var SelStop: Integer);
+    //    procedure GetSel(var ASelStart: Integer; var SelStop: Integer);
 {    procedure DoEnter; override;
     procedure DoExit; override;}
-//    procedure AcceptValue(const Value: Variant); override;
+    //    procedure AcceptValue(const Value: Variant); override;
 
-//    procedure Change; override;
-//    procedure ReformatEditText; dynamic;
+    //    procedure Change; override;
+    //    procedure ReformatEditText; dynamic;
     procedure DataChanged; virtual;
-    procedure KeyPress(var Key: Char); override;
-    function IsValidChar(Key: Char): Boolean; virtual;
-    function FormatDisplayText(Value: Extended): string;
+    procedure KeyPress(var Key: char); override;
+    function IsValidChar(Key: char): boolean; virtual;
+    function FormatDisplayText(Value: extended): string;
     function GetDisplayText: string; virtual;
     procedure Reset; override;
     procedure CheckRange;
     procedure UpdateData;
-    property Formatting: Boolean read FFormatting;
-    property BeepOnError: Boolean read FBeepOnError write SetBeepOnError
-      default True;
-    property CheckOnExit: Boolean read FCheckOnExit write FCheckOnExit default False;
-    property DecimalPlaces: Cardinal read FDecimalPlaces write SetDecimalPlaces
-      default 2;
+    property Formatting: boolean read FFormatting;
+    property BeepOnError: boolean read FBeepOnError write SetBeepOnError default True;
+    property CheckOnExit: boolean read FCheckOnExit write FCheckOnExit default False;
+    property DecimalPlaces: cardinal
+      read FDecimalPlaces write SetDecimalPlaces default 2;
     property DisplayFormat: string read FDisplayFormat write SetDisplayFormat;
     property EditFormat: string read FEditFormat write SetEditFormat;
-    property MaxValue: Extended read FMaxValue write SetMaxValue;
-    property MinValue: Extended read FMinValue write SetMinValue;
-//    property FormatOnEditing: Boolean read FFormatOnEditing write SetFormatOnEditing default False;
+    property MaxValue: extended read FMaxValue write SetMaxValue;
+    property MinValue: extended read FMinValue write SetMinValue;
+    //    property FormatOnEditing: Boolean read FFormatOnEditing write SetFormatOnEditing default False;
     property Text: string read GetText write SetText stored False;
     property MaxLength default 0;
-    property ZeroEmpty: Boolean read FZeroEmpty write SetZeroEmpty default True;
+    property ZeroEmpty: boolean read FZeroEmpty write SetZeroEmpty default True;
   public
     constructor Create(AOwner: TComponent); override;
     procedure Clear;
-    property AsInteger: Longint read GetAsInteger write SetAsInteger;
+    property AsInteger: longint read GetAsInteger write SetAsInteger;
     property DisplayText: string read GetDisplayText;
-    property Value: Extended read GetValue write SetValue;
-    property IsNull:boolean read GetIsNull;
+    property Value: extended read GetValue write SetValue;
+    property IsNull: boolean read GetIsNull;
   published
     { Published declarations }
   end;
-  
+
   { TCurrencyEdit }
 
   TCurrencyEdit = class(TCustomNumEdit)
@@ -155,12 +154,12 @@ type
     property Constraints;
     property DragKind;
     property ParentBiDiMode;
-{$IFDEF WIN32}
-  {$IFNDEF VER90}
-//    property ImeMode;
-//    property ImeName;
-  {$ENDIF}
-{$ENDIF}
+    {$IFDEF WIN32}
+    {$IFNDEF VER90}
+    //    property ImeMode;
+    //    property ImeName;
+    {$ENDIF}
+    {$ENDIF}
     property MaxLength;
     property MaxValue;
     property MinValue;
@@ -201,41 +200,46 @@ type
   end;
 
 implementation
+
 uses strutils, Math, rxtooledit, rxconst;
 
-function IsValidFloat(const Value: string; var RetValue: Extended): Boolean;
+function IsValidFloat(const Value: string; var RetValue: extended): boolean;
 var
-  I: Integer;
-  Buffer: array[0..63] of Char;
+  I: integer;
+  Buffer: array[0..63] of char;
 begin
   Result := False;
   for I := 1 to Length(Value) do
-    if not (Value[I] in [DefaultFormatSettings.DecimalSeparator, '-', '+', '0'..'9', 'e', 'E']) then
+    if not (Value[I] in [DefaultFormatSettings.DecimalSeparator, '-',
+      '+', '0'..'9', 'e', 'E']) then
       Exit;
-  Result := TextToFloat(StrPLCopy(Buffer, Value,
-    SizeOf(Buffer) - 1), RetValue, fvExtended);
+  Result := TextToFloat(StrPLCopy(Buffer, Value, SizeOf(Buffer) - 1),
+    RetValue, fvExtended);
 end;
 
-function FormatFloatStr(const S: string; Thousands: Boolean): string;
+function FormatFloatStr(const S: string; Thousands: boolean): string;
 var
-  I, MaxSym, MinSym, Group: Integer;
-  IsSign: Boolean;
+  I, MaxSym, MinSym, Group: integer;
+  IsSign: boolean;
 begin
   Result := '';
   MaxSym := Length(S);
   IsSign := (MaxSym > 0) and (S[1] in ['-', '+']);
   if IsSign then MinSym := 2
-  else MinSym := 1;
+  else
+    MinSym := 1;
   I := Pos(DefaultFormatSettings.DecimalSeparator, S);
   if I > 0 then MaxSym := I - 1;
   I := Pos('E', AnsiUpperCase(S));
   if I > 0 then MaxSym := Min(I - 1, MaxSym);
   Result := Copy(S, MaxSym + 1, MaxInt);
   Group := 0;
-  for I := MaxSym downto MinSym do begin
+  for I := MaxSym downto MinSym do
+  begin
     Result := S[I] + Result;
     Inc(Group);
-    if (Group = 3) and Thousands and (I > MinSym) then begin
+    if (Group = 3) and Thousands and (I > MinSym) then
+    begin
       Group := 0;
       Result := DefaultFormatSettings.ThousandSeparator + Result;
     end;
@@ -245,14 +249,14 @@ end;
 
 { TCustomNumEdit }
 
-function TCustomNumEdit.GetAsInteger: Longint;
+function TCustomNumEdit.GetAsInteger: longint;
 begin
   Result := Trunc(Value);
 end;
 
 function TCustomNumEdit.GetIsNull: boolean;
 begin
-  Result:=false;
+  Result := False;
 end;
 
 function TCustomNumEdit.GetDisplayText: string;
@@ -295,7 +299,7 @@ end;
 function TCustomNumEdit.GetText: string;
 begin
   if (FValue = 0) and FZeroEmpty then
-    Result:=''
+    Result := ''
   else
   begin
     if FEditFormat <> '' then
@@ -305,7 +309,7 @@ begin
   end;
 end;
 
-function TCustomNumEdit.GetValue: Extended;
+function TCustomNumEdit.GetValue: extended;
 begin
   if (not (csDesigning in ComponentState)) and FFocusedDisplay then
   begin
@@ -318,36 +322,36 @@ begin
   Result := FValue;
 end;
 
-procedure TCustomNumEdit.SetAsInteger(const AValue: Longint);
+procedure TCustomNumEdit.SetAsInteger(const AValue: longint);
 begin
   SetValue(AValue);
 end;
 
-procedure TCustomNumEdit.SetBeepOnError(const AValue: Boolean);
+procedure TCustomNumEdit.SetBeepOnError(const AValue: boolean);
 begin
-  if FBeepOnError=AValue then exit;
-  FBeepOnError:=AValue;
+  if FBeepOnError = AValue then exit;
+  FBeepOnError := AValue;
 end;
 
-procedure TCustomNumEdit.SetDecimalPlaces(const AValue: Cardinal);
+procedure TCustomNumEdit.SetDecimalPlaces(const AValue: cardinal);
 begin
-  if FDecimalPlaces=AValue then exit;
-  FDecimalPlaces:=AValue;
+  if FDecimalPlaces = AValue then exit;
+  FDecimalPlaces := AValue;
   DataChanged;
   Invalidate;
 end;
 
 procedure TCustomNumEdit.SetDisplayFormat(const AValue: string);
 begin
-  if FDisplayFormat=AValue then exit;
-  FDisplayFormat:=AValue;
+  if FDisplayFormat = AValue then exit;
+  FDisplayFormat := AValue;
   DataChanged;
 end;
 
 procedure TCustomNumEdit.SetEditFormat(AValue: string);
 begin
-  if FEditFormat=AValue then Exit;
-  FEditFormat:=AValue;
+  if FEditFormat = AValue then Exit;
+  FEditFormat := AValue;
   DataChanged;
 end;
 
@@ -366,20 +370,20 @@ begin
   end;
 end;
 }
-procedure TCustomNumEdit.SetMaxValue(const AValue: Extended);
+procedure TCustomNumEdit.SetMaxValue(const AValue: extended);
 begin
-  if FMaxValue=AValue then exit;
-  FMaxValue:=AValue;
+  if FMaxValue = AValue then exit;
+  FMaxValue := AValue;
   if Value > AValue then
-    Value:=AValue;
+    Value := AValue;
 end;
 
-procedure TCustomNumEdit.SetMinValue(const AValue: Extended);
+procedure TCustomNumEdit.SetMinValue(const AValue: extended);
 begin
-  if FMinValue=AValue then exit;
-  FMinValue:=AValue;
+  if FMinValue = AValue then exit;
+  FMinValue := AValue;
   if Value < AValue then
-    Value:=AValue;
+    Value := AValue;
 end;
 
 procedure TCustomNumEdit.SetText(const AValue: string);
@@ -392,54 +396,65 @@ begin
   end;
 end;
 
-procedure TCustomNumEdit.SetValue(const AValue: Extended);
+procedure TCustomNumEdit.SetValue(const AValue: extended);
 begin
   FValue := CheckValue(AValue, False);
   DataChanged;
   Invalidate;
 end;
 
-procedure TCustomNumEdit.SetZeroEmpty(const AValue: Boolean);
+procedure TCustomNumEdit.SetZeroEmpty(const AValue: boolean);
 begin
-  if FZeroEmpty=AValue then exit;
-  FZeroEmpty:=AValue;
+  if FZeroEmpty = AValue then exit;
+  FZeroEmpty := AValue;
   DataChanged;
 end;
 
 function TCustomNumEdit.TextToValText(const AValue: string): string;
 begin
   Result := Trim(AValue);
-  if DefaultFormatSettings.DecimalSeparator <> DefaultFormatSettings.ThousandSeparator then begin
+  if DefaultFormatSettings.DecimalSeparator <>
+    DefaultFormatSettings.ThousandSeparator then
+  begin
     Result := DelChars(Result, ThousandSeparator);
   end;
-  if (DefaultFormatSettings.DecimalSeparator <> '.') and (DefaultFormatSettings.ThousandSeparator <> '.') then
-    Result := StringReplace(Result, '.', DefaultFormatSettings.DecimalSeparator, [rfReplaceAll]);
-  if (DefaultFormatSettings.DecimalSeparator <> ',') and (DefaultFormatSettings.ThousandSeparator <> ',') then
-    Result := StringReplace(Result, ',', DefaultFormatSettings.DecimalSeparator, [rfReplaceAll]);
+  if (DefaultFormatSettings.DecimalSeparator <> '.') and
+    (DefaultFormatSettings.ThousandSeparator <> '.') then
+    Result := StringReplace(Result, '.', DefaultFormatSettings.DecimalSeparator,
+      [rfReplaceAll]);
+  if (DefaultFormatSettings.DecimalSeparator <> ',') and
+    (DefaultFormatSettings.ThousandSeparator <> ',') then
+    Result := StringReplace(Result, ',', DefaultFormatSettings.DecimalSeparator,
+      [rfReplaceAll]);
   if Result = '' then Result := '0'
   else if Result = '-' then Result := '-0';
 end;
 
-function TCustomNumEdit.CheckValue(NewValue: Extended; RaiseOnError: Boolean
-  ): Extended;
+function TCustomNumEdit.CheckValue(NewValue: extended;
+  RaiseOnError: boolean): extended;
 begin
   Result := NewValue;
-  if (FMaxValue <> FMinValue) then begin
-    if (FMaxValue > FMinValue) then begin
+  if (FMaxValue <> FMinValue) then
+  begin
+    if (FMaxValue > FMinValue) then
+    begin
       if NewValue < FMinValue then Result := FMinValue
       else if NewValue > FMaxValue then Result := FMaxValue;
     end
-    else begin
-      if FMaxValue = 0 then begin
+    else
+    begin
+      if FMaxValue = 0 then
+      begin
         if NewValue < FMinValue then Result := FMinValue;
       end
-      else if FMinValue = 0 then begin
+      else if FMinValue = 0 then
+      begin
         if NewValue > FMaxValue then Result := FMaxValue;
       end;
     end;
     if RaiseOnError and (Result <> NewValue) then
-      raise ERangeError.CreateFmt(StringReplace(SOutOfRange, '%d', '%.*f', [rfReplaceAll]),
-        [DecimalPlaces, FMinValue, DecimalPlaces, FMaxValue]);
+      raise ERangeError.CreateFmt(StringReplace(SOutOfRange, '%d',
+        '%.*f', [rfReplaceAll]), [DecimalPlaces, FMinValue, DecimalPlaces, FMaxValue]);
   end;
 end;
 {
@@ -464,7 +479,7 @@ begin
   // some widgetsets do not notify clipboard actions properly. Put at edit state at entry
   if FFocusedDisplay then
     exit;
-  FFocusedDisplay := true;
+  FFocusedDisplay := True;
   Reset;
 end;
 
@@ -474,7 +489,7 @@ begin
   FFocusedDisplay := False;
   UpdateData;
   if not Focused then
-      DisableMask(GetDisplayText);
+    DisableMask(GetDisplayText);
 end;
 
 {
@@ -536,7 +551,7 @@ begin
     EditText := S;
     SelectAll;
     if CanFocus then SetFocus;
-//    if BeepOnError then MessageBeep(0);
+    //    if BeepOnError then MessageBeep(0);
   end;
 end;
 {
@@ -616,17 +631,17 @@ begin
   if FFocusedDisplay then
     RestoreMask(GetText)
   else
-    DisableMask(GetDisplayText)
+    DisableMask(GetDisplayText);
 end;
 
-procedure TCustomNumEdit.KeyPress(var Key: Char);
+procedure TCustomNumEdit.KeyPress(var Key: char);
 begin
   if Key in ['.', ','] - [DefaultFormatSettings.ThousandSeparator] then
     Key := DefaultFormatSettings.DecimalSeparator;
   inherited KeyPress(Key);
   if (Key in [#32..#255]) and not IsValidChar(Key) then
   begin
-//    if BeepOnError then MessageBeep(0);
+    //    if BeepOnError then MessageBeep(0);
     Key := #0;
   end
   else
@@ -637,11 +652,11 @@ begin
   end;
 end;
 
-function TCustomNumEdit.IsValidChar(Key: Char): Boolean;
+function TCustomNumEdit.IsValidChar(Key: char): boolean;
 var
   S: string;
-  ASelStart, SelStop, DecPos: Integer;
-  RetValue: Extended;
+  ASelStart, SelStop, DecPos: integer;
+  RetValue: extended;
 begin
   Result := False;
   S := EditText;
@@ -657,7 +672,7 @@ begin
       DecPos := ASelStart - DecPos
     else
       DecPos := Length(S) - DecPos;
-    if DecPos > Integer(FDecimalPlaces) then
+    if DecPos > integer(FDecimalPlaces) then
       Exit;
 
     if S[1] = DefaultFormatSettings.DecimalSeparator then
@@ -668,27 +683,28 @@ begin
     Result := False;
 end;
 
-function TCustomNumEdit.FormatDisplayText(Value: Extended): string;
+function TCustomNumEdit.FormatDisplayText(Value: extended): string;
 var
-  Digits : integer;
+  Digits: integer;
 begin
   if FZeroEmpty and (Value = 0) then
-    Result:=''
+    Result := ''
   else
   if DisplayFormat <> '' then
-    Result:=FormatFloat(DisplayFormat, Value)
+    Result := FormatFloat(DisplayFormat, Value)
   else
   begin
     Digits := DefaultFormatSettings.CurrencyDecimals;
-    Result:=FloatToStrF(Value, ffCurrency, DecimalPlaces, Digits);
+    Result := FloatToStrF(Value, ffCurrency, DecimalPlaces, Digits);
   end;
 end;
 
 procedure TCustomNumEdit.Clear;
 begin
-  Text:='';
+  Text := '';
 end;
 
 initialization
-  RegisterPropertyToSkip( TCustomNumEdit, 'FormatOnEditing', 'This property depricated', '');
+  RegisterPropertyToSkip(TCustomNumEdit, 'FormatOnEditing',
+    'This property depricated', '');
 end.

@@ -20,6 +20,11 @@
           <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
+      <Other>
+        <CompilerMessages>
+          <IgnoredMessages idx6058="True" idx5024="True"/>
+        </CompilerMessages>
+      </Other>
     </CompilerOptions>
     <Description Value="Delphi VCL Extensions (RX) 
 Copyright (c) 1998 Master-Bank

@@ -404,51 +404,51 @@ const
   clbDefaultState = cbUnchecked;
   clbDefaultEnabled = True;
 
-{ TRxCustomLabel }
+  { TRxCustomLabel }
 
 type
   TShadowPosition = (spLeftTop, spLeftBottom, spRightBottom, spRightTop);
-{$IFNDEF RX_D3}
+  {$IFNDEF RX_D3}
   TTextLayout = (tlTop, tlCenter, tlBottom);
-{$ENDIF}
+  {$ENDIF}
 
   TRxCustomLabel = class(TGraphicControl)
   private
     FFocusControl: TWinControl;
     FAlignment: TAlignment;
-    FAutoSize: Boolean;
+    FAutoSize: boolean;
     FLayout: TTextLayout;
     FShadowColor: TColor;
-    FShadowSize: Byte;
+    FShadowSize: byte;
     FShadowPos: TShadowPosition;
-    FWordWrap: Boolean;
-    FShowAccelChar: Boolean;
-    FShowFocus: Boolean;
-    FFocused: Boolean;
-    FMouseInControl: Boolean;
-    FDragging: Boolean;
-    FLeftMargin: Integer;
-    FRightMargin: Integer;
+    FWordWrap: boolean;
+    FShowAccelChar: boolean;
+    FShowFocus: boolean;
+    FFocused: boolean;
+    FMouseInControl: boolean;
+    FDragging: boolean;
+    FLeftMargin: integer;
+    FRightMargin: integer;
     FOnMouseEnter: TNotifyEvent;
     FOnMouseLeave: TNotifyEvent;
-    procedure DoDrawText(var Rect: TRect; Flags: Word);
-    function GetTransparent: Boolean;
+    procedure DoDrawText(var Rect: TRect; Flags: word);
+    function GetTransparent: boolean;
     procedure UpdateTracking;
     procedure SetAlignment(Value: TAlignment);
-{$IFNDEF RX_D6}
-    procedure SetAutoSize(Value: Boolean);
-{$ENDIF}
+    {$IFNDEF RX_D6}
+    procedure SetAutoSize(Value: boolean);
+    {$ENDIF}
     procedure SetFocusControl(Value: TWinControl);
     procedure SetLayout(Value: TTextLayout);
-    procedure SetLeftMargin(Value: Integer);
-    procedure SetRightMargin(Value: Integer);
+    procedure SetLeftMargin(Value: integer);
+    procedure SetRightMargin(Value: integer);
     procedure SetShadowColor(Value: TColor);
-    procedure SetShadowSize(Value: Byte);
+    procedure SetShadowSize(Value: byte);
     procedure SetShadowPos(Value: TShadowPosition);
-    procedure SetShowAccelChar(Value: Boolean);
-    procedure SetTransparent(Value: Boolean);
-    procedure SetWordWrap(Value: Boolean);
-    procedure SetShowFocus(Value: Boolean);
+    procedure SetShowAccelChar(Value: boolean);
+    procedure SetTransparent(Value: boolean);
+    procedure SetWordWrap(Value: boolean);
+    procedure SetShowFocus(Value: boolean);
     procedure CMTextChanged(var Message: TLMessage); message CM_TEXTCHANGED;
     procedure CMFocusChanged(var Message: TLMessage); message CM_FOCUSCHANGED;
     procedure CMFontChanged(var Message: TLMessage); message CM_FONTCHANGED;
@@ -462,9 +462,9 @@ type
     procedure WMRButtonUp(var Message: TWMRButtonUp); message WM_RBUTTONUP;
 *)
   protected
-    procedure MouseDown(Button: TMouseButton; Shift:TShiftState; X,Y:Integer); override;
-    procedure MouseUp(Button: TMouseButton; Shift:TShiftState; X,Y:Integer); override;
-//    procedure SetAutoSize(Value: Boolean); override;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
+    procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
+    //    procedure SetAutoSize(Value: Boolean); override;
     procedure AdjustBounds;
     function GetDefaultFontColor: TColor; virtual;
     function GetLabelCaption: string; virtual;
@@ -472,28 +472,32 @@ type
     procedure Paint; override;
     procedure MouseEnter; dynamic;
     procedure MouseLeave; dynamic;
-    property Alignment: TAlignment read FAlignment write SetAlignment default taLeftJustify;
-    property AutoSize: Boolean read FAutoSize write SetAutoSize default True;
+    property Alignment: TAlignment read FAlignment write SetAlignment default
+      taLeftJustify;
+    property AutoSize: boolean read FAutoSize write SetAutoSize default True;
     property FocusControl: TWinControl read FFocusControl write SetFocusControl;
     property Layout: TTextLayout read FLayout write SetLayout default tlTop;
-    property LeftMargin: Integer read FLeftMargin write SetLeftMargin default 0;
-    property RightMargin: Integer read FRightMargin write SetRightMargin default 0;
-    property ShadowColor: TColor read FShadowColor write SetShadowColor default clBtnHighlight;
-    property ShadowSize: Byte read FShadowSize write SetShadowSize default 1;
-    property ShadowPos: TShadowPosition read FShadowPos write SetShadowPos default spLeftTop;
-    property ShowAccelChar: Boolean read FShowAccelChar write SetShowAccelChar default True;
-    property ShowFocus: Boolean read FShowFocus write SetShowFocus default False;
-    property Transparent: Boolean read GetTransparent write SetTransparent default False;
-    property WordWrap: Boolean read FWordWrap write SetWordWrap default False;
+    property LeftMargin: integer read FLeftMargin write SetLeftMargin default 0;
+    property RightMargin: integer read FRightMargin write SetRightMargin default 0;
+    property ShadowColor: TColor read FShadowColor write SetShadowColor default
+      clBtnHighlight;
+    property ShadowSize: byte read FShadowSize write SetShadowSize default 1;
+    property ShadowPos: TShadowPosition
+      read FShadowPos write SetShadowPos default spLeftTop;
+    property ShowAccelChar: boolean
+      read FShowAccelChar write SetShowAccelChar default True;
+    property ShowFocus: boolean read FShowFocus write SetShowFocus default False;
+    property Transparent: boolean read GetTransparent write SetTransparent default False;
+    property WordWrap: boolean read FWordWrap write SetWordWrap default False;
     property OnMouseEnter: TNotifyEvent read FOnMouseEnter write FOnMouseEnter;
     property OnMouseLeave: TNotifyEvent read FOnMouseLeave write FOnMouseLeave;
   public
     constructor Create(AOwner: TComponent); override;
     property Canvas;
-    property MouseInControl: Boolean read FMouseInControl;
+    property MouseInControl: boolean read FMouseInControl;
   end;
 
-{ TRxLabel }
+  { TRxLabel }
 
   TRxLabel = class(TRxCustomLabel)
   published
@@ -510,10 +514,10 @@ type
     property Anchors;
     property Constraints;
     property DragKind;
-{$IFDEF RX_D4}
+    {$IFDEF RX_D4}
     property BiDiMode;
     property ParentBiDiMode;
-{$ENDIF}
+    {$ENDIF}
     property BorderSpacing;
     property Layout;
     property ParentColor;
@@ -549,7 +553,7 @@ type
   end;
 
 
-{ TSecretPanel }
+  { TSecretPanel }
 
   TGlyphLayout = (glGlyphLeft, glGlyphRight, glGlyphTop, glGlyphBottom);
   TScrollDirection = (sdVertical, sdHorizontal);
@@ -558,14 +562,14 @@ type
 
   TSecretPanel = class(TCustomPanel)
   private
-    FActive: Boolean;
+    FActive: boolean;
     FAlignment: TAlignment;
     FLines: TStrings;
-    FCycled: Boolean;
-    FScrollCnt: Integer;
-    FMaxScroll: Integer;
-    FTxtDivider: Byte;
-    FFirstLine: Integer;
+    FCycled: boolean;
+    FScrollCnt: integer;
+    FMaxScroll: integer;
+    FTxtDivider: byte;
+    FFirstLine: integer;
     FTimer: TTimer;
     FTxtRect: TRect;
     FPaintRect: TRect;
@@ -579,14 +583,14 @@ type
     FOnPaintClient: TPanelDrawEvent;
     FOnStartPlay: TNotifyEvent;
     FOnStopPlay: TNotifyEvent;
-    FAsyncDrawing: Boolean;
-    procedure SetAsyncDrawing(Value: Boolean);
-    function GetInflateWidth: Integer;
-    function GetInterval: Cardinal;
-    procedure SetInterval(Value: Cardinal);
+    FAsyncDrawing: boolean;
+    procedure SetAsyncDrawing(Value: boolean);
+    function GetInflateWidth: integer;
+    function GetInterval: cardinal;
+    procedure SetInterval(Value: cardinal);
     procedure SetGlyph(Value: TBitmap);
     procedure SetLines(Value: TStrings);
-    procedure SetActive(Value: Boolean);
+    procedure SetActive(Value: boolean);
     procedure SetAlignment(Value: TAlignment);
     procedure SetGlyphLayout(Value: TGlyphLayout);
     procedure SetTextStyle(Value: TPanelBevel);
@@ -599,7 +603,7 @@ type
     procedure LinesChanged(Sender: TObject);
     procedure CMFontChanged(var Message: TLMessage); message CM_FONTCHANGED;
     procedure CMColorChanged(var Message: TLMessage); message CM_COLORCHANGED;
-//    procedure WMSize(var Message: TLMessage); message LM_SIZE;
+    //    procedure WMSize(var Message: TLMessage); message LM_SIZE;
     procedure WMSize(var Message: TLMSize); message LM_SIZE;
   protected
     procedure AlignControls(AControl: TControl; var Rect: TRect); override;
@@ -615,25 +619,25 @@ type
     procedure Stop;
     property Canvas;
   published
-    property AsyncDrawing: Boolean read FAsyncDrawing write SetAsyncDrawing default True;
-    property Active: Boolean read FActive write SetActive default False;
+    property AsyncDrawing: boolean read FAsyncDrawing write SetAsyncDrawing default True;
+    property Active: boolean read FActive write SetActive default False;
     property Alignment: TAlignment read FAlignment write SetAlignment default taCenter;
-    property Cycled: Boolean read FCycled write FCycled default False;
+    property Cycled: boolean read FCycled write FCycled default False;
     property Glyph: TBitmap read FGlyph write SetGlyph;
-    property GlyphLayout: TGlyphLayout read FGlyphLayout write SetGlyphLayout
-      default glGlyphLeft;
-    property Interval: Cardinal read GetInterval write SetInterval default 30;
+    property GlyphLayout: TGlyphLayout
+      read FGlyphLayout write SetGlyphLayout default glGlyphLeft;
+    property Interval: cardinal read GetInterval write SetInterval default 30;
     property Lines: TStrings read FLines write SetLines;
-    property ScrollDirection: TScrollDirection read FDirection write SetDirection
-      default sdVertical;
+    property ScrollDirection: TScrollDirection
+      read FDirection write SetDirection default sdVertical;
     property TextStyle: TPanelBevel read FTextStyle write SetTextStyle default bvNone;
     property Anchors;
     property Constraints;
     property DragKind;
-{$IFDEF RX_D4}
+    {$IFDEF RX_D4}
     property BiDiMode;
     property ParentBiDiMode;
-{$ENDIF}
+    {$ENDIF}
     property Align;
     property BevelInner;
     property BevelOuter default bvLowered;
@@ -675,7 +679,7 @@ type
     property OnResize;
   end;
 
-{ TRxSpeedButton }
+  { TRxSpeedButton }
 (*
 
   TRxNumGlyphs = 1..5;
@@ -685,24 +689,24 @@ type
 
   TRxSpeedButton = class(TSpeedButton)
   private
-    FAllowTimer: Boolean;
-    FInitRepeatPause: Word;
-    FRepeatPause: Word;
+    FAllowTimer: boolean;
+    FInitRepeatPause: word;
+    FRepeatPause: word;
     FRepeatTimer: TTimer;
-    procedure SetAllowTimer(const AValue: Boolean);
+    procedure SetAllowTimer(const AValue: boolean);
     procedure TimerExpired(Sender: TObject);
   protected
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
-      X, Y: Integer); override;
+      X, Y: integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState;
-      X, Y: Integer); override;
+      X, Y: integer); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
-    property AllowTimer: Boolean read FAllowTimer write SetAllowTimer default False;
-    property InitPause: Word read FInitRepeatPause write FInitRepeatPause default 500;
-    property RepeatInterval: Word read FRepeatPause write FRepeatPause default 100;
+    property AllowTimer: boolean read FAllowTimer write SetAllowTimer default False;
+    property InitPause: word read FInitRepeatPause write FInitRepeatPause default 500;
+    property RepeatInterval: word read FRepeatPause write FRepeatPause default 100;
   end;
 
 (*
@@ -811,21 +815,23 @@ type
   { TRxRadioGroup }
 
   TRxRadioGroup = class(TRadioGroup)
-   private
+  private
     function GetItemEnabled(Index: integer): boolean;
     procedure SetItemEnabled(Index: integer; AValue: boolean);
   public
-    property ItemEnabled[Index: integer]: boolean read GetItemEnabled write SetItemEnabled;
+    property ItemEnabled[Index: integer]: boolean
+      read GetItemEnabled write SetItemEnabled;
   end;
 
 implementation
 
 
 uses SysUtils, Dialogs, rxlclutils, Math, RxAppUtils, ImgList,
- ActnList, InterfaceBase;
+  ActnList, InterfaceBase;
+
 const
-  Alignments: array [TAlignment] of Word = (DT_LEFT, DT_RIGHT, DT_CENTER);
-  WordWraps: array[Boolean] of Word = (0, DT_WORDBREAK);
+  Alignments: array [TAlignment] of word = (DT_LEFT, DT_RIGHT, DT_CENTER);
+  WordWraps: array[boolean] of word = (0, DT_WORDBREAK);
 (*
 { TTextListBox }
 
@@ -2526,11 +2532,11 @@ begin
   inherited DeleteString(Index);
 end;
 *)
-{ TRxCustomLabel }
+  { TRxCustomLabel }
 
-function DrawShadowText(DC: HDC; Str: PChar; Count: Integer; var Rect: TRect;
-  Format: Word; ShadowSize: Byte; ShadowColor: TColorRef;
-  ShadowPos: TShadowPosition): Integer;
+function DrawShadowText(DC: HDC; Str: PChar; Count: integer; var Rect: TRect;
+  Format: word; ShadowSize: byte; ShadowColor: TColorRef;
+  ShadowPos: TShadowPosition): integer;
 var
   RText, RShadow: TRect;
   Color: TColorRef;
@@ -2542,15 +2548,15 @@ begin
     spLeftTop: OffsetRect(RShadow, -ShadowSize, -ShadowSize);
     spRightBottom: OffsetRect(RShadow, ShadowSize, ShadowSize);
     spLeftBottom:
-      begin
-        {OffsetRect(RText, ShadowSize, 0);}
-        OffsetRect(RShadow, -ShadowSize, ShadowSize);
-      end;
+    begin
+      {OffsetRect(RText, ShadowSize, 0);}
+      OffsetRect(RShadow, -ShadowSize, ShadowSize);
+    end;
     spRightTop:
-      begin
-        {OffsetRect(RText, 0, ShadowSize);}
-        OffsetRect(RShadow, ShadowSize, -ShadowSize);
-      end;
+    begin
+      {OffsetRect(RText, 0, ShadowSize);}
+      OffsetRect(RShadow, ShadowSize, -ShadowSize);
+    end;
   end; { case }
   Result := DrawText(DC, Str, Count, RShadow, Format);
   if Result > 0 then Inc(Result, ShadowSize);
@@ -2563,35 +2569,35 @@ end;
 
 function TRxRadioGroup.GetItemEnabled(Index: integer): boolean;
 var
-  R:TRadioButton;
+  R: TRadioButton;
 begin
   if (Index < -1) or (Index >= Items.Count) then
     RaiseIndexOutOfBounds(Self, Items, Index);
-  R:=FindComponent('RadioButton'+IntToStr(Index)) as TRadioButton;
+  R := FindComponent('RadioButton' + IntToStr(Index)) as TRadioButton;
   if Assigned(R) then
-    Result:=R.Enabled
+    Result := R.Enabled
   else
-    Result:=False;
+    Result := False;
 end;
 
 procedure TRxRadioGroup.SetItemEnabled(Index: integer; AValue: boolean);
 var
-  R:TRadioButton;
+  R: TRadioButton;
 begin
   if (Index < -1) or (Index >= Items.Count) then
     RaiseIndexOutOfBounds(Self, Items, Index);
-  R:=FindComponent('RadioButton'+IntToStr(Index)) as TRadioButton;
+  R := FindComponent('RadioButton' + IntToStr(Index)) as TRadioButton;
   if Assigned(R) then
-    R.Enabled:=AValue;
+    R.Enabled := AValue;
 end;
 
 constructor TRxCustomLabel.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   ControlStyle := ControlStyle + [csOpaque];
-{.$IFDEF WIN32}
+  {.$IFDEF WIN32}
   ControlStyle := ControlStyle + [csReplicatable];
-{.$ENDIF}
+  {.$ENDIF}
   Width := 65;
   Height := 17;
   FAutoSize := True;
@@ -2611,27 +2617,29 @@ begin
   Result := Font.Color;
 end;
 
-procedure TRxCustomLabel.DoDrawText(var Rect: TRect; Flags: Word);
+procedure TRxCustomLabel.DoDrawText(var Rect: TRect; Flags: word);
 var
   AText: string;
   PosShadow: TShadowPosition;
-  SizeShadow: Byte;
+  SizeShadow: byte;
   ColorShadow: TColor;
 begin
   AText := GetLabelCaption;
   if (Flags and DT_CALCRECT <> 0) and ((AText = '') or FShowAccelChar and
     (AText[1] = '&') and (AText[2] = #0)) then AText := AText + ' ';
   if not FShowAccelChar then Flags := Flags or DT_NOPREFIX;
-{$IFDEF USED_BiDi}
+  {$IFDEF USED_BiDi}
   Flags := DrawTextBiDiModeFlags(Flags);
-{$ENDIF}
+  {$ENDIF}
   Canvas.Font := Font;
   Canvas.Font.Color := GetDefaultFontColor;
   PosShadow := FShadowPos;
   SizeShadow := FShadowSize;
   ColorShadow := FShadowColor;
-  if not Enabled then begin
-    if (FShadowSize = 0) and NewStyleControls then begin
+  if not Enabled then
+  begin
+    if (FShadowSize = 0) and NewStyleControls then
+    begin
       PosShadow := spRightBottom;
       SizeShadow := 1;
     end;
@@ -2645,7 +2653,7 @@ end;
 procedure TRxCustomLabel.Paint;
 var
   Rect: TRect;
-  DrawStyle: Integer;
+  DrawStyle: integer;
 begin
   if not Enabled and not (csDesigning in ComponentState) then
     FDragging := False;
@@ -2671,15 +2679,16 @@ begin
       Rect.Left := ClientRect.Left + FLeftMargin;
       Rect.Right := ClientRect.Right - FRightMargin;
       if FLayout = tlBottom then OffsetRect(Rect, 0, Height - Rect.Bottom)
-      else OffsetRect(Rect, 0, (Height - Rect.Bottom) div 2);
+      else
+        OffsetRect(Rect, 0, (Height - Rect.Bottom) div 2);
     end;
     DoDrawText(Rect, DrawStyle);
-    if FShowFocus and Assigned(FFocusControl) and FFocused and
-      not (csDesigning in ComponentState) then
+    if FShowFocus and Assigned(FFocusControl) and FFocused and not
+      (csDesigning in ComponentState) then
     begin
       InflateRect(Rect, 1, 0);
       Brush.Color := Self.Color;
-//      DrawFocusRect(Rect);
+      //      DrawFocusRect(Rect);
       FrameRect(Rect);
     end;
   end;
@@ -2688,7 +2697,7 @@ end;
 procedure TRxCustomLabel.AdjustBounds;
 var
   DC: HDC;
-  X: Integer;
+  X: integer;
   Rect: TRect;
   AAlignment: TAlignment;
 begin
@@ -2708,9 +2717,9 @@ begin
     InflateRect(Rect, 1, 0);
     X := Left;
     AAlignment := FAlignment;
-{$IFDEF USED_BiDi}
+    {$IFDEF USED_BiDi}
     if UseRightToLeftAlignment then ChangeBiDiModeAlignment(AAlignment);
-{$ENDIF}
+    {$ENDIF}
     if AAlignment = taRightJustify then Inc(X, Width - Rect.Right);
     SetBounds(X, Top, Rect.Right, Rect.Bottom);
   end;
@@ -2718,15 +2727,17 @@ end;
 
 procedure TRxCustomLabel.SetAlignment(Value: TAlignment);
 begin
-  if FAlignment <> Value then begin
+  if FAlignment <> Value then
+  begin
     FAlignment := Value;
     Invalidate;
   end;
 end;
 
-procedure TRxCustomLabel.SetAutoSize(Value: Boolean);
+procedure TRxCustomLabel.SetAutoSize(Value: boolean);
 begin
-  if AutoSize <> Value then begin
+  if AutoSize <> Value then
+  begin
     FAutoSize := Value;
     AdjustBounds;
   end;
@@ -2734,13 +2745,14 @@ end;
 
 procedure TRxCustomLabel.SetLayout(Value: TTextLayout);
 begin
-  if FLayout <> Value then begin
+  if FLayout <> Value then
+  begin
     FLayout := Value;
     Invalidate;
   end;
 end;
 
-procedure TRxCustomLabel.SetLeftMargin(Value: Integer);
+procedure TRxCustomLabel.SetLeftMargin(Value: integer);
 begin
   if FLeftMargin <> Value then
   begin
@@ -2750,9 +2762,10 @@ begin
   end;
 end;
 
-procedure TRxCustomLabel.SetRightMargin(Value: Integer);
+procedure TRxCustomLabel.SetRightMargin(Value: integer);
 begin
-  if FRightMargin <> Value then begin
+  if FRightMargin <> Value then
+  begin
     FRightMargin := Max(Value, 0);
     AdjustBounds;
     Invalidate;
@@ -2761,15 +2774,17 @@ end;
 
 procedure TRxCustomLabel.SetShadowColor(Value: TColor);
 begin
-  if Value <> FShadowColor then begin
+  if Value <> FShadowColor then
+  begin
     FShadowColor := Value;
     Invalidate;
   end;
 end;
 
-procedure TRxCustomLabel.SetShadowSize(Value: Byte);
+procedure TRxCustomLabel.SetShadowSize(Value: byte);
 begin
-  if Value <> FShadowSize then begin
+  if Value <> FShadowSize then
+  begin
     FShadowSize := Value;
     AdjustBounds;
     Invalidate;
@@ -2778,13 +2793,14 @@ end;
 
 procedure TRxCustomLabel.SetShadowPos(Value: TShadowPosition);
 begin
-  if Value <> FShadowPos then begin
+  if Value <> FShadowPos then
+  begin
     FShadowPos := Value;
     Invalidate;
   end;
 end;
 
-function TRxCustomLabel.GetTransparent: Boolean;
+function TRxCustomLabel.GetTransparent: boolean;
 begin
   Result := not (csOpaque in ControlStyle);
 end;
@@ -2792,47 +2808,51 @@ end;
 procedure TRxCustomLabel.SetFocusControl(Value: TWinControl);
 begin
   FFocusControl := Value;
-{.$IFDEF WIN32}
+  {.$IFDEF WIN32}
   if Value <> nil then Value.FreeNotification(Self);
-{.$ENDIF}
+  {.$ENDIF}
   if FShowFocus then Invalidate;
 end;
 
-procedure TRxCustomLabel.SetShowAccelChar(Value: Boolean);
+procedure TRxCustomLabel.SetShowAccelChar(Value: boolean);
 begin
-  if FShowAccelChar <> Value then begin
+  if FShowAccelChar <> Value then
+  begin
     FShowAccelChar := Value;
     Invalidate;
   end;
 end;
 
-procedure TRxCustomLabel.SetTransparent(Value: Boolean);
+procedure TRxCustomLabel.SetTransparent(Value: boolean);
 begin
-  if Transparent <> Value then begin
+  if Transparent <> Value then
+  begin
     if Value then ControlStyle := ControlStyle - [csOpaque]
-    else ControlStyle := ControlStyle + [csOpaque];
+    else
+      ControlStyle := ControlStyle + [csOpaque];
     Invalidate;
   end;
 end;
 
-procedure TRxCustomLabel.SetShowFocus(Value: Boolean);
+procedure TRxCustomLabel.SetShowFocus(Value: boolean);
 begin
-  if FShowFocus <> Value then begin
+  if FShowFocus <> Value then
+  begin
     FShowFocus := Value;
     Invalidate;
   end;
 end;
 
-procedure TRxCustomLabel.SetWordWrap(Value: Boolean);
+procedure TRxCustomLabel.SetWordWrap(Value: boolean);
 begin
-  if FWordWrap <> Value then begin
+  if FWordWrap <> Value then
+  begin
     FWordWrap := Value;
     AdjustBounds;
   end;
 end;
 
-procedure TRxCustomLabel.Notification(AComponent: TComponent;
-  Operation: TOperation);
+procedure TRxCustomLabel.Notification(AComponent: TComponent; Operation: TOperation);
 begin
   inherited Notification(AComponent, Operation);
   if (Operation = opRemove) and (AComponent = FFocusControl) then
@@ -2852,19 +2872,21 @@ end;
 procedure TRxCustomLabel.UpdateTracking;
 var
   P: TPoint;
-  OldValue: Boolean;
+  OldValue: boolean;
 begin
   OldValue := FMouseInControl;
   GetCursorPos(P);
   FMouseInControl := Enabled and (FindDragTarget(P, True) = Self) and
     IsForegroundTask;
   if (FMouseInControl <> OldValue) then
-    if FMouseInControl then MouseEnter else MouseLeave;
+    if FMouseInControl then MouseEnter
+    else
+      MouseLeave;
 end;
 
 procedure TRxCustomLabel.CMFocusChanged(var Message: TLMessage);
 var
-  Active: Boolean;
+  Active: boolean;
 begin
   Active := Assigned(FFocusControl) {and (Message.Sender = FFocusControl)};
   if FFocused <> Active then
@@ -2892,7 +2914,8 @@ begin
   if (FFocusControl <> nil) and Enabled and ShowAccelChar and
     IsAccel(Message.CharCode, GetLabelCaption) then
     with FFocusControl do
-      if CanFocus then begin
+      if CanFocus then
+      begin
         SetFocus;
         Message.Result := 1;
       end;
@@ -2916,15 +2939,15 @@ begin
   UpdateTracking;
 end;
 }
-procedure TRxCustomLabel.MouseDown(Button: TMouseButton; Shift:TShiftState; X,Y:Integer);
+procedure TRxCustomLabel.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 begin
-  inherited MouseDown(Button, Shift, X,Y);
+  inherited MouseDown(Button, Shift, X, Y);
   UpdateTracking;
 end;
 
-procedure TRxCustomLabel.MouseUp(Button: TMouseButton; Shift:TShiftState; X,Y:Integer);
+procedure TRxCustomLabel.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: integer);
 begin
-  inherited MouseUp(Button, Shift, X,Y);
+  inherited MouseUp(Button, Shift, X, Y);
   UpdateTracking;
 end;
 (*
@@ -2955,7 +2978,8 @@ end;
 procedure TRxCustomLabel.CMMouseEnter(var Message: TLMessage);
 begin
   inherited;
-  if not FMouseInControl and Enabled and IsForegroundTask then begin
+  if not FMouseInControl and Enabled and IsForegroundTask then
+  begin
     FMouseInControl := True;
     MouseEnter;
   end;
@@ -2964,7 +2988,8 @@ end;
 procedure TRxCustomLabel.CMMouseLeave(var Message: TLMessage);
 begin
   inherited;
-  if FMouseInControl and Enabled and not FDragging then begin
+  if FMouseInControl and Enabled and not FDragging then
+  begin
     FMouseInControl := False;
     MouseLeave;
   end;
@@ -2994,10 +3019,10 @@ begin
     Enabled := False;
     OnTimer := @TimerExpired;
     Interval := 30;
-{$IFDEF RX_D3}
-//    SyncEvent := False;
+    {$IFDEF RX_D3}
+    //    SyncEvent := False;
     FAsyncDrawing := True;
-{$ENDIF}
+    {$ENDIF}
   end;
 end;
 
@@ -3014,7 +3039,8 @@ end;
 
 procedure TSecretPanel.GlyphChanged(Sender: TObject);
 begin
-  if Active then begin
+  if Active then
+  begin
     UpdateMemoryImage;
     Invalidate;
   end;
@@ -3022,7 +3048,8 @@ end;
 
 procedure TSecretPanel.LinesChanged(Sender: TObject);
 begin
-  if Active then begin
+  if Active then
+  begin
     FScrollCnt := 0;
     UpdateMemoryImage;
     Invalidate;
@@ -3045,18 +3072,19 @@ end;
 procedure TSecretPanel.WMSize(var Message: TLMSize);
 begin
   inherited;
-  if Active then begin
+  if Active then
+  begin
     UpdateMemoryImage;
     Invalidate;
   end;
 end;
 
 {$IFDEF RX_D3}
-procedure TSecretPanel.SetAsyncDrawing(Value: Boolean);
+procedure TSecretPanel.SetAsyncDrawing(Value: boolean);
 begin
   if FAsyncDrawing <> Value then
   begin
-//    FTimer.SyncEvent := not Value;
+    //    FTimer.SyncEvent := not Value;
     FAsyncDrawing := Value;
   end;
 end;
@@ -3068,7 +3096,7 @@ begin
   if (AControl = nil) and Active then UpdateMemoryImage;
 end;
 
-function TSecretPanel.GetInflateWidth: Integer;
+function TSecretPanel.GetInflateWidth: integer;
 begin
   Result := BorderWidth;
   if BevelOuter <> bvNone then Inc(Result, BevelWidth);
@@ -3079,8 +3107,8 @@ procedure TSecretPanel.RecalcDrawRect;
 const
   MinOffset = 3;
 var
-  InflateWidth: Integer;
-  LastLine: Integer;
+  InflateWidth: integer;
+  LastLine: integer;
 begin
   FTxtRect := GetClientRect;
   FPaintRect := FTxtRect;
@@ -3088,60 +3116,65 @@ begin
   InflateRect(FPaintRect, -InflateWidth, -InflateWidth);
   Inc(InflateWidth, MinOffset);
   InflateRect(FTxtRect, -InflateWidth, -InflateWidth);
-  with FGlyphOrigin do begin
+  with FGlyphOrigin do
+  begin
     case FGlyphLayout of
       glGlyphLeft:
+      begin
+        X := FTxtRect.Left;
+        Y := (FTxtRect.Bottom + FTxtRect.Top - Glyph.Height) div 2;
+        if Y < FTxtRect.Top then Y := FTxtRect.Top;
+        if Glyph.Width > 0 then
         begin
-          X := FTxtRect.Left;
-          Y := (FTxtRect.Bottom + FTxtRect.Top - Glyph.Height) div 2;
-          if Y < FTxtRect.Top then Y := FTxtRect.Top;
-          if Glyph.Width > 0 then begin
-            Inc(X, MinOffset);
-            FTxtRect.Left := X + Glyph.Width + InflateWidth;
-          end;
+          Inc(X, MinOffset);
+          FTxtRect.Left := X + Glyph.Width + InflateWidth;
         end;
+      end;
       glGlyphRight:
+      begin
+        Y := (FTxtRect.Bottom + FTxtRect.Top - Glyph.Height) div 2;
+        if Y < FTxtRect.Top then Y := FTxtRect.Top;
+        X := FTxtRect.Right - Glyph.Width;
+        if Glyph.Width > 0 then
         begin
-          Y := (FTxtRect.Bottom + FTxtRect.Top - Glyph.Height) div 2;
-          if Y < FTxtRect.Top then Y := FTxtRect.Top;
-          X := FTxtRect.Right - Glyph.Width;
-          if Glyph.Width > 0 then begin
-            Dec(X, MinOffset);
-            if X < FTxtRect.Left then X := FTxtRect.Left;
-            FTxtRect.Right := X - InflateWidth;
-          end;
+          Dec(X, MinOffset);
+          if X < FTxtRect.Left then X := FTxtRect.Left;
+          FTxtRect.Right := X - InflateWidth;
         end;
+      end;
       glGlyphTop:
+      begin
+        Y := FTxtRect.Top;
+        X := (FTxtRect.Right + FTxtRect.Left - Glyph.Width) div 2;
+        if X < FTxtRect.Left then X := FTxtRect.Left;
+        if Glyph.Height > 0 then
         begin
-          Y := FTxtRect.Top;
-          X := (FTxtRect.Right + FTxtRect.Left - Glyph.Width) div 2;
-          if X < FTxtRect.Left then X := FTxtRect.Left;
-          if Glyph.Height > 0 then begin
-            Inc(Y, MinOffset);
-            FTxtRect.Top := Y + Glyph.Height + (InflateWidth + MinOffset);
-          end;
+          Inc(Y, MinOffset);
+          FTxtRect.Top := Y + Glyph.Height + (InflateWidth + MinOffset);
         end;
+      end;
       glGlyphBottom:
+      begin
+        X := (FTxtRect.Right + FTxtRect.Left - Glyph.Width) div 2;
+        if X < FTxtRect.Left then X := FTxtRect.Left;
+        Y := FTxtRect.Bottom - Glyph.Height;
+        if Glyph.Height > 0 then
         begin
-          X := (FTxtRect.Right + FTxtRect.Left - Glyph.Width) div 2;
-          if X < FTxtRect.Left then X := FTxtRect.Left;
-          Y := FTxtRect.Bottom - Glyph.Height;
-          if Glyph.Height > 0 then begin
-            Dec(Y, MinOffset);
-            if Y < FTxtRect.Top then Y := FTxtRect.Top;
-            FTxtRect.Bottom := Y - (InflateWidth + MinOffset);
-          end;
+          Dec(Y, MinOffset);
+          if Y < FTxtRect.Top then Y := FTxtRect.Top;
+          FTxtRect.Bottom := Y - (InflateWidth + MinOffset);
         end;
+      end;
     end;
   end;
-  if FDirection = sdHorizontal then begin
+  if FDirection = sdHorizontal then
+  begin
     LastLine := FLines.Count - 1;
     while (LastLine >= 0) and (Trim(FLines[LastLine]) = '') do
       Dec(LastLine);
-    InflateWidth := HeightOf(FTxtRect) -
-      (LastLine + 1 - FFirstLine) * FTxtDivider;
+    InflateWidth := HeightOf(FTxtRect) - (LastLine + 1 - FFirstLine) * FTxtDivider;
     if InflateWidth > 0 then
-      InflateRect(FTxtRect, 0, - InflateWidth div 2);
+      InflateRect(FTxtRect, 0, -InflateWidth div 2);
   end;
   with FTxtRect do
     if (Left >= Right) or (Top >= Bottom) then FTxtRect := Rect(0, 0, 0, 0);
@@ -3159,18 +3192,19 @@ end;
 
 procedure TSecretPanel.PaintText;
 var
-  STmp: array[0..255] of Char;
+  STmp: array[0..255] of char;
   R: TRect;
-  I: Integer;
-  Flags: Longint;
+  I: integer;
+  Flags: longint;
 begin
   if (FLines.Count = 0) or IsRectEmpty(FTxtRect) or not HandleAllocated then
     Exit;
-{$IFDEF RX_D3}
+  {$IFDEF RX_D3}
   FMemoryImage.Canvas.Lock;
   try
-{$ENDIF}
-    with FMemoryImage.Canvas do begin
+    {$ENDIF}
+    with FMemoryImage.Canvas do
+    begin
       I := SaveDC(Handle);
       try
         with FTxtRect do
@@ -3183,20 +3217,23 @@ begin
       end;
     end;
     R := Bounds(0, 0, WidthOf(FTxtRect), HeightOf(FTxtRect));
-    if FDirection = sdHorizontal then begin
-{$IFDEF RX_D4}
-      if IsRightToLeft then begin
+    if FDirection = sdHorizontal then
+    begin
+      {$IFDEF RX_D4}
+      if IsRightToLeft then
+      begin
         R.Right := R.Left + FScrollCnt;
         R.Left := R.Right - (FMaxScroll - WidthOf(FTxtRect));
       end
-      else begin
+      else
+      begin
         R.Left := R.Right - FScrollCnt;
         R.Right := R.Left + (FMaxScroll - WidthOf(FTxtRect));
       end;
-{$ELSE}
+      {$ELSE}
       R.Left := R.Right - FScrollCnt;
       R.Right := R.Left + (FMaxScroll - WidthOf(FTxtRect));
-{$ENDIF}
+      {$ENDIF}
     end
     else
     begin { sdVertical }
@@ -3205,29 +3242,33 @@ begin
     R.Bottom := R.Top + FTxtDivider;
     Flags := {DT_EXPANDTABS or }Alignments[FAlignment] or DT_SINGLELINE or
       DT_NOCLIP or DT_NOPREFIX;
-{$IFDEF USED_BiDi}
+    {$IFDEF USED_BiDi}
     Flags := DrawTextBiDiModeFlags(Flags);
-{$ENDIF}
-    for I := FFirstLine to FLines.Count do begin
+    {$ENDIF}
+    for I := FFirstLine to FLines.Count do
+    begin
       if I = FLines.Count then StrCopy(STmp, ' ')
-      else StrPLCopy(STmp, FLines[I], SizeOf(STmp) - 1);
+      else
+        StrPLCopy(STmp, FLines[I], SizeOf(STmp) - 1);
       if R.Top >= HeightOf(FTxtRect) then Break
-      else if R.Bottom > 0 then begin
-        if FTextStyle <> bvNone then begin
+      else if R.Bottom > 0 then
+      begin
+        if FTextStyle <> bvNone then
+        begin
           FMemoryImage.Canvas.Font.Color := clBtnHighlight;
           case FTextStyle of
             bvLowered:
-              begin
-                OffsetRect(R, 1, 1);
-                DrawText(FMemoryImage.Canvas.Handle, STmp, -1, R, Flags);
-                OffsetRect(R, -1, -1);
-              end;
+            begin
+              OffsetRect(R, 1, 1);
+              DrawText(FMemoryImage.Canvas.Handle, STmp, -1, R, Flags);
+              OffsetRect(R, -1, -1);
+            end;
             bvRaised:
-              begin
-                OffsetRect(R, -1, -1);
-                DrawText(FMemoryImage.Canvas.Handle, STmp, -1, R, Flags);
-                OffsetRect(R, 1, 1);
-              end;
+            begin
+              OffsetRect(R, -1, -1);
+              DrawText(FMemoryImage.Canvas.Handle, STmp, -1, R, Flags);
+              OffsetRect(R, 1, 1);
+            end;
           end;
           FMemoryImage.Canvas.Font.Color := Self.Font.Color;
           SetBkMode(FMemoryImage.Canvas.Handle, Transparent);
@@ -3236,36 +3277,37 @@ begin
       end;
       OffsetRect(R, 0, FTxtDivider);
     end;
-{$IFDEF RX_D3}
+    {$IFDEF RX_D3}
     Canvas.Lock;
     try
-{$ENDIF}
+      {$ENDIF}
       BitBlt(Canvas.Handle, FTxtRect.Left, FTxtRect.Top, FMemoryImage.Width,
         FMemoryImage.Height, FMemoryImage.Canvas.Handle, 0, 0, SRCCOPY);
-//      ValidateRect(Handle, @FTxtRect);
-{$IFDEF RX_D3}
+      //      ValidateRect(Handle, @FTxtRect);
+      {$IFDEF RX_D3}
     finally
       Canvas.Unlock;
     end;
-{$ENDIF}
-{$IFDEF RX_D3}
+    {$ENDIF}
+    {$IFDEF RX_D3}
   finally
     FMemoryImage.Canvas.Unlock;
   end;
-{$ENDIF}
+  {$ENDIF}
 end;
 
 procedure TSecretPanel.PaintClient(ACanvas: TCanvas; Rect: TRect);
 begin
   if Assigned(FOnPaintClient) then FOnPaintClient(Self, ACanvas, Rect)
-  else ACanvas.FillRect(Rect);
+  else
+    ACanvas.FillRect(Rect);
 end;
 
 procedure TSecretPanel.Paint;
 var
   Rect: TRect;
   TopColor, BottomColor: TColor;
-  SaveIndex: Integer;
+  SaveIndex: integer;
 
   procedure AdjustColors(Bevel: TPanelBevel);
   begin
@@ -3280,15 +3322,15 @@ begin
   if BevelOuter <> bvNone then
   begin
     AdjustColors(BevelOuter);
-//    Frame3D(Canvas, Rect, TopColor, BottomColor, BevelWidth);
+    //    Frame3D(Canvas, Rect, TopColor, BottomColor, BevelWidth);
     WidgetSet.Frame3d(Canvas.Handle, Rect, BevelWidth, BevelOuter);
   end;
-//  Frame3D(Canvas, Rect, Color, Color, BorderWidth);
+  //  Frame3D(Canvas, Rect, Color, Color, BorderWidth);
   WidgetSet.Frame3d(Canvas.Handle, Rect, BorderWidth, BevelOuter);
   if BevelInner <> bvNone then
   begin
     AdjustColors(BevelInner);
-//    Frame3D(Canvas, Rect, TopColor, BottomColor, BevelWidth);
+    //    Frame3D(Canvas, Rect, TopColor, BottomColor, BevelWidth);
     WidgetSet.Frame3d(Canvas.Handle, Rect, BorderWidth, BevelInner);
   end;
   SaveIndex := SaveDC(Canvas.Handle);
@@ -3319,34 +3361,36 @@ end;
 
 procedure TSecretPanel.TimerExpired(Sender: TObject);
 begin
-  if (FScrollCnt < FMaxScroll) then begin
+  if (FScrollCnt < FMaxScroll) then
+  begin
     Inc(FScrollCnt);
     if Assigned(FMemoryImage) then PaintText;
   end
-  else if Cycled then begin
+  else if Cycled then
+  begin
     FScrollCnt := 0;
     if Assigned(FMemoryImage) then PaintText;
   end
   else
   begin
-{.$IFDEF RX_D3}
-//    FTimer.Synchronize(Stop);
-{.$ELSE}
+    {.$IFDEF RX_D3}
+    //    FTimer.Synchronize(Stop);
+    {.$ELSE}
     SetActive(False);
-{.$ENDIF}
+    {.$ENDIF}
   end;
 end;
 
 procedure TSecretPanel.UpdateMemoryImage;
 var
   Metrics: TTextMetric;
-  I: Integer;
+  I: integer;
 begin
   if FMemoryImage = nil then FMemoryImage := TBitmap.Create;
-{.$IFDEF RX_D3}
+  {.$IFDEF RX_D3}
   FMemoryImage.Canvas.Lock;
   try
-{.$ENDIF}
+    {.$ENDIF}
     FFirstLine := 0;
     while (FFirstLine < FLines.Count) and (Trim(FLines[FFirstLine]) = '') do
       Inc(FFirstLine);
@@ -3355,36 +3399,39 @@ begin
     FTxtDivider := Metrics.tmHeight + Metrics.tmExternalLeading;
     if FTextStyle <> bvNone then Inc(FTxtDivider);
     RecalcDrawRect;
-    if FDirection = sdHorizontal then begin
+    if FDirection = sdHorizontal then
+    begin
       FMaxScroll := 0;
       for I := FFirstLine to FLines.Count - 1 do
         FMaxScroll := Max(FMaxScroll, Canvas.TextWidth(FLines[I]));
       Inc(FMaxScroll, WidthOf(FTxtRect));
     end
-    else begin { sdVertical }
+    else
+    begin { sdVertical }
       FMaxScroll := ((FLines.Count - FFirstLine) * FTxtDivider) +
         HeightOf(FTxtRect);
     end;
     FMemoryImage.Width := WidthOf(FTxtRect);
     FMemoryImage.Height := HeightOf(FTxtRect);
-    with FMemoryImage.Canvas do begin
+    with FMemoryImage.Canvas do
+    begin
       Font := Self.Font;
       Brush.Color := Self.Color;
       SetBkMode(Handle, Transparent);
     end;
-{.$IFDEF RX_D3}
+    {.$IFDEF RX_D3}
   finally
     FMemoryImage.Canvas.UnLock;
   end;
-{.$ENDIF}
+  {.$ENDIF}
 end;
 
-function TSecretPanel.GetInterval: Cardinal;
+function TSecretPanel.GetInterval: cardinal;
 begin
   Result := FTimer.Interval;
 end;
 
-procedure TSecretPanel.SetInterval(Value: Cardinal);
+procedure TSecretPanel.SetInterval(Value: cardinal);
 begin
   FTimer.Interval := Value;
 end;
@@ -3399,9 +3446,9 @@ begin
   SetActive(False);
 end;
 
-procedure TSecretPanel.SetActive(Value: Boolean);
+procedure TSecretPanel.SetActive(Value: boolean);
 var
-  I: Integer;
+  I: integer;
 begin
   if Value <> FActive then
   begin
@@ -3419,18 +3466,19 @@ begin
         raise;
       end;
     end
-    else begin
-{.$IFDEF RX_D3}
+    else
+    begin
+      {.$IFDEF RX_D3}
       FMemoryImage.Canvas.Lock;
       { ensure that canvas is locked before timer is disabled }
-{.$ENDIF}
+      {.$ENDIF}
       FTimer.Enabled := False;
       FScrollCnt := 0;
       FMemoryImage.Free;
       FMemoryImage := nil;
       StopPlay;
-      if (csDesigning in ComponentState) and
-        not (csDestroying in ComponentState) then
+      if (csDesigning in ComponentState) and not
+        (csDestroying in ComponentState) then
         ValidParentForm(Self).Designer.Modified;
     end;
     if not (csDestroying in ComponentState) then
@@ -3440,7 +3488,7 @@ begin
         begin
           if Controls[I].Visible then FHiddenList.Add(Controls[I]);
           if not (csDesigning in ComponentState) then
-            Controls[I].Visible := False
+            Controls[I].Visible := False;
         end
         else
         if FHiddenList.IndexOf(Controls[I]) >= 0 then
@@ -4402,10 +4450,10 @@ initialization
 
 { TRxSpeedButton }
 
-procedure TRxSpeedButton.SetAllowTimer(const AValue: Boolean);
+procedure TRxSpeedButton.SetAllowTimer(const AValue: boolean);
 begin
-  if FAllowTimer=AValue then exit;
-  FAllowTimer:=AValue;
+  if FAllowTimer = AValue then exit;
+  FAllowTimer := AValue;
   if not FAllowTimer and (FRepeatTimer <> nil) then
   begin
     FRepeatTimer.Enabled := False;
@@ -4419,34 +4467,35 @@ begin
   FRepeatTimer.Interval := RepeatInterval;
   if (FState = bsDown) and MouseCapture then
   try
-      Click;
+    Click;
   except
     FRepeatTimer.Enabled := False;
     raise;
   end;
 end;
 
-procedure TRxSpeedButton.MouseDown(Button: TMouseButton; Shift: TShiftState; X,
-  Y: Integer);
+procedure TRxSpeedButton.MouseDown(Button: TMouseButton; Shift: TShiftState;
+  X, Y: integer);
 begin
   inherited MouseDown(Button, Shift, X, Y);
   if (Button = mbLeft) and Enabled then
   begin
-    if FAllowTimer then begin
+    if FAllowTimer then
+    begin
       if FRepeatTimer = nil then
         FRepeatTimer := TTimer.Create(nil);
       FRepeatTimer.Interval := InitPause;
       FRepeatTimer.OnTimer := @TimerExpired;
-      FRepeatTimer.Enabled  := True;
+      FRepeatTimer.Enabled := True;
     end;
   end;
 end;
 
-procedure TRxSpeedButton.MouseUp(Button: TMouseButton; Shift: TShiftState; X,
-  Y: Integer);
+procedure TRxSpeedButton.MouseUp(Button: TMouseButton; Shift: TShiftState;
+  X, Y: integer);
 begin
   inherited MouseUp(Button, Shift, X, Y);
-  if FRepeatTimer <> nil then FRepeatTimer.Enabled  := False;
+  if FRepeatTimer <> nil then FRepeatTimer.Enabled := False;
 end;
 
 constructor TRxSpeedButton.Create(AOwner: TComponent);

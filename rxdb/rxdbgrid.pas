@@ -50,11 +50,11 @@ const
 
 type
   //forward declarations
-  TRxDBGrid = class;
-  TRxColumn = class;
-  TRxDBGridAbstractTools = class;
-  TRxDbGridColumnsEnumerator = class;
-  TRxColumnFooterItemsEnumerator = class;
+  TRxDBGrid = class ;
+  TRxColumn = class ;
+  TRxDBGridAbstractTools = class ;
+  TRxDbGridColumnsEnumerator = class ;
+  TRxColumnFooterItemsEnumerator = class ;
 
 
   TRxQuickSearchNotifyEvent = procedure(Sender: TObject; Field: TField;
@@ -70,19 +70,22 @@ type
     AFont: TFont; var Background: TColor) of object;
 
   TRxDBGridDataHintShowEvent = procedure(Sender: TObject; CursorPos: TPoint;
-      Cell: TGridCoord; Column: TRxColumn; var HintStr: string;
-      var Processed: boolean) of object;
+    Cell: TGridCoord; Column: TRxColumn; var HintStr: string;
+    var Processed: boolean) of object;
 
-  TRxDBGridCalcRowHeight = procedure(Sender: TRxDBGrid;  var ARowHegth:integer) of object;
-  TRxDBGridMergeCellsEvent = procedure (Sender: TObject; ACol : Integer;
-    var ALeft, ARight : Integer; var ADisplayColumn: TRxColumn) of object;
+  TRxDBGridCalcRowHeight = procedure(Sender: TRxDBGrid;
+    var ARowHegth: integer) of object;
+  TRxDBGridMergeCellsEvent = procedure(Sender: TObject; ACol: integer;
+    var ALeft, ARight: integer; var ADisplayColumn: TRxColumn) of object;
 
   //Freeman35 added
-  TOnRxCalcFooterValues = procedure(Sender: TObject; Column: TRxColumn; var AValue : Variant) of object;
-  TOnRxColumnFooterDraw = procedure(Sender: TObject; ABrush: TBrush; AFont : TFont;
-    const Rect: TRect; Column: TRxColumn; var AText :String) of object;
+  TOnRxCalcFooterValues = procedure(Sender: TObject; Column: TRxColumn;
+    var AValue: variant) of object;
+  TOnRxColumnFooterDraw = procedure(Sender: TObject; ABrush: TBrush;
+    AFont: TFont; const Rect: TRect; Column: TRxColumn; var AText: string) of object;
 
-  TRxColumnOption = (coCustomizeVisible, coCustomizeWidth, coFixDecimalSeparator, coDisableDialogFind);
+  TRxColumnOption = (coCustomizeVisible, coCustomizeWidth, coFixDecimalSeparator,
+    coDisableDialogFind);
   TRxColumnOptions = set of TRxColumnOption;
 
   TRxColumnEditButtonStyle = (ebsDropDownRx, ebsEllipsisRx, ebsGlyphRx, ebsUpDownRx,
@@ -128,7 +131,7 @@ type
 
   { TRxDBGridKeyStroke }
 
-  TRxDBGridKeyStroke = class(TCollectionItem)
+  TRxDBGridKeyStroke = class (TCollectionItem)
   private
     FCommand: TRxDBGridCommand;
     FEnabled: boolean;
@@ -149,7 +152,7 @@ type
 
   { TRxDBGridKeyStrokes }
 
-  TRxDBGridKeyStrokes = class(TOwnedCollection)
+  TRxDBGridKeyStrokes = class (TOwnedCollection)
   private
     function GetItem(Index: integer): TRxDBGridKeyStroke;
     procedure SetItem(Index: integer; const AValue: TRxDBGridKeyStroke);
@@ -164,32 +167,34 @@ type
     function FindRxCommand(AKey: word; AShift: TShiftState): TRxDBGridCommand;
     function FindRxKeyStrokes(ACommand: TRxDBGridCommand): TRxDBGridKeyStroke;
   public
-    property Items[Index: integer]: TRxDBGridKeyStroke read GetItem write SetItem; default;
+    property Items[Index: integer]: TRxDBGridKeyStroke read GetItem write SetItem;
+      default;
   end;
 
   { TRxDBGridSearchOptions }
 
-  TRxDBGridSearchOptions = class(TPersistent)
+  TRxDBGridSearchOptions = class (TPersistent)
   private
     FFromStart: boolean;
     FHilightColor: TColor;
     FHilightSearch: boolean;
-    FOwner:TRxDBGrid;
+    FOwner: TRxDBGrid;
     FQuickSearchOptions: TLocateOptions;
   protected
     procedure AssignTo(Dest: TPersistent); override;
   public
     constructor Create(AOwner: TRxDBGrid);
   published
-    property QuickSearchOptions:TLocateOptions read FQuickSearchOptions write FQuickSearchOptions;
-    property FromStart:boolean read FFromStart write FFromStart;
-    property HilightSearch:boolean read FHilightSearch write FHilightSearch default true;
-    property HilightColor:TColor read FHilightColor write FHilightColor default clYellow;
+    property QuickSearchOptions: TLocateOptions
+      read FQuickSearchOptions write FQuickSearchOptions;
+    property FromStart: boolean read FFromStart write FFromStart;
+    property HilightSearch: boolean read FHilightSearch write FHilightSearch default True;
+    property HilightColor: TColor read FHilightColor write FHilightColor default clYellow;
   end;
 
   { TRxDBGridCollumnConstraint }
 
-  TRxDBGridCollumnConstraints = class(TPersistent)
+  TRxDBGridCollumnConstraints = class (TPersistent)
   private
     FMaxWidth: integer;
     FMinWidth: integer;
@@ -201,13 +206,13 @@ type
   public
     constructor Create(AOwner: TPersistent);
   published
-    property MinWidth:integer read FMinWidth write SetMinWidth default 0;
-    property MaxWidth:integer read FMaxWidth write SetMaxWidth default 0;
+    property MinWidth: integer read FMinWidth write SetMinWidth default 0;
+    property MaxWidth: integer read FMaxWidth write SetMaxWidth default 0;
   end;
 
   { TRxDBGridFooterOptions }
 
-  TRxDBGridFooterOptions = class(TPersistent)
+  TRxDBGridFooterOptions = class (TPersistent)
   private
     FActive: boolean;
     FColor: TColor;
@@ -226,7 +231,7 @@ type
     constructor Create(Owner: TRxDBGrid);
     destructor Destroy; override;
   published
-    property Active: boolean read FActive write SetActive default false;
+    property Active: boolean read FActive write SetActive default False;
     property Color: TColor read FColor write SetColor default clWindow;
     property RowCount: integer read FRowCount write SetRowCount default 0;
     property Style: TTitleStyle read FStyle write SetStyle default tsLazarus;
@@ -235,7 +240,7 @@ type
 
   { TRxDBGridColumnDefValues }
 
-  TRxDBGridColumnDefValues = class(TPersistent)
+  TRxDBGridColumnDefValues = class (TPersistent)
   private
     FBlobText: string;
     FOwner: TRxDBGrid;
@@ -245,7 +250,7 @@ type
     constructor Create(AOwner: TRxDBGrid);
     destructor Destroy; override;
   published
-    property BlobText:string read FBlobText write FBlobText;
+    property BlobText: string read FBlobText write FBlobText;
   end;
 
   { TRxDBGridSortEngine }
@@ -254,10 +259,12 @@ type
 
   TRxDBGridSortEngine = class
   protected
-    FGrid:TRxDBGrid;
+    FGrid: TRxDBGrid;
   public
-    procedure Sort(FieldName: string; ADataSet: TDataSet; Asc: boolean; SortOptions: TRxSortEngineOptions); virtual; abstract;
-    procedure SortList(ListField: string; ADataSet: TDataSet; Asc: array of boolean; SortOptions: TRxSortEngineOptions); virtual;
+    procedure Sort(FieldName: string; ADataSet: TDataSet; Asc: boolean;
+      SortOptions: TRxSortEngineOptions); virtual; abstract;
+    procedure SortList(ListField: string; ADataSet: TDataSet;
+      Asc: array of boolean; SortOptions: TRxSortEngineOptions); virtual;
   end;
 
   TRxDBGridSortEngineClass = class of TRxDBGridSortEngine;
@@ -268,12 +275,12 @@ type
     Height: integer;
     Next: TMLCaptionItem;
     Prior: TMLCaptionItem;
-    FInvalidDraw:integer;
+    FInvalidDraw: integer;
     Col: TGridColumn;
   end;
 
   { TRxColumnTitle }
-  TRxColumnTitle = class(TColumnTitle)
+  TRxColumnTitle = class (TColumnTitle)
   private
     FHint: string;
     FOrientation: TTextOrientation;
@@ -296,7 +303,7 @@ type
   end;
 
   { TRxColumnFooterItem }
-  TRxColumnFooterItem = class(TCollectionItem)
+  TRxColumnFooterItem = class (TCollectionItem)
   private
     FColor: TColor;
     FIsDefaultFont: boolean;
@@ -305,15 +312,15 @@ type
     FAlignment: TAlignment;
     FDisplayFormat: string;
     FFieldName: string;
-    FField:TField;
+    FField: TField;
     FFont: TFont;
     FValue: string;
     FValueType: TFooterValueType;
     FTestValue: double;
-    FCountRec:integer;
+    FCountRec: integer;
     procedure FontChanged(Sender: TObject);
     function GetFont: TFont;
-    function IsFontStored: Boolean;
+    function IsFontStored: boolean;
     procedure SetAlignment(AValue: TAlignment);
     procedure SetColor(AValue: TColor);
     procedure SetDisplayFormat(AValue: string);
@@ -334,8 +341,8 @@ type
     function PostTestValue: boolean;
     function ErrorTestValue: boolean;
   protected
-    procedure UpdateTestValueFromVar(AValue:Variant);
-    property  IsDefaultFont: boolean read FIsDefaultFont;
+    procedure UpdateTestValueFromVar(AValue: variant);
+    property IsDefaultFont: boolean read FIsDefaultFont;
   public
     constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
@@ -344,21 +351,24 @@ type
 
     property Owner: TRxColumn read FOwner;
     property NumericValue: double read FTestValue;
-    property CountRec:integer read FCountRec;
+    property CountRec: integer read FCountRec;
   published
-    property Alignment: TAlignment read FAlignment write SetAlignment default taLeftJustify;
+    property Alignment: TAlignment read FAlignment write SetAlignment default
+      taLeftJustify;
     property Layout: TTextLayout read FLayout write SetLayout default tlCenter;
     property DisplayFormat: string read FDisplayFormat write SetDisplayFormat;
     property FieldName: string read FFieldName write SetFieldName;
     property Value: string read FValue write SetValue;
-    property ValueType: TFooterValueType read FValueType write SetValueType default fvtNon;
+    property ValueType: TFooterValueType
+      read FValueType write SetValueType default fvtNon;
     property Font: TFont read GetFont write SetFont stored IsFontStored;
-    property Color : TColor read FColor write SetColor stored IsFontStored default clNone;
+    property Color: TColor read FColor write SetColor stored IsFontStored default
+      clNone;
   end;
 
   { TRxColumnFooterItems }
 
-  TRxColumnFooterItems = class(TOwnedCollection)
+  TRxColumnFooterItems = class (TOwnedCollection)
   private
     function GetItem(Index: integer): TRxColumnFooterItem;
     procedure SetItem(Index: integer; const AValue: TRxColumnFooterItem);
@@ -368,7 +378,8 @@ type
     constructor Create(AOwner: TPersistent);
     function GetEnumerator: TRxColumnFooterItemsEnumerator;
   public
-    property Items[Index: integer]: TRxColumnFooterItem read GetItem write SetItem; default;
+    property Items[Index: integer]: TRxColumnFooterItem read GetItem write SetItem;
+      default;
   end;
 
   { TRxColumnFooterItemsEnumerator }
@@ -376,11 +387,11 @@ type
   TRxColumnFooterItemsEnumerator = class
   private
     FList: TRxColumnFooterItems;
-    FPosition: Integer;
+    FPosition: integer;
   public
     constructor Create(AList: TRxColumnFooterItems);
     function GetCurrent: TRxColumnFooterItem;
-    function MoveNext: Boolean;
+    function MoveNext: boolean;
     property Current: TRxColumnFooterItem read GetCurrent;
   end;
 
@@ -390,10 +401,10 @@ type
   TRxFilterState = (rxfsAll, rxfsEmpty, rxfsNonEmpty, rxfsFilter{, rxfsTopXXXX});
   TRxFilterStyle = (rxfstSimple, rxfstDialog, rxfstManualEdit, rxfstBoth);
 
-  TRxColumnFilter = class(TPersistent)
+  TRxColumnFilter = class (TPersistent)
   private
-    FIsFontStored:Boolean;
-    FIsEmptyFontStored:Boolean;
+    FIsFontStored: boolean;
+    FIsEmptyFontStored: boolean;
     FAllValue: string;
     FCurrentValues: TStringList;
     FEnabled: boolean;
@@ -411,8 +422,8 @@ type
     FColor: TColor;
     function GetDisplayFilterValue: string;
     function GetItemIndex: integer;
-    function IsEmptyFontStored: Boolean;
-    function IsFontStored: Boolean;
+    function IsEmptyFontStored: boolean;
+    function IsFontStored: boolean;
     procedure FontChanged(Sender: TObject);
     procedure SetColor(const AValue: TColor);
     procedure SetEmptyFont(AValue: TFont);
@@ -423,10 +434,10 @@ type
     destructor Destroy; override;
     procedure ClearFilter;
 
-    property State:TRxFilterState read FState write FState;
-    property CurrentValues : TStringList read FCurrentValues;
-    property ManulEditValue : string read FManulEditValue write FManulEditValue;
-    property DisplayFilterValue:string read GetDisplayFilterValue;
+    property State: TRxFilterState read FState write FState;
+    property CurrentValues: TStringList read FCurrentValues;
+    property ManulEditValue: string read FManulEditValue write FManulEditValue;
+    property DisplayFilterValue: string read GetDisplayFilterValue;
   published
     property Font: TFont read FFont write SetFont stored IsFontStored;
     property Alignment: TAlignment read FAlignment write FAlignment default
@@ -437,35 +448,36 @@ type
     property EmptyValue: string read FEmptyValue write FEmptyValue;
     property NotEmptyValue: string read FNotEmptyValue write FNotEmptyValue;
     property AllValue: string read FAllValue write FAllValue;
-    property EmptyFont: TFont read FEmptyFont write SetEmptyFont stored IsEmptyFontStored;
+    property EmptyFont: TFont
+      read FEmptyFont write SetEmptyFont stored IsEmptyFontStored;
     property ItemIndex: integer read GetItemIndex write SetItemIndex;
-    property Enabled:boolean read FEnabled write FEnabled default true;
-    property Style : TRxFilterStyle read FStyle write FStyle default rxfstSimple;
+    property Enabled: boolean read FEnabled write FEnabled default True;
+    property Style: TRxFilterStyle read FStyle write FStyle default rxfstSimple;
   end;
 
   { TRxColumnEditButton }
 
-  TRxColumnEditButton = class(TCollectionItem)
+  TRxColumnEditButton = class (TCollectionItem)
   private
-    FEnabled: Boolean;
+    FEnabled: boolean;
     FShortCut: TShortCut;
     FStyle: TRxColumnEditButtonStyle;
-    FButton:TSpeedButton;
-    FVisible: Boolean;
-    //
-    FSpinBtn:TRxSpinButton;
+    FButton: TSpeedButton;
+    FVisible: boolean;
+
+    FSpinBtn: TRxSpinButton;
     function GetGlyph: TBitmap;
-    function GetHint: String;
-    function GetNumGlyphs: Integer;
+    function GetHint: string;
+    function GetNumGlyphs: integer;
     function GetOnButtonClick: TNotifyEvent;
-    function GetWidth: Integer;
+    function GetWidth: integer;
     procedure SetGlyph(AValue: TBitmap);
-    procedure SetHint(AValue: String);
-    procedure SetNumGlyphs(AValue: Integer);
+    procedure SetHint(AValue: string);
+    procedure SetNumGlyphs(AValue: integer);
     procedure SetOnButtonClick(AValue: TNotifyEvent);
     procedure SetStyle(AValue: TRxColumnEditButtonStyle);
-    procedure SetVisible(AValue: Boolean);
-    procedure SetWidth(AValue: Integer);
+    procedure SetVisible(AValue: boolean);
+    procedure SetWidth(AValue: integer);
 
     procedure DoBottomClick(Sender: TObject);
     procedure DoTopClick(Sender: TObject);
@@ -475,18 +487,19 @@ type
     constructor Create(ACollection: TCollection); override;
     destructor Destroy; override;
   published
-    property Enabled: Boolean read FEnabled write FEnabled default true;
+    property Enabled: boolean read FEnabled write FEnabled default True;
     property Glyph: TBitmap read GetGlyph write SetGlyph;
-    property Hint: String read GetHint write SetHint;
-    property NumGlyphs: Integer read GetNumGlyphs write SetNumGlyphs default 1;
+    property Hint: string read GetHint write SetHint;
+    property NumGlyphs: integer read GetNumGlyphs write SetNumGlyphs default 1;
     property ShortCut: TShortCut read FShortCut write FShortCut default scNone;
-    property Style: TRxColumnEditButtonStyle read FStyle write SetStyle default ebsDropDownRx;
-    property Visible: Boolean read FVisible write SetVisible default true;
-    property Width: Integer read GetWidth write SetWidth default 15;
+    property Style: TRxColumnEditButtonStyle
+      read FStyle write SetStyle default ebsDropDownRx;
+    property Visible: boolean read FVisible write SetVisible default True;
+    property Width: integer read GetWidth write SetWidth default 15;
     property OnClick: TNotifyEvent read GetOnButtonClick write SetOnButtonClick;
   end;
 
-  TRxColumnEditButtons = class(TCollection)
+  TRxColumnEditButtons = class (TCollection)
   private
     FOwner: TPersistent;
     function GetItem(Index: integer): TRxColumnEditButton;
@@ -497,30 +510,31 @@ type
     constructor Create(AOwner: TPersistent);
     function Add: TRxColumnEditButton;
   public
-    property Items[Index: integer]: TRxColumnEditButton read GetItem write SetItem; default;
+    property Items[Index: integer]: TRxColumnEditButton read GetItem write SetItem;
+      default;
   end;
 
   TColumnGroupItemValue = class
-    FieldName:string;
-    GroupValue:Double;
+    FieldName: string;
+    GroupValue: double;
   end;
 
   { TColumnGroupItem }
 
   TColumnGroupItem = class
   private
-    FValues:TFPList;
-    RecBookMark:TBookMark;
-    FieldValue:string;
-    RecordCount:integer;
-    RecordNo:integer;
+    FValues: TFPList;
+    RecBookMark: TBookMark;
+    FieldValue: string;
+    RecordCount: integer;
+    RecordNo: integer;
     function GetItems(FieldName: string): TColumnGroupItemValue;
     procedure ClearValues;
-    function AddItem(AFieldName:string):TColumnGroupItemValue;
+    function AddItem(AFieldName: string): TColumnGroupItemValue;
   public
     constructor Create;
     destructor Destroy; override;
-    property Items[FieldName:string]:TColumnGroupItemValue read GetItems;
+    property Items[FieldName: string]: TColumnGroupItemValue read GetItems;
   end;
 
   { TColumnGroupItems }
@@ -529,30 +543,30 @@ type
   private
     FColor: TColor;
     //for calc
-    FGroupField:TField;
-    FCurItem:TColumnGroupItem;
-    FCurrentValue:String;
+    FGroupField: TField;
+    FCurItem: TColumnGroupItem;
+    FCurrentValue: string;
     //params
     FActive: boolean;
     FGroupFieldName: string;
-    FList:TFPList;
-    FRxDBGrid:TRxDBGrid;
+    FList: TFPList;
+    FRxDBGrid: TRxDBGrid;
     procedure SetActive(AValue: boolean);
     procedure SetColor(AValue: TColor);
   protected
-    function AddGroupItem:TColumnGroupItem;
+    function AddGroupItem: TColumnGroupItem;
     procedure InitGroup;
     procedure DoneGroup;
   public
-    constructor Create(ARxDBGrid:TRxDBGrid);
+    constructor Create(ARxDBGrid: TRxDBGrid);
     destructor Destroy; override;
     procedure Clear;
     procedure UpdateValues;
     function FindGroupItem(ARecBookMark: TBookMark): TColumnGroupItem;
-    property GroupFieldName:string read FGroupFieldName write FGroupFieldName;
+    property GroupFieldName: string read FGroupFieldName write FGroupFieldName;
   published
-    property Active:boolean read FActive write SetActive;
-    property Color:TColor read FColor write SetColor;
+    property Active: boolean read FActive write SetActive;
+    property Color: TColor read FColor write SetColor;
   end;
 
 
@@ -567,13 +581,13 @@ type
     FLayout: TTextLayout;
     FStaticText: string;
     FValueType: TFooterValueType;
-    FColumn:TRxColumn;
+    FColumn: TRxColumn;
     FIsDefaultFont: boolean;
     FFont: TFont;
     procedure FontChanged(Sender: TObject);
     function GetDisplayText: string;
     function GetFont: TFont;
-    function IsFontStored: Boolean;
+    function IsFontStored: boolean;
     procedure SetAlignment(AValue: TAlignment);
     procedure SetColor(AValue: TColor);
     procedure SetDisplayFormat(AValue: string);
@@ -581,38 +595,40 @@ type
     procedure SetLayout(AValue: TTextLayout);
     procedure SetStaticText(AValue: string);
   protected
-    function GetGroupItems:TColumnGroupItem;
-    function GetGroupItem:TColumnGroupItemValue;
+    function GetGroupItems: TColumnGroupItem;
+    function GetGroupItem: TColumnGroupItemValue;
     function GetRecordsCount: string;
     function GetGroupTotal: string;
     function GetGroupValue: string;
     function GetRecNo: string;
   public
-    constructor Create(AColumn:TRxColumn);
+    constructor Create(AColumn: TRxColumn);
     destructor Destroy; override;
     procedure FillDefaultFont;
     procedure UpdateValues;
-    property DisplayText:string read GetDisplayText;
+    property DisplayText: string read GetDisplayText;
   published
-    property ValueType:TFooterValueType read FValueType write FValueType default fvtNon;
-    property Alignment:TAlignment read FAlignment write SetAlignment default taLeftJustify;
+    property ValueType: TFooterValueType read FValueType write FValueType default fvtNon;
+    property Alignment: TAlignment read FAlignment write SetAlignment default
+      taLeftJustify;
     property Layout: TTextLayout read FLayout write SetLayout default tlCenter;
     property DisplayFormat: string read FDisplayFormat write SetDisplayFormat;
     property StaticText: string read FStaticText write SetStaticText;
     property Font: TFont read GetFont write SetFont stored IsFontStored;
-    property Color : TColor read FColor write SetColor stored IsFontStored default clNone;
+    property Color: TColor read FColor write SetColor stored IsFontStored default
+      clNone;
   end;
 
 
 
   { TRxColumn }
 
-  TRxColumn = class(TColumn)
+  TRxColumn = class (TColumn)
   private
     FDirectInput: boolean;
     FEditButtons: TRxColumnEditButtons;
     FFooter: TRxColumnFooterItem;
-    FConstraints:TRxDBGridCollumnConstraints;
+    FConstraints: TRxDBGridCollumnConstraints;
     FFilter: TRxColumnFilter;
     FGroupParam: TRxColumnGroupParam;
     FImageList: TImageList;
@@ -630,7 +646,7 @@ type
     function GetFooter: TRxColumnFooterItem;
     function GetFooters: TRxColumnFooterItems;
     function GetKeyList: TStrings;
-    function GetSortFields:string;
+    function GetSortFields: string;
     procedure SetConstraints(AValue: TRxDBGridCollumnConstraints);
     procedure SetEditButtons(AValue: TRxColumnEditButtons);
     procedure SetFilter(const AValue: TRxColumnFilter);
@@ -649,35 +665,39 @@ type
     procedure OptimizeWidth;
     property SortOrder: TSortMarker read FSortOrder write FSortOrder;
     property SortPosition: integer read FSortPosition;
-    property GroupParam:TRxColumnGroupParam read FGroupParam;
+    property GroupParam: TRxColumnGroupParam read FGroupParam;
   published
-    property Constraints:TRxDBGridCollumnConstraints read GetConstraints write SetConstraints;
-    property DirectInput : boolean read FDirectInput write FDirectInput default true;
-    property EditButtons:TRxColumnEditButtons read FEditButtons write SetEditButtons;
+    property Constraints: TRxDBGridCollumnConstraints
+      read GetConstraints write SetConstraints;
+    property DirectInput: boolean read FDirectInput write FDirectInput default True;
+    property EditButtons: TRxColumnEditButtons read FEditButtons write SetEditButtons;
     property Filter: TRxColumnFilter read FFilter write SetFilter;
     property Footer: TRxColumnFooterItem read GetFooter write SetFooter;
     property Footers: TRxColumnFooterItems read GetFooters write SetFooters;
     property ImageList: TImageList read FImageList write SetImageList;
     property KeyList: TStrings read GetKeyList write SetKeyList;
-    property NotInKeyListIndex: integer read FNotInKeyListIndex write SetNotInKeyListIndex default -1;
-    property Options:TRxColumnOptions read FOptions write FOptions default [coCustomizeVisible, coCustomizeWidth];
+    property NotInKeyListIndex: integer read FNotInKeyListIndex
+      write SetNotInKeyListIndex default -1;
+    property Options: TRxColumnOptions read FOptions write FOptions default
+      [coCustomizeVisible, coCustomizeWidth];
     property SortFields: string read FSortFields write FSortFields;
-    property WordWrap:boolean read FWordWrap write SetWordWrap default false;
-    property OnDrawColumnCell: TDrawColumnCellEvent read FOnDrawColumnCell write FOnDrawColumnCell;
+    property WordWrap: boolean read FWordWrap write SetWordWrap default False;
+    property OnDrawColumnCell: TDrawColumnCellEvent
+      read FOnDrawColumnCell write FOnDrawColumnCell;
     property PopupMenu: TPopupMenu read FPopupMenu write FPopupMenu;
   end;
 
   { TRxDbGridColumns }
-  TRxDbGridColumns = class(TDbGridColumns)
+  TRxDbGridColumns = class (TDbGridColumns)
   private
-    function GetColumn(Index: Integer): TRxColumn;
-    procedure SetColumn(Index: Integer; AValue: TRxColumn);
+    function GetColumn(Index: integer): TRxColumn;
+    procedure SetColumn(Index: integer; AValue: TRxColumn);
   protected
-    procedure Notify(Item: TCollectionItem;Action: TCollectionNotification); override;
+    procedure Notify(Item: TCollectionItem; Action: TCollectionNotification); override;
   public
     function Add: TRxColumn;
     function GetEnumerator: TRxDbGridColumnsEnumerator;
-    property Items[Index: Integer]: TRxColumn read GetColumn write SetColumn; default;
+    property Items[Index: integer]: TRxColumn read GetColumn write SetColumn; default;
   end;
 
   { TRxDbGridColumnsEnumerator }
@@ -685,26 +705,26 @@ type
   TRxDbGridColumnsEnumerator = class
   private
     FList: TRxDbGridColumns;
-    FPosition: Integer;
+    FPosition: integer;
   public
     constructor Create(AList: TRxDbGridColumns);
     function GetCurrent: TRxColumn;
-    function MoveNext: Boolean;
+    function MoveNext: boolean;
     property Current: TRxColumn read GetCurrent;
   end;
 
   { TRxDbGridColumnsSortList }
 
-  TRxDbGridColumnsSortList = class(TFPList)
+  TRxDbGridColumnsSortList = class (TFPList)
   private
-    function GetCollumn(Index: Integer): TRxColumn;
+    function GetCollumn(Index: integer): TRxColumn;
   public
-    property Collumn[Index: Integer]: TRxColumn read GetCollumn; default;
+    property Collumn[Index: integer]: TRxColumn read GetCollumn; default;
   end;
 
   { TFilterListCellEditor }
 
-  TFilterListCellEditor = class(TComboBox)
+  TFilterListCellEditor = class (TComboBox)
   private
     FGrid: TCustomGrid;
     FCol: integer;
@@ -721,7 +741,7 @@ type
 
   { TFilterColDlgButton }
 
-  TFilterColDlgButton = class(TSpeedButton)
+  TFilterColDlgButton = class (TSpeedButton)
   private
     FGrid: TRxDBGrid;
     FCol: integer;
@@ -732,7 +752,7 @@ type
 
   { TFilterSimpleEdit }
 
-  TFilterSimpleEdit = class(TEdit)
+  TFilterSimpleEdit = class (TEdit)
   private
     FGrid: TCustomGrid;
     FCol: integer;
@@ -749,11 +769,11 @@ type
 
 
   { TRxDBGrid }
-  TRxDBGrid = class(TCustomDBGrid)
+  TRxDBGrid = class (TCustomDBGrid)
   private
-    FDrawGetDefaultRowHeight:integer;
+    FDrawGetDefaultRowHeight: integer;
     FColumnDefValues: TRxDBGridColumnDefValues;
-    FIsSelectedDefaultFont:boolean;
+    FIsSelectedDefaultFont: boolean;
 
     FFooterOptions: TRxDBGridFooterOptions;
     FBeforeSorting: TNotifyEvent;
@@ -761,26 +781,26 @@ type
     FSearchOptions: TRxDBGridSearchOptions;
     FSelectedFont: TFont;
     FSortColumns: TRxDbGridColumnsSortList;
-    FSortingNow:Boolean;
+    FSortingNow: boolean;
     FInProcessCalc: integer;
 
     FOnMergeCells: TRxDBGridMergeCellsEvent;
-    FMergeLock: Integer;
-    //
+    FMergeLock: integer;
+
     FKeyStrokes: TRxDBGridKeyStrokes;
     FOnGetCellProps: TGetCellPropsEvent;
     FOptionsRx: TOptionsRx;
 
     FOnGetBtnParams: TGetBtnParamsEvent;
     FOnFiltred: TNotifyEvent;
-    FOnRxCalcFooterValues :TOnRxCalcFooterValues;
-    FOnRxColumnFooterDraw :TOnRxColumnFooterDraw;
+    FOnRxCalcFooterValues: TOnRxCalcFooterValues;
+    FOnRxColumnFooterDraw: TOnRxColumnFooterDraw;
     //auto sort support
 
-    FAutoSort   : boolean;
-    FSortEngine : TRxDBGridSortEngine;
-    FPressedCol : TRxColumn;
-    //
+    FAutoSort: boolean;
+    FSortEngine: TRxDBGridSortEngine;
+    FPressedCol: TRxColumn;
+
     FPressed: boolean;
     FSwapButtons: boolean;
     FTracking: boolean;
@@ -804,24 +824,24 @@ type
 
     FFilterListEditor: TFilterListCellEditor;
     FFilterColDlgButton: TFilterColDlgButton;
-    FFilterSimpleEdit:TFilterSimpleEdit;
+    FFilterSimpleEdit: TFilterSimpleEdit;
 
-//    FOldPosition: Integer;
+    //    FOldPosition: Integer;
     FVersion: integer;
     FPropertyStorageLink: TPropertyStorageLink;
 
     FAfterQuickSearch: TRxQuickSearchNotifyEvent;
     FBeforeQuickSearch: TRxQuickSearchNotifyEvent;
     FQuickUTF8Search: string;
-    FOldDataSetState:TDataSetState;
-    FToolsList:TFPList;
+    FOldDataSetState: TDataSetState;
+    FToolsList: TFPList;
 
     FOnSortChanged: TNotifyEvent;
-    FOnDataHintShow:TRxDBGridDataHintShowEvent;
+    FOnDataHintShow: TRxDBGridDataHintShowEvent;
 
     FSaveOnDataSetScrolled: TDataSetScrolledEvent;
     //Group data suppert
-    FGroupItems:TColumnGroupItems;
+    FGroupItems: TColumnGroupItems;
 
     procedure DoCreateJMenu;
     function GetColumns: TRxDbGridColumns;
@@ -834,7 +854,7 @@ type
     function IsColumnsStored: boolean;
 
     procedure SelectedFontChanged(Sender: TObject);
-    function IsSelectedFontStored: Boolean;
+    function IsSelectedFontStored: boolean;
     procedure SetAutoSort(const AValue: boolean);
     procedure SetColumnDefValues(AValue: TRxDBGridColumnDefValues);
     procedure SetColumns(const AValue: TRxDbGridColumns);
@@ -861,13 +881,14 @@ type
     procedure OutCaptionCellText90(aCol, aRow: integer; const aRect: TRect;
       aState: TGridDrawState; const ACaption: string;
       const TextOrient: TTextOrientation);
-    procedure OutCaptionSortMarker(const aRect: TRect; ASortMarker: TSortMarker; ASortPosition:integer);
+    procedure OutCaptionSortMarker(const aRect: TRect; ASortMarker: TSortMarker;
+      ASortPosition: integer);
     procedure OutCaptionMLCellText(aCol, aRow: integer; aRect: TRect;
       aState: TGridDrawState; MLI: TMLCaptionItem);
     procedure UpdateJMenuStates;
     procedure UpdateJMenuKeys;
     function SortEngineOptions: TRxSortEngineOptions;
-    procedure GetScrollbarParams(out aRange, aPage, aPos: Integer);
+    procedure GetScrollbarParams(out aRange, aPage, aPos: integer);
     procedure RestoreEditor;
     //storage
     procedure OnIniSave(Sender: TObject);
@@ -876,23 +897,23 @@ type
     procedure CleanDSEvent;
 
 
-    function UpdateRowsHeight:integer;
+    function UpdateRowsHeight: integer;
     procedure ResetRowHeght;
 
     procedure DoClearInvalidTitle;
     procedure DoDrawInvalidTitle;
     procedure DoSetColEdtBtn;
-    procedure AddTools(ATools:TRxDBGridAbstractTools);
-    procedure RemoveTools(ATools:TRxDBGridAbstractTools);
-    procedure UpdateToolsState(ATools:TRxDBGridAbstractTools);
+    procedure AddTools(ATools: TRxDBGridAbstractTools);
+    procedure RemoveTools(ATools: TRxDBGridAbstractTools);
+    procedure UpdateToolsState(ATools: TRxDBGridAbstractTools);
 
-    procedure OnDataSetScrolled(aDataSet:TDataSet; Distance: Integer);
+    procedure OnDataSetScrolled(aDataSet: TDataSet; Distance: integer);
     procedure FillFilterData;
     procedure DoCblClickMrOk;
   protected
     FRxDbGridLookupComboEditor: TCustomControl;
     FRxDbGridDateEditor: TWinControl;
-    FGroupItemDrawCur:TColumnGroupItem;
+    FGroupItemDrawCur: TColumnGroupItem;
 
     procedure CollumnSortListUpdate;
     procedure CollumnSortListClear;
@@ -902,10 +923,10 @@ type
 
     function DatalinkActive: boolean;
     function DataSetNotEmpty: boolean;
-    procedure AdjustEditorBounds(NewCol,NewRow:Integer); override;
-    procedure LinkActive(Value: Boolean); override;
+    procedure AdjustEditorBounds(NewCol, NewRow: integer); override;
+    procedure LinkActive(Value: boolean); override;
 
-    function GetFieldDisplayText(AField:TField; ACollumn:TRxColumn):string;
+    function GetFieldDisplayText(AField: TField; ACollumn: TRxColumn): string;
     procedure DefaultDrawCellA(aCol, aRow: integer; aRect: TRect;
       aState: TGridDrawState);
     procedure DefaultDrawTitle(aCol, aRow: integer; aRect: TRect;
@@ -916,17 +937,19 @@ type
       aState: TGridDrawState);
     procedure DrawCell(aCol, aRow: integer; aRect: TRect; aState: TGridDrawState);
       override;
-    procedure SetDBHandlers(Value: boolean);virtual;
+    procedure SetDBHandlers(Value: boolean); virtual;
 
-    procedure DrawRow(ARow: Integer); override;
-    procedure DrawFocusRect(aCol,aRow:Integer; ARect:TRect); override;
+    procedure DrawRow(ARow: integer); override;
+    procedure DrawFocusRect(aCol, aRow: integer; ARect: TRect); override;
     procedure DrawFooterRows; virtual;
     procedure DrawCellBitmap(RxColumn: TRxColumn; aRect: TRect;
       aState: TGridDrawState; AImageIndex: integer); virtual;
 
-    procedure DoTitleClick(ACol: longint; ACollumn: TRxColumn; Shift: TShiftState); virtual;
+    procedure DoTitleClick(ACol: longint; ACollumn: TRxColumn;
+      Shift: TShiftState); virtual;
     procedure MouseMove(Shift: TShiftState; X, Y: integer); override;
-    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
+      X, Y: integer); override;
     procedure MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: integer); override;
     procedure KeyDown(var Key: word; Shift: TShiftState); override;
     procedure KeyPress(var Key: char); override;
@@ -937,7 +960,7 @@ type
     procedure ColRowMoved(IsColumn: boolean; FromIndex, ToIndex: integer); override;
     procedure Paint; override;
     procedure MoveSelection; override;
-    function  GetBufferCount: integer; override;
+    function GetBufferCount: integer; override;
     procedure CMHintShow(var Message: TLMessage); message CM_HINTSHOW;
     procedure FFilterListEditorOnChange(Sender: TObject);
     procedure FFilterListEditorOnCloseUp(Sender: TObject);
@@ -946,12 +969,13 @@ type
 
     procedure InternalOptimizeColumnsWidth(AColList: TList);
     procedure VisualChange; override;
-    procedure EditorWidthChanged(aCol,aWidth: Integer); override;
+    procedure EditorWidthChanged(aCol, aWidth: integer); override;
 
     procedure SetQuickUTF8Search(AValue: string);
     procedure BeforeDel(DataSet: TDataSet);
     procedure BeforePo(DataSet: TDataSet);
-    procedure ErrorDel(DataSet: TDataSet; E: EDatabaseError; var DataAction: TDataAction);
+    procedure ErrorDel(DataSet: TDataSet; E: EDatabaseError;
+      var DataAction: TDataAction);
     procedure ErrorPo(DataSet: TDataSet; E: EDatabaseError; var DataAction: TDataAction);
     procedure OnFind(Sender: TObject);
     procedure OnFilterBy(Sender: TObject);
@@ -967,17 +991,17 @@ type
 
     procedure DoEditorHide; override;
     procedure DoEditorShow; override;
-    procedure CheckNewCachedSizes(var AGCache:TGridDataCache); override;
+    procedure CheckNewCachedSizes(var AGCache: TGridDataCache); override;
 
-    function  GetEditMask(aCol, aRow: Longint): string; override;
-    function  GetEditText(aCol, aRow: Longint): string; override;
-    function  GetDefaultEditor(Column: Integer): TWinControl; override;
+    function GetEditMask(aCol, aRow: longint): string; override;
+    function GetEditText(aCol, aRow: longint): string; override;
+    function GetDefaultEditor(Column: integer): TWinControl; override;
 
-    procedure PrepareCanvas(aCol, aRow: Integer; AState: TGridDrawState); override;
+    procedure PrepareCanvas(aCol, aRow: integer; AState: TGridDrawState); override;
     function GetPopupMenu: TPopupMenu; override;
-{$IFDEF DEVELOPER_RX}
-    procedure InternalAdjustRowCount(var RecCount:integer); override;
-{$ENDIF}
+    {$IFDEF DEVELOPER_RX}
+    procedure InternalAdjustRowCount(var RecCount: integer); override;
+    {$ENDIF}
     property Editor;
   public
     constructor Create(AOwner: TComponent); override;
@@ -1004,14 +1028,17 @@ type
     procedure DeSelectAllRows;
     procedure InvertSelection;
     procedure CopyCellValue;
-    function CreateToolMenuItem(ShortCut: char; const ACaption: string; MenuAction: TNotifyEvent):TMenuItem;
+    function CreateToolMenuItem(ShortCut: char; const ACaption: string;
+      MenuAction: TNotifyEvent): TMenuItem;
     procedure RemoveToolMenuItem(MenuAction: TNotifyEvent);
 
-    procedure CalcCellExtent(ACol, ARow: Integer; var ARect: TRect);
-    function IsMerged(ACol : Integer): Boolean; overload;
-    function IsMerged(ACol : Integer; out ALeft, ARight: Integer; out AColumn: TRxColumn): Boolean; overload;
+    procedure CalcCellExtent(ACol, ARow: integer; var ARect: TRect);
+    function IsMerged(ACol: integer): boolean; overload;
+    function IsMerged(ACol: integer; out ALeft, ARight: integer;
+      out AColumn: TRxColumn): boolean; overload;
 
-    procedure SetSort(AFields: array of String; ASortMarkers: array of TSortMarker; PreformSort: Boolean = False);
+    procedure SetSort(AFields: array of string; ASortMarkers: array of TSortMarker;
+      PreformSort: boolean = False);
 
     property Canvas;
     property DefaultTextStyle;
@@ -1023,37 +1050,52 @@ type
     property SelectedRows;
     property QuickUTF8Search: string read FQuickUTF8Search write SetQuickUTF8Search;
 
-    property SortField:string read GetSortField;
-    property SortOrder:TSortMarker read GetSortOrder;
+    property SortField: string read GetSortField;
+    property SortOrder: TSortMarker read GetSortOrder;
 
-    property SortColumns:TRxDbGridColumnsSortList read FSortColumns;
-    property GroupItems:TColumnGroupItems read FGroupItems;
+    property SortColumns: TRxDbGridColumnsSortList read FSortColumns;
+    property GroupItems: TColumnGroupItems read FGroupItems;
   published
-    property AfterQuickSearch: TRxQuickSearchNotifyEvent read FAfterQuickSearch write FAfterQuickSearch;
-    property ColumnDefValues:TRxDBGridColumnDefValues read FColumnDefValues write SetColumnDefValues;
-    property BeforeQuickSearch: TRxQuickSearchNotifyEvent read FBeforeQuickSearch write FBeforeQuickSearch;
-    property OnGetBtnParams: TGetBtnParamsEvent read FOnGetBtnParams write FOnGetBtnParams;
+    property AfterQuickSearch: TRxQuickSearchNotifyEvent
+      read FAfterQuickSearch write FAfterQuickSearch;
+    property ColumnDefValues: TRxDBGridColumnDefValues
+      read FColumnDefValues write SetColumnDefValues;
+    property BeforeQuickSearch: TRxQuickSearchNotifyEvent
+      read FBeforeQuickSearch write FBeforeQuickSearch;
+    property OnGetBtnParams: TGetBtnParamsEvent
+      read FOnGetBtnParams write FOnGetBtnParams;
     property TitleButtons: boolean read GetTitleButtons write SetTitleButtons;
     property AutoSort: boolean read FAutoSort write SetAutoSort;
-    property OnGetCellProps: TGetCellPropsEvent read FOnGetCellProps write FOnGetCellProps;
-    property Columns: TRxDbGridColumns read GetColumns write SetColumns stored IsColumnsStored;
+    property OnGetCellProps: TGetCellPropsEvent
+      read FOnGetCellProps write FOnGetCellProps;
+    property Columns: TRxDbGridColumns
+      read GetColumns write SetColumns stored IsColumnsStored;
     property KeyStrokes: TRxDBGridKeyStrokes read FKeyStrokes write SetKeyStrokes;
-    property FooterOptions:TRxDBGridFooterOptions read FFooterOptions write SetFooterOptions;
-    property SearchOptions:TRxDBGridSearchOptions read FSearchOptions write SetSearchOptions;
-    property OnCalcRowHeight:TRxDBGridCalcRowHeight read FOnCalcRowHeight write FOnCalcRowHeight;
-    property SelectedFont:TFont read FSelectedFont write SetSelectedFont stored IsSelectedFontStored;
+    property FooterOptions: TRxDBGridFooterOptions
+      read FFooterOptions write SetFooterOptions;
+    property SearchOptions: TRxDBGridSearchOptions
+      read FSearchOptions write SetSearchOptions;
+    property OnCalcRowHeight: TRxDBGridCalcRowHeight
+      read FOnCalcRowHeight write FOnCalcRowHeight;
+    property SelectedFont: TFont
+      read FSelectedFont write SetSelectedFont stored IsSelectedFontStored;
 
     //storage
-    property PropertyStorage: TCustomPropertyStorage read GetPropertyStorage write SetPropertyStorage;
+    property PropertyStorage: TCustomPropertyStorage
+      read GetPropertyStorage write SetPropertyStorage;
     property Version: integer read FVersion write FVersion default 0;
     property OptionsRx: TOptionsRx read FOptionsRx write SetOptionsRx;
-    property FooterColor: TColor read GetFooterColor write SetFooterColor default clWindow; deprecated;
-    property FooterRowCount: integer read GetFooterRowCount write SetFooterRowCount default 0; deprecated;
+    property FooterColor: TColor read GetFooterColor write SetFooterColor default
+      clWindow;
+      deprecated;
+    property FooterRowCount: integer read GetFooterRowCount
+      write SetFooterRowCount default 0; deprecated;
 
     property OnFiltred: TNotifyEvent read FOnFiltred write FOnFiltred;
     property OnSortChanged: TNotifyEvent read FOnSortChanged write FOnSortChanged;
     property BeforeSorting: TNotifyEvent read FBeforeSorting write FBeforeSorting;
-    property OnDataHintShow: TRxDBGridDataHintShowEvent read FOnDataHintShow write FOnDataHintShow;
+    property OnDataHintShow: TRxDBGridDataHintShowEvent
+      read FOnDataHintShow write FOnDataHintShow;
 
     //from DBGrid
     property Align;
@@ -1068,7 +1110,8 @@ type
     property Color;
     property CellHintPriority;
     property BorderColor;
-    property DrawFullLine: boolean read GetDrawFullLine write SetDrawFullLine; deprecated;
+    property DrawFullLine: boolean read GetDrawFullLine write SetDrawFullLine;
+      deprecated;
     property FocusColor;
     property FixedHotColor;
 
@@ -1100,7 +1143,7 @@ type
     property Options2;
     property OptionsExtra;
     property ParentBiDiMode;
-    property ParentColor default false;
+    property ParentColor default False;
     property ParentDoubleBuffered;
     //property ParentCtl3D;
     property ParentFont;
@@ -1152,8 +1195,10 @@ type
     property OnStartDock;
     property OnStartDrag;
     property OnTitleClick;
-    property OnRxCalcFooterValues: TOnRxCalcFooterValues read FOnRxCalcFooterValues write FOnRxCalcFooterValues;
-    property OnRxColumnFooterDraw: TOnRxColumnFooterDraw read FOnRxColumnFooterDraw write FOnRxColumnFooterDraw;
+    property OnRxCalcFooterValues: TOnRxCalcFooterValues
+      read FOnRxCalcFooterValues write FOnRxCalcFooterValues;
+    property OnRxColumnFooterDraw: TOnRxColumnFooterDraw
+      read FOnRxColumnFooterDraw write FOnRxColumnFooterDraw;
     property OnUserCheckboxBitmap;
     {$IF LCL_FullVersion >= 2010000}
     property OnUserCheckboxImage;
@@ -1164,41 +1209,45 @@ type
 
     property OnCreateLookup: TCreateLookup read F_CreateLookup write F_CreateLookup;
     property OnDisplayLookup: TDisplayLookup read F_DisplayLookup write F_DisplayLookup;
-    property OnMergeCells:TRxDBGridMergeCellsEvent read FOnMergeCells write FOnMergeCells;
+    property OnMergeCells: TRxDBGridMergeCellsEvent
+      read FOnMergeCells write FOnMergeCells;
   end;
 
   { TRxDBGridAbstractTools }
-  TRxDBGridToolsEvent = (rxteMouseDown, rxteMouseUp, rxteMouseMove, rxteKeyDown, rxteKeyUp);
+  TRxDBGridToolsEvent = (rxteMouseDown, rxteMouseUp, rxteMouseMove,
+    rxteKeyDown, rxteKeyUp);
   TRxDBGridToolsEvents = set of TRxDBGridToolsEvent;
 
-  TRxDBGridAbstractTools = class(TComponent)
+  TRxDBGridAbstractTools = class (TComponent)
   private
     FEnabled: boolean;
     FOnAfterExecute: TNotifyEvent;
     FOnBeforeExecute: TNotifyEvent;
     FShowSetupForm: boolean;
-    procedure ExecTools(Sender:TObject);
+    procedure ExecTools(Sender: TObject);
     procedure SetEnabled(AValue: boolean);
   protected
     FRxDBGrid: TRxDBGrid;
-    FCaption:string;
-    FToolsEvents:TRxDBGridToolsEvents;
+    FCaption: string;
+    FToolsEvents: TRxDBGridToolsEvents;
     procedure SetRxDBGrid(AValue: TRxDBGrid);
-    function DoExecTools:boolean; virtual;
-    function DoSetupTools:boolean; virtual;
-    function MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: integer):boolean; virtual;
+    function DoExecTools: boolean; virtual;
+    function DoSetupTools: boolean; virtual;
+    function MouseDown(Button: TMouseButton; Shift: TShiftState;
+      X, Y: integer): boolean; virtual;
     procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function Execute:boolean;
+    function Execute: boolean;
   published
-    property RxDBGrid:TRxDBGrid read FRxDBGrid write SetRxDBGrid;
-    property Caption:string read FCaption write FCaption;
-    property ShowSetupForm:boolean read FShowSetupForm write FShowSetupForm default false;
-    property OnBeforeExecute:TNotifyEvent read FOnBeforeExecute write FOnBeforeExecute;
-    property OnAfterExecute:TNotifyEvent read FOnAfterExecute write FOnAfterExecute;
-    property Enabled:boolean read FEnabled write SetEnabled default true;
+    property RxDBGrid: TRxDBGrid read FRxDBGrid write SetRxDBGrid;
+    property Caption: string read FCaption write FCaption;
+    property ShowSetupForm: boolean
+      read FShowSetupForm write FShowSetupForm default False;
+    property OnBeforeExecute: TNotifyEvent read FOnBeforeExecute write FOnBeforeExecute;
+    property OnAfterExecute: TNotifyEvent read FOnAfterExecute write FOnAfterExecute;
+    property Enabled: boolean read FEnabled write SetEnabled default True;
   end;
 
 procedure RegisterRxDBGridSortEngine(RxDBGridSortEngineClass: TRxDBGridSortEngineClass;
@@ -1206,11 +1255,12 @@ procedure RegisterRxDBGridSortEngine(RxDBGridSortEngineClass: TRxDBGridSortEngin
 
 implementation
 
-uses Math, rxdateutil, rxdconst, rxstrutils, rxutils, strutils, rxdbgrid_findunit, Themes,
+uses Math, rxdateutil, rxdconst, rxstrutils, rxutils, strutils,
+  rxdbgrid_findunit, Themes,
   rxdbgrid_columsunit, RxDBGrid_PopUpFilterUnit, rxlookup, rxtooledit, LCLProc,
   Clipbrd, rxfilterby, rxsortby, variants, LazUTF8, DateUtils;
 
-{$R rxdbgrid.res}
+  {$R rxdbgrid.res}
 
 const
   EditorCommandStrs: array[rxgcNone .. High(TRxDBGridCommand)] of TIdentMapEntry =
@@ -1232,8 +1282,8 @@ const
 var
   RxDBGridSortEngineList: TStringList;
 
-  FMarkerUp   : TBitmap = nil;
-  FMarkerDown : TBitmap = nil;
+  FMarkerUp: TBitmap = nil;
+  FMarkerDown: TBitmap = nil;
   FEllipsisRxBMP: TBitmap = nil;
   FGlyphRxBMP: TBitmap = nil;
   FUpDownRxBMP: TBitmap = nil;
@@ -1241,8 +1291,8 @@ var
   FMinusRxBMP: TBitmap = nil;
 
 
-procedure RegisterRxDBGridSortEngine(
-  RxDBGridSortEngineClass: TRxDBGridSortEngineClass; DataSetClassName: string);
+procedure RegisterRxDBGridSortEngine(RxDBGridSortEngineClass: TRxDBGridSortEngineClass;
+  DataSetClassName: string);
 var
   Pos: integer;
   RxDBGridSortEngine: TRxDBGridSortEngine;
@@ -1263,14 +1313,14 @@ begin
 end;
 
 type
-  THackDataSet = class(TDataSet);
+  THackDataSet = class (TDataSet);
 
 
 type
 
   { TRxDBGridLookupComboEditor }
 
-  TRxDBGridLookupComboEditor = class(TRxCustomDBLookupCombo)
+  TRxDBGridLookupComboEditor = class (TRxCustomDBLookupCombo)
   private
     FGrid: TRxDBGrid;
     FCol, FRow: integer;
@@ -1281,7 +1331,7 @@ type
     procedure msg_SetGrid(var Msg: TGridMessage); message GM_SETGRID;
     procedure msg_SetValue(var Msg: TGridMessage); message GM_SETVALUE;
     procedure msg_GetValue(var Msg: TGridMessage); message GM_GETVALUE;
-    procedure OnInternalClosePopup(AResult:boolean);override;
+    procedure OnInternalClosePopup(AResult: boolean); override;
     procedure ShowList; override;
   public
     constructor Create(AOwner: TComponent); override;
@@ -1289,7 +1339,7 @@ type
   end;
 
   { TRxDBGridDateEditor }
-  TRxDBGridDateEditor = class(TCustomRxDateEdit)
+  TRxDBGridDateEditor = class (TCustomRxDateEdit)
   private
     FGrid: TRxDBGrid;
     FCol, FRow: integer;
@@ -1302,13 +1352,12 @@ type
     procedure msg_SetValue(var Msg: TGridMessage); message GM_SETVALUE;
     procedure msg_GetValue(var Msg: TGridMessage); message GM_GETVALUE;
     procedure msg_SelectAll(var Msg: TGridMessage); message GM_SELECTALL;
-
   public
-    constructor Create(Aowner : TComponent); override;
+    constructor Create(Aowner: TComponent); override;
     procedure EditingDone; override;
   end;
 
-{ TFilterSimpleEdit }
+  { TFilterSimpleEdit }
 
 procedure TFilterSimpleEdit.WndProc(var TheMessage: TLMessage);
 begin
@@ -1358,17 +1407,17 @@ end;
 function TRxColumnGroupParam.GetDisplayText: string;
 begin
   case FValueType of
-    fvtCount : Result := GetRecordsCount;
+    fvtCount: Result := GetRecordsCount;
     fvtSum,
     fvtAvg,
     fvtMax,
-    fvtMin : Result := GetGroupTotal;
-    fvtRecNo : Result := GetRecNo;
-    fvtStaticText:Result := FStaticText;
-    fvtFieldValue:Result := GetGroupValue;
-  else
-    //fvtNon,
-    Result:='';
+    fvtMin: Result := GetGroupTotal;
+    fvtRecNo: Result := GetRecNo;
+    fvtStaticText: Result := FStaticText;
+    fvtFieldValue: Result := GetGroupValue;
+    else
+      //fvtNon,
+      Result := '';
   end;
 end;
 
@@ -1377,27 +1426,27 @@ begin
   Result := FFont;
 end;
 
-function TRxColumnGroupParam.IsFontStored: Boolean;
+function TRxColumnGroupParam.IsFontStored: boolean;
 begin
   Result := not FisDefaultFont;
 end;
 
 procedure TRxColumnGroupParam.SetAlignment(AValue: TAlignment);
 begin
-  if FAlignment=AValue then Exit;
-  FAlignment:=AValue;
+  if FAlignment = AValue then Exit;
+  FAlignment := AValue;
 end;
 
 procedure TRxColumnGroupParam.SetColor(AValue: TColor);
 begin
-  if FColor=AValue then Exit;
-  FColor:=AValue;
+  if FColor = AValue then Exit;
+  FColor := AValue;
 end;
 
 procedure TRxColumnGroupParam.SetDisplayFormat(AValue: string);
 begin
-  if FDisplayFormat=AValue then Exit;
-  FDisplayFormat:=AValue;
+  if FDisplayFormat = AValue then Exit;
+  FDisplayFormat := AValue;
 end;
 
 procedure TRxColumnGroupParam.SetFont(AValue: TFont);
@@ -1408,41 +1457,41 @@ end;
 
 procedure TRxColumnGroupParam.SetLayout(AValue: TTextLayout);
 begin
-  if FLayout=AValue then Exit;
-  FLayout:=AValue;
+  if FLayout = AValue then Exit;
+  FLayout := AValue;
 end;
 
 procedure TRxColumnGroupParam.SetStaticText(AValue: string);
 begin
-  if FStaticText=AValue then Exit;
-  FStaticText:=AValue;
+  if FStaticText = AValue then Exit;
+  FStaticText := AValue;
 end;
 
 function TRxColumnGroupParam.GetGroupItems: TColumnGroupItem;
 begin
-  Result:=nil;
+  Result := nil;
   if TRxDBGrid(FColumn.Grid).DatalinkActive then
-    Result:=TRxDBGrid(FColumn.Grid).FGroupItemDrawCur;
+    Result := TRxDBGrid(FColumn.Grid).FGroupItemDrawCur;
 end;
 
 function TRxColumnGroupParam.GetGroupItem: TColumnGroupItemValue;
 var
   FCGDI: TColumnGroupItem;
 begin
-  Result:=nil;
+  Result := nil;
   if TRxDBGrid(FColumn.Grid).DatalinkActive then
   begin
-    FCGDI:=TRxDBGrid(FColumn.Grid).FGroupItemDrawCur;
+    FCGDI := TRxDBGrid(FColumn.Grid).FGroupItemDrawCur;
     if Assigned(FCGDI) then
-      Result:=FCGDI.GetItems(FColumn.FieldName);
-  end
+      Result := FCGDI.GetItems(FColumn.FieldName);
+  end;
 end;
 
 function TRxColumnGroupParam.GetRecordsCount: string;
 var
   V: TColumnGroupItem;
 begin
-  V:=GetGroupItems;
+  V := GetGroupItems;
   if Assigned(V) then
   begin
     if DisplayFormat <> '' then
@@ -1459,7 +1508,7 @@ var
   V: TColumnGroupItemValue;
   F: TField;
 begin
-  V:=GetGroupItem;
+  V := GetGroupItem;
   if Assigned(V) then
   begin
     F := TRxDBGrid(FColumn.Grid).DataSource.DataSet.FieldByName(FColumn.FieldName);
@@ -1473,32 +1522,32 @@ begin
           if FValueType in [fvtSum, fvtAvg] then
             Result := ''
           else
-          if V.GroupValue = 0 then
-            Result := ''
-          else
-          if FDisplayFormat = '' then
-            Result := DateToStr(V.GroupValue)
-          else
-            Result := FormatDateTime(FDisplayFormat, V.GroupValue);
+            if V.GroupValue = 0 then
+              Result := ''
+            else
+              if FDisplayFormat = '' then
+                Result := DateToStr(V.GroupValue)
+              else
+                Result := FormatDateTime(FDisplayFormat, V.GroupValue);
         end
         else
-        if F.DataType in [ftSmallint, ftInteger, ftWord, ftLargeint] then
-        begin
-          if FDisplayFormat = '' then
-            Result := IntToStr(Round(V.GroupValue))
+          if F.DataType in [ftSmallint, ftInteger, ftWord, ftLargeint] then
+          begin
+            if FDisplayFormat = '' then
+              Result := IntToStr(Round(V.GroupValue))
+            else
+              Result := FormatFloat(FDisplayFormat, V.GroupValue);
+          end
           else
-            Result := FormatFloat(FDisplayFormat, V.GroupValue);
-        end
-        else
-        begin
-          if FDisplayFormat <> '' then
-            Result := FormatFloat(FDisplayFormat, V.GroupValue)
-          else
-          if F.DataType = ftCurrency then
-            Result := FloatToStrF(V.GroupValue, ffCurrency, 12, 2)
-          else
-            Result := FloatToStr(V.GroupValue);
-        end;
+          begin
+            if FDisplayFormat <> '' then
+              Result := FormatFloat(FDisplayFormat, V.GroupValue)
+            else
+              if F.DataType = ftCurrency then
+                Result := FloatToStrF(V.GroupValue, ffCurrency, 12, 2)
+              else
+                Result := FloatToStr(V.GroupValue);
+          end;
       end
       else
         Result := '';
@@ -1514,7 +1563,7 @@ function TRxColumnGroupParam.GetGroupValue: string;
 var
   V: TColumnGroupItem;
 begin
-  V:=GetGroupItems;
+  V := GetGroupItems;
   if Assigned(V) then
     Result := V.FieldValue
   else
@@ -1525,7 +1574,7 @@ function TRxColumnGroupParam.GetRecNo: string;
 var
   V: TColumnGroupItem;
 begin
-  V:=GetGroupItems;
+  V := GetGroupItems;
   if Assigned(V) then
   begin
     if DisplayFormat <> '' then
@@ -1540,11 +1589,11 @@ end;
 constructor TRxColumnGroupParam.Create(AColumn: TRxColumn);
 begin
   inherited Create;
-  FColumn:=AColumn;
-  FValueType:=fvtNon;
-  FAlignment:=taLeftJustify;
+  FColumn := AColumn;
+  FValueType := fvtNon;
+  FAlignment := taLeftJustify;
   FLayout := tlCenter;
-  FColor:=clNone;
+  FColor := clNone;
 
   FFont := TFont.Create;
   FillDefaultFont;
@@ -1563,7 +1612,7 @@ var
 begin
   if not Assigned(FColumn) then exit;
   AGrid := FColumn.Grid;
-  if (AGrid<>nil) then
+  if (AGrid <> nil) then
   begin
     FFont.Assign(AGrid.Font);
     FIsDefaultFont := True;
@@ -1578,9 +1627,9 @@ begin
   if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FColumn.FieldName <> '') then
   begin
     F := TRxDBGrid(FColumn.Grid).DataSource.DataSet.FindField(FColumn.FieldName);
-    V:=TRxDBGrid(FColumn.Grid).FGroupItems.FCurItem.Items[FColumn.FieldName];
+    V := TRxDBGrid(FColumn.Grid).FGroupItems.FCurItem.Items[FColumn.FieldName];
     if not Assigned(V) then
-      V:=TRxDBGrid(FColumn.Grid).FGroupItems.FCurItem.AddItem(FColumn.FieldName);
+      V := TRxDBGrid(FColumn.Grid).FGroupItems.FCurItem.AddItem(FColumn.FieldName);
     if Assigned(F) and Assigned(V) then
     begin
       if F.DataType in [ftDate, ftTime, ftDateTime, ftTimeStamp] then
@@ -1616,7 +1665,7 @@ begin
   Result := FList[FPosition];
 end;
 
-function TRxColumnFooterItemsEnumerator.MoveNext: Boolean;
+function TRxColumnFooterItemsEnumerator.MoveNext: boolean;
 begin
   Inc(FPosition);
   Result := FPosition < FList.Count;
@@ -1626,8 +1675,8 @@ end;
 
 procedure TColumnGroupItems.SetActive(AValue: boolean);
 begin
-  if FActive=AValue then Exit;
-  FActive:=AValue;
+  if FActive = AValue then Exit;
+  FActive := AValue;
   if FActive then
   begin
     FRxDBGrid.CalcStatTotals;
@@ -1639,17 +1688,17 @@ end;
 
 procedure TColumnGroupItems.SetColor(AValue: TColor);
 begin
-  if FColor=AValue then Exit;
-  FColor:=AValue;
+  if FColor = AValue then Exit;
+  FColor := AValue;
   FRxDBGrid.Invalidate;
 end;
 
 constructor TColumnGroupItems.Create(ARxDBGrid: TRxDBGrid);
 begin
   inherited Create;
-  FActive:=false;
-  FList:=TFPList.Create;
-  FRxDBGrid:=ARxDBGrid;
+  FActive := False;
+  FList := TFPList.Create;
+  FRxDBGrid := ARxDBGrid;
 end;
 
 destructor TColumnGroupItems.Destroy;
@@ -1659,15 +1708,16 @@ begin
   inherited Destroy;
 end;
 
-function TColumnGroupItems.FindGroupItem(ARecBookMark: TBookMark
-  ): TColumnGroupItem;
+function TColumnGroupItems.FindGroupItem(ARecBookMark: TBookMark): TColumnGroupItem;
 var
-  S, E, i: Integer;
+  //S: Integer;
+  //E: Integer;
+  i: Integer;
 begin
-  Result:=nil;
+  Result := nil;
   if FList.Count = 0 then exit;
-  S:=0;
-  E:=FList.Count - 1;
+  //S := 0;
+  //E := FList.Count - 1;
 {
   while (S<=E) do
   begin
@@ -1682,16 +1732,17 @@ begin
     else S:=i+1;
   end; }
 
-  for i:=0 to FList.Count-1 do
-    if FRxDBGrid.DataSource.DataSet.CompareBookmarks(TColumnGroupItem(FList[i]).RecBookMark, ARecBookMark) = 0 then
-      exit(TColumnGroupItem(FList[i]))
+  for i := 0 to FList.Count - 1 do
+    if FRxDBGrid.DataSource.DataSet.CompareBookmarks(
+      TColumnGroupItem(FList[i]).RecBookMark, ARecBookMark) = 0 then
+      Exit(TColumnGroupItem(FList[i]));
 end;
 
 procedure TColumnGroupItems.Clear;
 var
-  i: Integer;
+  i: integer;
 begin
-  for i:=0 to FList.Count-1 do
+  for i := 0 to FList.Count - 1 do
     TColumnGroupItem(FList[i]).Free;
   FList.Clear;
 end;
@@ -1702,24 +1753,24 @@ begin
   if (FCurrentValue <> FGroupField.DisplayText) or (not Assigned(FCurItem)) then
   begin
     DoneGroup;
-    FCurItem:=AddGroupItem;
-    FCurrentValue:=FGroupField.DisplayText;
-    FCurItem.RecordCount:=1;
-    FCurItem.RecordNo:=FRxDBGrid.DataSource.DataSet.RecNo;
-    FCurItem.RecBookMark:=FRxDBGrid.DataSource.DataSet.Bookmark;
-    FCurItem.FieldValue:=FCurrentValue;
+    FCurItem := AddGroupItem;
+    FCurrentValue := FGroupField.DisplayText;
+    FCurItem.RecordCount := 1;
+    FCurItem.RecordNo := FRxDBGrid.DataSource.DataSet.RecNo;
+    FCurItem.RecBookMark := FRxDBGrid.DataSource.DataSet.Bookmark;
+    FCurItem.FieldValue := FCurrentValue;
   end
   else
   begin
     Inc(FCurItem.RecordCount);
-    FCurItem.RecordNo:=FRxDBGrid.DataSource.DataSet.RecNo;
-    FCurItem.RecBookMark:=FRxDBGrid.DataSource.DataSet.Bookmark;
+    FCurItem.RecordNo := FRxDBGrid.DataSource.DataSet.RecNo;
+    FCurItem.RecBookMark := FRxDBGrid.DataSource.DataSet.Bookmark;
   end;
 end;
 
 function TColumnGroupItems.AddGroupItem: TColumnGroupItem;
 begin
-  Result:=TColumnGroupItem.Create;
+  Result := TColumnGroupItem.Create;
   FList.Add(Result);
 end;
 
@@ -1727,8 +1778,8 @@ procedure TColumnGroupItems.InitGroup;
 begin
   if (FRxDBGrid.DataSource.DataSet.RecordCount > 0) and (FGroupFieldName <> '') then
   begin
-    FGroupField:=FRxDBGrid.DataSource.DataSet.FieldByName(FGroupFieldName);
-    FCurrentValue:=FGroupField.DisplayText;
+    FGroupField := FRxDBGrid.DataSource.DataSet.FieldByName(FGroupFieldName);
+    FCurrentValue := FGroupField.DisplayText;
   end;
 end;
 
@@ -1742,41 +1793,41 @@ begin
     //FList.Sort(@DoListSortCompare);
     //FCurItem.RecordNo:=FRxDBGrid.DataSource.DataSet.Bookmark;
   end;
-  FCurItem:=nil;
+  FCurItem := nil;
 end;
 
 { TColumnGroupItem }
 
 function TColumnGroupItem.GetItems(FieldName: string): TColumnGroupItemValue;
 var
-  i: Integer;
+  i: integer;
 begin
-  Result:=nil;
-  for i:=0 to FValues.Count-1 do
+  Result := nil;
+  for i := 0 to FValues.Count - 1 do
     if TColumnGroupItemValue(FValues[i]).FieldName = FieldName then
       Exit(TColumnGroupItemValue(FValues[i]));
 end;
 
 procedure TColumnGroupItem.ClearValues;
 var
-  i: Integer;
+  i: integer;
 begin
-  for i:=0 to FValues.Count-1 do
+  for i := 0 to FValues.Count - 1 do
     TColumnGroupItemValue(FValues[i]).Free;
   FValues.Clear;
 end;
 
 function TColumnGroupItem.AddItem(AFieldName: string): TColumnGroupItemValue;
 begin
-  Result:=TColumnGroupItemValue.Create;
+  Result := TColumnGroupItemValue.Create;
   FValues.Add(Result);
-  Result.FieldName:=AFieldName;
+  Result.FieldName := AFieldName;
 end;
 
 constructor TColumnGroupItem.Create;
 begin
   inherited Create;
-  FValues:=TFPList.Create;
+  FValues := TFPList.Create;
 end;
 
 destructor TColumnGroupItem.Destroy;
@@ -1799,7 +1850,7 @@ begin
   Result := FList[FPosition];
 end;
 
-function TRxDbGridColumnsEnumerator.MoveNext: Boolean;
+function TRxDbGridColumnsEnumerator.MoveNext: boolean;
 begin
   Inc(FPosition);
   Result := FPosition < FList.Count;
@@ -1820,10 +1871,10 @@ procedure TRxDBGridSearchOptions.AssignTo(Dest: TPersistent);
 begin
   if Dest is TRxDBGridSearchOptions then
   begin
-    TRxDBGridSearchOptions(Dest).FQuickSearchOptions:=FQuickSearchOptions;
-    TRxDBGridSearchOptions(Dest).FFromStart:=FFromStart;
-    TRxDBGridSearchOptions(Dest).FHilightSearch:=FHilightSearch;
-    TRxDBGridSearchOptions(Dest).FHilightColor:=FHilightColor;
+    TRxDBGridSearchOptions(Dest).FQuickSearchOptions := FQuickSearchOptions;
+    TRxDBGridSearchOptions(Dest).FFromStart := FFromStart;
+    TRxDBGridSearchOptions(Dest).FHilightSearch := FHilightSearch;
+    TRxDBGridSearchOptions(Dest).FHilightColor := FHilightColor;
   end
   else
     inherited AssignTo(Dest);
@@ -1832,11 +1883,11 @@ end;
 constructor TRxDBGridSearchOptions.Create(AOwner: TRxDBGrid);
 begin
   inherited Create;
-  FOwner:=AOwner;
-  FQuickSearchOptions:=[loPartialKey, loCaseInsensitive];
-  FFromStart:=false;
-  FHilightSearch:=true;
-  FHilightColor:=clYellow;
+  FOwner := AOwner;
+  FQuickSearchOptions := [loPartialKey, loCaseInsensitive];
+  FFromStart := False;
+  FHilightSearch := True;
+  FHilightColor := clYellow;
 end;
 
 { TRxDBGridColumnDefValues }
@@ -1845,7 +1896,7 @@ procedure TRxDBGridColumnDefValues.AssignTo(Dest: TPersistent);
 begin
   if Dest is TRxDBGridColumnDefValues then
   begin
-    TRxDBGridColumnDefValues(Dest).FBlobText:=FBlobText;
+    TRxDBGridColumnDefValues(Dest).FBlobText := FBlobText;
   end
   else
     inherited AssignTo(Dest);
@@ -1854,8 +1905,8 @@ end;
 constructor TRxDBGridColumnDefValues.Create(AOwner: TRxDBGrid);
 begin
   inherited Create;
-  FOwner:=AOwner;
-  FBlobText:=sBlobText;
+  FOwner := AOwner;
+  FBlobText := sBlobText;
 end;
 
 destructor TRxDBGridColumnDefValues.Destroy;
@@ -1876,7 +1927,7 @@ begin
   Result := FFont;
 end;
 
-function TRxColumnFooterItem.IsFontStored: Boolean;
+function TRxColumnFooterItem.IsFontStored: boolean;
 begin
   Result := not FisDefaultFont;
 end;
@@ -1890,22 +1941,22 @@ end;
 
 procedure TRxColumnFooterItem.SetColor(AValue: TColor);
 begin
-  if FColor=AValue then Exit;
-  FColor:=AValue;
+  if FColor = AValue then Exit;
+  FColor := AValue;
   FOwner.ColumnChanged;
 end;
 
 procedure TRxColumnFooterItem.SetDisplayFormat(AValue: string);
 begin
-  if FDisplayFormat=AValue then Exit;
-  FDisplayFormat:=AValue;
+  if FDisplayFormat = AValue then Exit;
+  FDisplayFormat := AValue;
   FOwner.ColumnChanged;
 end;
 
 procedure TRxColumnFooterItem.SetFieldName(AValue: string);
 begin
-  if FFieldName=AValue then Exit;
-  FFieldName:=AValue;
+  if FFieldName = AValue then Exit;
+  FFieldName := AValue;
   FOwner.ColumnChanged;
 end;
 
@@ -1917,22 +1968,22 @@ end;
 
 procedure TRxColumnFooterItem.SetLayout(AValue: TTextLayout);
 begin
-  if FLayout=AValue then Exit;
-  FLayout:=AValue;
+  if FLayout = AValue then Exit;
+  FLayout := AValue;
   FOwner.ColumnChanged;
 end;
 
 procedure TRxColumnFooterItem.SetValue(AValue: string);
 begin
-  if FValue=AValue then Exit;
-  FValue:=AValue;
+  if FValue = AValue then Exit;
+  FValue := AValue;
   FOwner.ColumnChanged;
 end;
 
 procedure TRxColumnFooterItem.SetValueType(AValue: TFooterValueType);
 begin
-  if FValueType=AValue then Exit;
-  FValueType:=AValue;
+  if FValueType = AValue then Exit;
+  FValueType := AValue;
   FOwner.ColumnChanged;
 end;
 
@@ -1988,32 +2039,32 @@ begin
           if FValueType in [fvtSum, fvtAvg] then
             Result := ''
           else
-          if FTestValue = 0 then
-            Result := ''
-          else
-          if FDisplayFormat = '' then
-            Result := DateToStr(FTestValue)
-          else
-            Result := FormatDateTime(FDisplayFormat, FTestValue);
+            if FTestValue = 0 then
+              Result := ''
+            else
+              if FDisplayFormat = '' then
+                Result := DateToStr(FTestValue)
+              else
+                Result := FormatDateTime(FDisplayFormat, FTestValue);
         end
         else
-        if F.DataType in [ftSmallint, ftInteger, ftWord, ftLargeint] then
-        begin
-          if FDisplayFormat = '' then
-            Result := IntToStr(Round(FTestValue))
+          if F.DataType in [ftSmallint, ftInteger, ftWord, ftLargeint] then
+          begin
+            if FDisplayFormat = '' then
+              Result := IntToStr(Round(FTestValue))
+            else
+              Result := FormatFloat(FDisplayFormat, FTestValue);
+          end
           else
-            Result := FormatFloat(FDisplayFormat, FTestValue);
-        end
-        else
-        begin
-          if FDisplayFormat <> '' then
-            Result := FormatFloat(FDisplayFormat, FTestValue)
-          else
-          if F.DataType = ftCurrency then
-            Result := FloatToStrF(FTestValue, ffCurrency, 12, 2)
-          else
-            Result := FloatToStr(FTestValue);
-        end;
+          begin
+            if FDisplayFormat <> '' then
+              Result := FormatFloat(FDisplayFormat, FTestValue)
+            else
+              if F.DataType = ftCurrency then
+                Result := FloatToStrF(FTestValue, ffCurrency, 12, 2)
+              else
+                Result := FloatToStr(FTestValue);
+          end;
       end
       else
         Result := '';
@@ -2030,10 +2081,11 @@ var
   F: TField;
 begin
   FTestValue := 0;
-  FCountRec:=0;
+  FCountRec := 0;
 
-  if (ValueType in [fvtMin, fvtMax]) and (TRxDBGrid(
-    FOwner.Grid).DataSource.DataSet.RecordCount <> 0) and (FFieldName<>'') then
+  if (ValueType in [fvtMin, fvtMax]) and
+    (TRxDBGrid(FOwner.Grid).DataSource.DataSet.RecordCount <> 0) and
+    (FFieldName <> '') then
   begin
     F := TRxDBGrid(FOwner.Grid).DataSource.DataSet.FieldByName(FFieldName);
     if (Assigned(F)) and not (F.IsNull) then
@@ -2048,7 +2100,7 @@ procedure TRxColumnFooterItem.UpdateTestValue;
 var
   F: TField;
 begin
-  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName<>'') then
+  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName <> '') then
   begin
     F := TRxDBGrid(FOwner.Grid).DataSource.DataSet.FindField(FFieldName);
     if Assigned(F) then
@@ -2078,17 +2130,17 @@ var
   F: TField;
 begin
   Result := True;
-  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName<>'') then
+  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName <> '') then
   begin
     F := TRxDBGrid(FOwner.Grid).DataSource.DataSet.FieldByName(FFieldName);
     if (Assigned(F)) and not (F.IsNull) then
       if F.DataType in [ftDate, ftTime, ftDateTime, ftTimeStamp] then
         Result := not ((FValueType in [fvtMax, fvtMin]) and (FTestValue = F.AsDateTime))
       else
-      if FValueType in [fvtMax, fvtMin] then
-        Result := (FTestValue <> F.AsFloat)
-      else
-        FTestValue := FTestValue - F.AsFloat;
+        if FValueType in [fvtMax, fvtMin] then
+          Result := (FTestValue <> F.AsFloat)
+        else
+          FTestValue := FTestValue - F.AsFloat;
   end;
 end;
 
@@ -2097,7 +2149,7 @@ var
   F: TField;
 begin
   Result := True;
-  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName<>'') then
+  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName <> '') then
   begin
     F := TRxDBGrid(FOwner.Grid).DataSource.DataSet.FieldByName(FFieldName);
     if Assigned(F) then
@@ -2113,45 +2165,45 @@ begin
               end;
           end
           else
-          if (F.OldValue <> null) and (FTestValue = TDateTime(F.OldValue)) then
-            Result := False
-          else
+            if (F.OldValue <> null) and (FTestValue = TDateTime(F.OldValue)) then
+              Result := False
+            else
+              if not F.IsNull then
+                case FValueType of
+                  fvtMax: FTestValue := Max(FTestValue, F.AsDateTime);
+                  fvtMin: FTestValue := Min(FTestValue, F.AsDateTime);
+                end;
+      end
+      else
+        if F.DataSet.State = dsinsert then
+        begin
           if not F.IsNull then
             case FValueType of
-              fvtMax: FTestValue := Max(FTestValue, F.AsDateTime);
-              fvtMin: FTestValue := Min(FTestValue, F.AsDateTime);
+              fvtSum: FTestValue := FTestValue + F.AsFloat;
+              fvtMax: FTestValue := Max(FTestValue, F.AsFloat);
+              fvtMin: FTestValue := Min(FTestValue, F.AsFloat);
             end;
-      end
-      else
-      if F.DataSet.State = dsinsert then
-      begin
-        if not F.IsNull then
-          case FValueType of
-            fvtSum: FTestValue := FTestValue + F.AsFloat;
-            fvtMax: FTestValue := Max(FTestValue, F.AsFloat);
-            fvtMin: FTestValue := Min(FTestValue, F.AsFloat);
-          end;
-      end
-      else
-      if (FValueType in [fvtMax, fvtMin]) and (F.OldValue <> null) and
-        (FTestValue = Float(F.OldValue)) then
-        Result := False
-      else
-        case FValueType of
-          fvtSum:
-          begin
-            if not F.IsNull then
-            begin
-              if F.OldValue <> null then
-                FTestValue := FTestValue - Float(F.OldValue);
-              FTestValue := FTestValue + F.AsFloat;
+        end
+        else
+          if (FValueType in [fvtMax, fvtMin]) and (F.OldValue <> null) and
+            (FTestValue = Float(F.OldValue)) then
+            Result := False
+          else
+            case FValueType of
+              fvtSum:
+              begin
+                if not F.IsNull then
+                begin
+                  if F.OldValue <> null then
+                    FTestValue := FTestValue - Float(F.OldValue);
+                  FTestValue := FTestValue + F.AsFloat;
+                end;
+              end;
+              fvtMax: if not F.IsNull then
+                  FTestValue := Max(FTestValue, F.AsFloat);
+              fvtMin: if not F.IsNull then
+                  FTestValue := Min(FTestValue, F.AsFloat);
             end;
-          end;
-          fvtMax: if not F.IsNull then
-              FTestValue := Max(FTestValue, F.AsFloat);
-          fvtMin: if not F.IsNull then
-              FTestValue := Min(FTestValue, F.AsFloat);
-        end;
   end;
 end;
 
@@ -2160,7 +2212,7 @@ var
   F: TField;
 begin
   Result := True;
-  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName<>'') then
+  if (ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and (FFieldName <> '') then
   begin
     F := TRxDBGrid(FOwner.Grid).DataSource.DataSet.FieldByName(FFieldName);
     if Assigned(F) then
@@ -2172,48 +2224,49 @@ begin
           if not (F.IsNull) and (FTestValue = F.AsDateTime) then
             Result := False
           else
-          if (F.DataSet.RecordCount <> 0) and (F.OldValue <> null) then
-          begin
-            case FValueType of
-              fvtMax: FTestValue := Max(FTestValue, TDateTime(F.OldValue));
-              fvtMin: FTestValue := Min(FTestValue, TDateTime(F.OldValue));
+            if (F.DataSet.RecordCount <> 0) and (F.OldValue <> null) then
+            begin
+              case FValueType of
+                fvtMax: FTestValue := Max(FTestValue, TDateTime(F.OldValue));
+                fvtMin: FTestValue := Min(FTestValue, TDateTime(F.OldValue));
+              end;
             end;
-          end;
         end;
       end
       else
-      if (FValueType in [fvtMax, fvtMin]) and not (F.IsNull) and (FTestValue = F.AsFloat) then
-        Result := False
-      else
-      begin
-        case FValueType of
-          fvtSum:
-            if F.DataSet.RecordCount = 0 then
-            begin
+        if (FValueType in [fvtMax, fvtMin]) and not (F.IsNull) and
+          (FTestValue = F.AsFloat) then
+          Result := False
+        else
+        begin
+          case FValueType of
+            fvtSum:
+              if F.DataSet.RecordCount = 0 then
+              begin
 {              if not F.IsNull then
                 FTestValue := FTestValue - F.AsFloat;}
-              { TODO -oalexs : need rewrite this code - where difficult! }
-            end
-            else
-            begin
-              if F.OldValue <> null then
-                FTestValue := FTestValue + Float(F.OldValue);
-              if not F.IsNull then
-                FTestValue := FTestValue - F.AsFloat;
-            end;
-          fvtMax:
-            if (F.DataSet.RecordCount <> 0) and (F.OldValue <> null) then
-              FTestValue := Max(FTestValue, Float(F.OldValue));
-          fvtMin:
-            if (F.DataSet.RecordCount <> 0) and (F.OldValue <> null) then
-              FTestValue := Min(FTestValue, Float(F.OldValue));
+                { TODO -oalexs : need rewrite this code - where difficult! }
+              end
+              else
+              begin
+                if F.OldValue <> null then
+                  FTestValue := FTestValue + Float(F.OldValue);
+                if not F.IsNull then
+                  FTestValue := FTestValue - F.AsFloat;
+              end;
+            fvtMax:
+              if (F.DataSet.RecordCount <> 0) and (F.OldValue <> null) then
+                FTestValue := Max(FTestValue, Float(F.OldValue));
+            fvtMin:
+              if (F.DataSet.RecordCount <> 0) and (F.OldValue <> null) then
+                FTestValue := Min(FTestValue, Float(F.OldValue));
+          end;
         end;
-      end;
     end;
   end;
 end;
 
-procedure TRxColumnFooterItem.UpdateTestValueFromVar(AValue: Variant);
+procedure TRxColumnFooterItem.UpdateTestValueFromVar(AValue: variant);
 begin
   if FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin] then
   begin
@@ -2247,7 +2300,7 @@ begin
 
   FTestValue := 0;
   FLayout := tlCenter;
-  FColor:=clNone;
+  FColor := clNone;
 
   FFont := TFont.Create;
   FillDefaultFont;
@@ -2282,7 +2335,7 @@ var
 begin
   if not Assigned(FOwner) then exit;
   AGrid := FOwner.Grid;
-  if (AGrid<>nil) then
+  if (AGrid <> nil) then
   begin
     FFont.Assign(AGrid.Font);
     FIsDefaultFont := True;
@@ -2314,35 +2367,35 @@ end;
 
 function TRxColumnFooterItems.GetEnumerator: TRxColumnFooterItemsEnumerator;
 begin
-  Result:=TRxColumnFooterItemsEnumerator.Create(Self);
+  Result := TRxColumnFooterItemsEnumerator.Create(Self);
 end;
 
 { TRxDBGridAbstractTools }
 
 procedure TRxDBGridAbstractTools.SetRxDBGrid(AValue: TRxDBGrid);
 begin
-  if FRxDBGrid=AValue then Exit;
+  if FRxDBGrid = AValue then Exit;
   if Assigned(FRxDBGrid) then
     FRxDBGrid.RemoveTools(Self);
-  FRxDBGrid:=AValue;
+  FRxDBGrid := AValue;
   if Assigned(FRxDBGrid) then
     FRxDBGrid.AddTools(Self);
 end;
 
 function TRxDBGridAbstractTools.DoExecTools: boolean;
 begin
-  Result:=false;
+  Result := False;
 end;
 
 function TRxDBGridAbstractTools.DoSetupTools: boolean;
 begin
-  Result:=true;
+  Result := True;
 end;
 
 function TRxDBGridAbstractTools.MouseDown(Button: TMouseButton;
   Shift: TShiftState; X, Y: integer): boolean;
 begin
-  Result:=false;
+  Result := False;
 end;
 
 procedure TRxDBGridAbstractTools.Notification(AComponent: TComponent;
@@ -2360,18 +2413,18 @@ end;
 
 procedure TRxDBGridAbstractTools.SetEnabled(AValue: boolean);
 begin
-  if FEnabled=AValue then Exit;
-  FEnabled:=AValue;
+  if FEnabled = AValue then Exit;
+  FEnabled := AValue;
   FRxDBGrid.UpdateToolsState(Self);
 end;
 
 constructor TRxDBGridAbstractTools.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
-  FToolsEvents:=[];
-  FCaption:=Name;
-  FShowSetupForm:=false;
-  FEnabled:=true;
+  FToolsEvents := [];
+  FCaption := Name;
+  FShowSetupForm := False;
+  FEnabled := True;
 end;
 
 destructor TRxDBGridAbstractTools.Destroy;
@@ -2382,15 +2435,15 @@ end;
 
 function TRxDBGridAbstractTools.Execute: boolean;
 begin
-  Result:=true;
+  Result := True;
   if Assigned(FOnBeforeExecute) then
     FOnBeforeExecute(Self);
 
   if FShowSetupForm then
-    Result:=DoSetupTools;
+    Result := DoSetupTools;
 
   if Result then
-    Result:=DoExecTools;
+    Result := DoExecTools;
 
   if Assigned(FOnAfterExecute) then
     FOnAfterExecute(Self);
@@ -2401,147 +2454,148 @@ end;
 
 procedure TRxDBGridCollumnConstraints.SetMaxWidth(AValue: integer);
 begin
-  if FMaxWidth=AValue then Exit;
-  if (FMinWidth<>0) and (AValue<>0) and (AValue < FMinWidth) then exit;
-  FMaxWidth:=AValue;
+  if FMaxWidth = AValue then Exit;
+  if (FMinWidth <> 0) and (AValue <> 0) and (AValue < FMinWidth) then exit;
+  FMaxWidth := AValue;
 end;
 
 procedure TRxDBGridCollumnConstraints.SetMinWidth(AValue: integer);
 begin
-  if FMinWidth=AValue then Exit;
-  if (FMaxWidth<>0) and (AValue<>0) and (AValue > FMaxWidth) then exit;
-  FMinWidth:=AValue;
+  if FMinWidth = AValue then Exit;
+  if (FMaxWidth <> 0) and (AValue <> 0) and (AValue > FMaxWidth) then exit;
+  FMinWidth := AValue;
 end;
 
 procedure TRxDBGridCollumnConstraints.AssignTo(Dest: TPersistent);
 begin
   if Dest is TRxDBGridCollumnConstraints then
   begin
-    TRxDBGridCollumnConstraints(Dest).FMinWidth:=FMinWidth;
-    TRxDBGridCollumnConstraints(Dest).FMaxWidth:=FMaxWidth;
+    TRxDBGridCollumnConstraints(Dest).FMinWidth := FMinWidth;
+    TRxDBGridCollumnConstraints(Dest).FMaxWidth := FMaxWidth;
   end
   else
-  inherited AssignTo(Dest);
+    inherited AssignTo(Dest);
 end;
 
 constructor TRxDBGridCollumnConstraints.Create(AOwner: TPersistent);
 begin
   inherited Create;
-  FOwner:=AOwner;
+  FOwner := AOwner;
 end;
 
 { TRxDbGridColumnsSortList }
 
-function TRxDbGridColumnsSortList.GetCollumn(Index: Integer): TRxColumn;
+function TRxDbGridColumnsSortList.GetCollumn(Index: integer): TRxColumn;
 begin
-  Result:=TRxColumn(Items[Index]);
+  Result := TRxColumn(Items[Index]);
 end;
 
 { TRxColumnEditButton }
 
 function TRxColumnEditButton.GetGlyph: TBitmap;
 begin
-  Result:=FButton.Glyph;
+  Result := FButton.Glyph;
 end;
 
-function TRxColumnEditButton.GetHint: String;
+function TRxColumnEditButton.GetHint: string;
 begin
-  Result:=FButton.Hint;
+  Result := FButton.Hint;
 end;
 
-function TRxColumnEditButton.GetNumGlyphs: Integer;
+function TRxColumnEditButton.GetNumGlyphs: integer;
 begin
-  Result:=FButton.NumGlyphs;
+  Result := FButton.NumGlyphs;
 end;
 
 function TRxColumnEditButton.GetOnButtonClick: TNotifyEvent;
 begin
-  Result:=FButton.OnClick;
+  Result := FButton.OnClick;
 end;
 
-function TRxColumnEditButton.GetWidth: Integer;
+function TRxColumnEditButton.GetWidth: integer;
 begin
-  Result:=FButton.Width;
+  Result := FButton.Width;
 end;
 
 procedure TRxColumnEditButton.SetGlyph(AValue: TBitmap);
 begin
   FButton.Glyph.Assign(AValue);
-  if not (csLoading in TRxDBGrid(TRxColumnEditButtons(Collection).Owner).ComponentState) then
-    FStyle:=ebsGlyphRx;
+  if not (csLoading in TRxDBGrid(TRxColumnEditButtons(
+    Collection).Owner).ComponentState) then
+    FStyle := ebsGlyphRx;
 end;
 
-procedure TRxColumnEditButton.SetHint(AValue: String);
+procedure TRxColumnEditButton.SetHint(AValue: string);
 begin
-  FButton.Hint:=AValue;
-  FSpinBtn.Hint:=AValue;
+  FButton.Hint := AValue;
+  FSpinBtn.Hint := AValue;
 end;
 
-procedure TRxColumnEditButton.SetNumGlyphs(AValue: Integer);
+procedure TRxColumnEditButton.SetNumGlyphs(AValue: integer);
 begin
-  FButton.NumGlyphs:=AValue;
+  FButton.NumGlyphs := AValue;
 end;
 
 procedure TRxColumnEditButton.SetOnButtonClick(AValue: TNotifyEvent);
 begin
-  FButton.OnClick:=AValue;
+  FButton.OnClick := AValue;
 end;
 
 procedure TRxColumnEditButton.SetStyle(AValue: TRxColumnEditButtonStyle);
 begin
-  if FStyle=AValue then Exit;
-  FStyle:=AValue;
+  if FStyle = AValue then Exit;
+  FStyle := AValue;
   case FStyle of
-    ebsDropDownRx:FButton.Glyph.Assign(FMarkerDown);
-    ebsEllipsisRx:FButton.Glyph.Assign(FEllipsisRxBMP);
-    ebsGlyphRx:FButton.Glyph.Assign(FGlyphRxBMP);
-    ebsUpDownRx:FButton.Glyph.Assign(FUpDownRxBMP);
-    ebsPlusRx:FButton.Glyph.Assign(FPlusRxBMP);
-    ebsMinusRx:FButton.Glyph.Assign(FMinusRxBMP);
-  else
-    FButton.Glyph.Assign(nil);
+    ebsDropDownRx: FButton.Glyph.Assign(FMarkerDown);
+    ebsEllipsisRx: FButton.Glyph.Assign(FEllipsisRxBMP);
+    ebsGlyphRx: FButton.Glyph.Assign(FGlyphRxBMP);
+    ebsUpDownRx: FButton.Glyph.Assign(FUpDownRxBMP);
+    ebsPlusRx: FButton.Glyph.Assign(FPlusRxBMP);
+    ebsMinusRx: FButton.Glyph.Assign(FMinusRxBMP);
+    else
+      FButton.Glyph.Assign(nil);
   end;
 end;
 
-procedure TRxColumnEditButton.SetVisible(AValue: Boolean);
+procedure TRxColumnEditButton.SetVisible(AValue: boolean);
 begin
-  FVisible:=AValue;
+  FVisible := AValue;
   if AValue then
   begin
     if Style = ebsUpDownRx then
     begin
-      FSpinBtn.Visible:=AValue;
-      FButton.Visible:=false;
+      FSpinBtn.Visible := AValue;
+      FButton.Visible := False;
     end
     else
     begin
-      FButton.Visible:=AValue;
-      FSpinBtn.Visible:=false;
+      FButton.Visible := AValue;
+      FSpinBtn.Visible := False;
     end;
   end
   else
   begin
-    FButton.Visible:=AValue;
-    FSpinBtn.Visible:=AValue;
+    FButton.Visible := AValue;
+    FSpinBtn.Visible := AValue;
   end;
 end;
 
-procedure TRxColumnEditButton.SetWidth(AValue: Integer);
+procedure TRxColumnEditButton.SetWidth(AValue: integer);
 begin
-  FButton.Width:=AValue;
-  FSpinBtn.Width:=AValue;
+  FButton.Width := AValue;
+  FSpinBtn.Width := AValue;
 end;
 
 procedure TRxColumnEditButton.DoBottomClick(Sender: TObject);
 var
-  F:TField;
-  Col:TRxColumn;
+  F: TField;
+  Col: TRxColumn;
 
   msg: TGridMessage;
-  V: Boolean;
+  V: boolean;
 begin
-  Col:=TRxColumnEditButtons(Collection).FOwner as TRxColumn;
-  F:=Col.Field;
+  Col := TRxColumnEditButtons(Collection).FOwner as TRxColumn;
+  F := Col.Field;
 
   if Assigned(F) and (F.DataType in NumericDataTypes) then
   begin
@@ -2549,22 +2603,24 @@ begin
       F.DataSet.Edit;
 
     if F.IsNull then
-      F.Value:=0;
+      F.Value := 0;
 
     if F is TLongintField then
-      V:=((TLongintField(F).MinValue <> 0) or (TLongintField(F).MaxValue <> 0)) and (TLongintField(F).MinValue < F.Value)
+      V := ((TLongintField(F).MinValue <> 0) or (TLongintField(F).MaxValue <> 0)) and
+        (TLongintField(F).MinValue < F.Value)
     else
-    if F is TFloatField then
-      V:=((TFloatField(F).MinValue <> 0) or (TFloatField(F).MaxValue <> 0)) and (TFloatField(F).MinValue < F.Value)
-    else
-      V:=true;
+      if F is TFloatField then
+        V := ((TFloatField(F).MinValue <> 0) or (TFloatField(F).MaxValue <> 0)) and
+          (TFloatField(F).MinValue < F.Value)
+      else
+        V := True;
 
     if V then
-      F.Value:=F.Value - 1;
+      F.Value := F.Value - 1;
 
-    Msg.LclMsg.msg:=GM_SETVALUE;
-    Msg.Grid:=Col.Grid;
-    Msg.Value:=F.DisplayText;
+    Msg.LclMsg.msg := GM_SETVALUE;
+    Msg.Grid := Col.Grid;
+    Msg.Value := F.DisplayText;
     TRxDBGrid(Col.Grid).Editor.Dispatch(Msg);
 
   end;
@@ -2572,14 +2628,14 @@ end;
 
 procedure TRxColumnEditButton.DoTopClick(Sender: TObject);
 var
-  F:TField;
-  Col:TRxColumn;
+  F: TField;
+  Col: TRxColumn;
 
   msg: TGridMessage;
-  V: Boolean;
+  V: boolean;
 begin
-  Col:=TRxColumnEditButtons(Collection).FOwner as TRxColumn;
-  F:=Col.Field;
+  Col := TRxColumnEditButtons(Collection).FOwner as TRxColumn;
+  F := Col.Field;
 
   if Assigned(F) and (F.DataType in NumericDataTypes) then
   begin
@@ -2587,46 +2643,48 @@ begin
       F.DataSet.Edit;
 
     if F.IsNull then
-      F.Value:=0;
+      F.Value := 0;
 
     if F is TLongintField then
-      V:=((TLongintField(F).MinValue <> 0) or (TLongintField(F).MaxValue <> 0)) and (TLongintField(F).MaxValue > F.Value)
+      V := ((TLongintField(F).MinValue <> 0) or (TLongintField(F).MaxValue <> 0)) and
+        (TLongintField(F).MaxValue > F.Value)
     else
-    if F is TFloatField then
-      V:=((TFloatField(F).MinValue <> 0) or (TFloatField(F).MaxValue <> 0)) and (TFloatField(F).MaxValue > F.Value)
-    else
-      V:=true;
+      if F is TFloatField then
+        V := ((TFloatField(F).MinValue <> 0) or (TFloatField(F).MaxValue <> 0)) and
+          (TFloatField(F).MaxValue > F.Value)
+      else
+        V := True;
 
     if V then
-      F.Value:=F.Value + 1;
+      F.Value := F.Value + 1;
 
-    Msg.LclMsg.msg:=GM_SETVALUE;
-    Msg.Grid:=Col.Grid;
-    Msg.Value:=F.DisplayText;
+    Msg.LclMsg.msg := GM_SETVALUE;
+    Msg.Grid := Col.Grid;
+    Msg.Value := F.DisplayText;
     TRxDBGrid(Col.Grid).Editor.Dispatch(Msg);
   end;
 end;
 
 function TRxColumnEditButton.GetDisplayName: string;
 begin
-  if Hint<>'' then
-    Result:=Hint
+  if Hint <> '' then
+    Result := Hint
   else
-    Result:='TRxColumnEditButton';
+    Result := 'TRxColumnEditButton';
 end;
 
 constructor TRxColumnEditButton.Create(ACollection: TCollection);
 begin
   inherited Create(ACollection);
-  FButton:=TSpeedButton.Create(nil);
+  FButton := TSpeedButton.Create(nil);
 
-  FSpinBtn:=TRxSpinButton.Create(nil);
-  FSpinBtn.OnBottomClick:=@DoBottomClick;
-  FSpinBtn.OnTopClick:=@DoTopClick;
+  FSpinBtn := TRxSpinButton.Create(nil);
+  FSpinBtn.OnBottomClick := @DoBottomClick;
+  FSpinBtn.OnTopClick := @DoTopClick;
 
-  FVisible:=true;
-  FEnabled:=true;
-  Width:=15;
+  FVisible := True;
+  FEnabled := True;
+  Width := 15;
 end;
 
 destructor TRxColumnEditButton.Destroy;
@@ -2640,11 +2698,10 @@ end;
 
 function TRxColumnEditButtons.GetItem(Index: integer): TRxColumnEditButton;
 begin
-  Result:= TRxColumnEditButton(inherited Items[Index]);
+  Result := TRxColumnEditButton(inherited Items[Index]);
 end;
 
-procedure TRxColumnEditButtons.SetItem(Index: integer;
-  AValue: TRxColumnEditButton);
+procedure TRxColumnEditButtons.SetItem(Index: integer; AValue: TRxColumnEditButton);
 begin
   inherited SetItem(Index, AValue);
 end;
@@ -2657,7 +2714,7 @@ end;
 constructor TRxColumnEditButtons.Create(AOwner: TPersistent);
 begin
   inherited Create(TRxColumnEditButton);
-  FOwner:=AOwner;
+  FOwner := AOwner;
 end;
 
 function TRxColumnEditButtons.Add: TRxColumnEditButton;
@@ -2669,14 +2726,14 @@ end;
 
 procedure TRxDBGridFooterOptions.SetActive(AValue: boolean);
 begin
-  if FActive=AValue then Exit;
-  FActive:=AValue;
+  if FActive = AValue then Exit;
+  FActive := AValue;
 
   { TODO : Устаревший код - в следующей версии необходимо убрать }
   if FActive then
-    FOwner.FOptionsRx:=FOwner.FOptionsRx + [rdgFooterRows]
+    FOwner.FOptionsRx := FOwner.FOptionsRx + [rdgFooterRows]
   else
-    FOwner.FOptionsRx:=FOwner.FOptionsRx - [rdgFooterRows];
+    FOwner.FOptionsRx := FOwner.FOptionsRx - [rdgFooterRows];
 
   if FActive then
     FOwner.CalcStatTotals;
@@ -2685,41 +2742,41 @@ end;
 
 procedure TRxDBGridFooterOptions.SetColor(AValue: TColor);
 begin
-  if FColor=AValue then Exit;
-  FColor:=AValue;
+  if FColor = AValue then Exit;
+  FColor := AValue;
   FOwner.Invalidate;
 end;
 
 procedure TRxDBGridFooterOptions.SetDrawFullLine(AValue: boolean);
 begin
-  if FDrawFullLine=AValue then Exit;
-  FDrawFullLine:=AValue;
+  if FDrawFullLine = AValue then Exit;
+  FDrawFullLine := AValue;
   FOwner.VisualChange;
 end;
 
 procedure TRxDBGridFooterOptions.SetRowCount(AValue: integer);
 begin
-  if FRowCount=AValue then Exit;
-  FRowCount:=AValue;
+  if FRowCount = AValue then Exit;
+  FRowCount := AValue;
   FOwner.VisualChange;
 end;
 
 procedure TRxDBGridFooterOptions.SetStyle(AValue: TTitleStyle);
 begin
-  if FStyle=AValue then Exit;
-  FStyle:=AValue;
+  if FStyle = AValue then Exit;
+  FStyle := AValue;
 end;
 
 procedure TRxDBGridFooterOptions.AssignTo(Dest: TPersistent);
 var
-  FO:TRxDBGridFooterOptions absolute Dest;
+  FO: TRxDBGridFooterOptions absolute Dest;
 begin
   if Dest is TRxDBGridFooterOptions then
   begin
-    FO.Active:=Active;
-    FO.Color:=Color;
-    FO.RowCount:=RowCount;
-    FO.Style:=Style;
+    FO.Active := Active;
+    FO.Color := Color;
+    FO.RowCount := RowCount;
+    FO.Style := Style;
   end
   else
     inherited AssignTo(Dest);
@@ -2728,7 +2785,7 @@ end;
 constructor TRxDBGridFooterOptions.Create(Owner: TRxDBGrid);
 begin
   inherited Create;
-  FOwner:=Owner;
+  FOwner := Owner;
 
   FColor := clWindow;
   FRowCount := 0;
@@ -2744,15 +2801,15 @@ end;
 { TRxDBGridDateEditor }
 procedure TRxDBGridDateEditor.EditChange;
 var
-  D:TDateTime;
+  D: TDateTime;
 begin
   inherited EditChange;
-  if (FGrid<>nil) and Visible then
+  if (FGrid <> nil) and Visible then
   begin
     if TryStrToDate(Text, D) then
       FGrid.EditorTextChanged(FCol, FRow, Text)
     else
-      FGrid.EditorTextChanged(FCol, FRow, '')
+      FGrid.EditorTextChanged(FCol, FRow, '');
   end;
 end;
 
@@ -2834,15 +2891,15 @@ end;
 
 procedure TRxDBGridDateEditor.WndProc(var TheMessage: TLMessage);
 begin
-  if FGrid<>nil then
+  if FGrid <> nil then
     case TheMessage.Msg of
       LM_CLEAR,
       LM_CUT,
       LM_PASTE:
-        begin
-          if FGrid.EditorIsReadOnly then
-            exit;
-        end;
+      begin
+        if FGrid.EditorIsReadOnly then
+          exit;
+      end;
     end;
 
   if TheMessage.msg = LM_KILLFOCUS then
@@ -2872,10 +2929,10 @@ begin
   if FGrid.SelectedField.DataType in [ftDate, ftDateTime] then
     Self.Date := FGrid.SelectedField.AsDateTime
   else
-  if TryStrToDateTime(FGrid.SelectedField.AsString, D) then
-    Self.Date := D
-  else
-    Self.Clear;
+    if TryStrToDateTime(FGrid.SelectedField.AsString, D) then
+      Self.Date := D
+    else
+      Self.Clear;
 end;
 
 procedure TRxDBGridDateEditor.msg_GetValue(var Msg: TGridMessage);
@@ -2897,8 +2954,8 @@ end;
 constructor TRxDBGridDateEditor.Create(Aowner: TComponent);
 begin
   inherited Create(Aowner);
-  AutoSize := false;
-  Spacing:=0;
+  AutoSize := False;
+  Spacing := 0;
   UpdateMask;
 end;
 
@@ -2948,9 +3005,10 @@ procedure TRxDBGridLookupComboEditor.KeyDown(var Key: word; Shift: TShiftState);
     else
       Result := False;
   end;
+
   procedure CheckEditingKey;
   begin
-    if (FGrid=nil) or FGrid.EditorIsReadOnly then
+    if (FGrid = nil) or FGrid.EditorIsReadOnly then
       Key := 0;
   end;
 
@@ -2962,7 +3020,7 @@ begin
       if (not PopupVisible) and (not (ssAlt in Shift)) then
       begin
         doGridKeyDown;
-        Key:=0;
+        Key := 0;
         exit;
       end;
     VK_LEFT, VK_RIGHT:
@@ -3018,12 +3076,12 @@ end;
 procedure TRxDBGridLookupComboEditor.msg_GetValue(var Msg: TGridMessage);
 var
   sText: string;
-  F:TField;
+  F: TField;
 begin
   if Assigned(FGrid.SelectedField) and Assigned(FLDS.DataSet) then
   begin
-//    F:=FLDS.DataSet.FieldByName(LookupDisplay);
-    F:=FLDS.DataSet.FieldByName(LookupField);
+    //    F:=FLDS.DataSet.FieldByName(LookupDisplay);
+    F := FLDS.DataSet.FieldByName(LookupField);
     if Assigned(F) then
     begin
       sText := F.DisplayText;
@@ -3039,23 +3097,26 @@ begin
 end;
 
 procedure TRxDBGridLookupComboEditor.OnInternalClosePopup(AResult: boolean);
+
   procedure CheckEditingKey;
   begin
-    if (FGrid=nil) or FGrid.EditorIsReadOnly then
-//      Key := 0;
+    if (FGrid = nil) or FGrid.EditorIsReadOnly then;
+      //      Key := 0;
   end;
+
 var
-  F:TField;
+  F: TField;
 begin
   inherited OnInternalClosePopup(AResult);
   CheckEditingKey;
   if (AResult) and Assigned(FGrid.SelectedField) and Assigned(FLDS.DataSet) then
   begin
     //F:=FLDS.DataSet.FieldByName(LookupDisplay);
-    F:=FLDS.DataSet.FieldByName(LookupField);
+    F := FLDS.DataSet.FieldByName(LookupField);
     if Assigned(F) then
     begin
-      if (FGrid<>nil) and Visible then begin
+      if (FGrid <> nil) and Visible then
+      begin
         FGrid.SetEditText(FCol, FRow, F.DisplayText);
       end;
     end;
@@ -3067,8 +3128,8 @@ begin
   inherited Create(AOwner);
   FLDS := TDataSource.Create(nil);
   LookupSource := FLDS;
-  AutoSize := false;
-  Style:=rxcsDropDownList;
+  AutoSize := False;
+  Style := rxcsDropDownList;
 end;
 
 destructor TRxDBGridLookupComboEditor.Destroy;
@@ -3087,26 +3148,35 @@ begin
     Options := Options - [dgHeaderPushedLook];
 end;
 
-procedure TRxDBGrid.GetScrollbarParams(out aRange, aPage, aPos: Integer);
+procedure TRxDBGrid.GetScrollbarParams(out aRange, aPage, aPos: integer);
 begin
-  if (DataSource.DataSet<>nil) and DataSource.DataSet.Active then begin
-    if DataSource.DataSet.IsSequenced then begin
+  if (DataSource.DataSet <> nil) and DataSource.DataSet.Active then
+  begin
+    if DataSource.DataSet.IsSequenced then
+    begin
       aRange := DataSource.DataSet.RecordCount + VisibleRowCount - 1;
       aPage := VisibleRowCount;
-      if aPage<1 then aPage := 1;
-      if DataSource.DataSet.BOF then aPos := 0 else
-      if DataSource.DataSet.EOF then aPos := aRange
+      if aPage < 1 then aPage := 1;
+      if DataSource.DataSet.BOF then aPos := 0
       else
-        aPos := DataSource.DataSet.RecNo - 1; // RecNo is 1 based
-      if aPos<0 then aPos:=0;
-    end else begin
+        if DataSource.DataSet.EOF then aPos := aRange
+        else
+          aPos := DataSource.DataSet.RecNo - 1; // RecNo is 1 based
+      if aPos < 0 then aPos := 0;
+    end
+    else
+    begin
       aRange := 6;
       aPage := 2;
-      if DataSource.DataSet.EOF then aPos := 4 else
-      if DataSource.DataSet.BOF then aPos := 0
-      else aPos := 2;
+      if DataSource.DataSet.EOF then aPos := 4
+      else
+        if DataSource.DataSet.BOF then aPos := 0
+        else
+          aPos := 2;
     end;
-  end else begin
+  end
+  else
+  begin
     aRange := 0;
     aPage := 0;
     aPos := 0;
@@ -3154,12 +3224,12 @@ end;
 
 function TRxDBGrid.GetFooterColor: TColor;
 begin
-  Result:=FFooterOptions.FColor;
+  Result := FFooterOptions.FColor;
 end;
 
 function TRxDBGrid.GetFooterRowCount: integer;
 begin
-  Result:=FFooterOptions.RowCount;
+  Result := FFooterOptions.RowCount;
 end;
 
 function TRxDBGrid.GetDrawFullLine: boolean;
@@ -3186,12 +3256,12 @@ end;
 procedure TRxDBGrid.RemoveToolMenuItem(MenuAction: TNotifyEvent);
 var
   R: TMenuItem;
-  I: Integer;
+  I: integer;
 begin
   if not Assigned(MenuAction) then Exit;
-  for I:=F_PopupMenu.Items.Count-1 downto 0 do
+  for I := F_PopupMenu.Items.Count - 1 downto 0 do
   begin
-    R:=F_PopupMenu.Items[I];
+    R := F_PopupMenu.Items[I];
     if R.OnClick = MenuAction then
     begin
       F_PopupMenu.Items.Delete(i);
@@ -3224,17 +3294,17 @@ end;
 function TRxDBGrid.GetSortField: string;
 begin
   if FSortColumns.Count > 0 then
-    Result:=FSortColumns[0].GetSortFields
+    Result := FSortColumns[0].GetSortFields
   else
-    Result:='';
+    Result := '';
 end;
 
 function TRxDBGrid.GetSortOrder: TSortMarker;
 begin
   if FSortColumns.Count > 0 then
-    Result:=FSortColumns[0].SortOrder
+    Result := FSortColumns[0].SortOrder
   else
-    Result:=smNone;
+    Result := smNone;
 end;
 
 function TRxDBGrid.GetTitleButtons: boolean;
@@ -3249,13 +3319,13 @@ end;
 
 procedure TRxDBGrid.SelectedFontChanged(Sender: TObject);
 begin
-  FIsSelectedDefaultFont:=FSelectedFont.IsDefault;
+  FIsSelectedDefaultFont := FSelectedFont.IsDefault;
   VisualChange;
 end;
 
-function TRxDBGrid.IsSelectedFontStored: Boolean;
+function TRxDBGrid.IsSelectedFontStored: boolean;
 begin
-  Result:=not FIsSelectedDefaultFont
+  Result := not FIsSelectedDefaultFont;
 end;
 
 procedure TRxDBGrid.SetColumns(const AValue: TRxDbGridColumns);
@@ -3275,7 +3345,7 @@ end;
 
 procedure TRxDBGrid.SetFooterRowCount(const AValue: integer);
 begin
-  FFooterOptions.RowCount:=AValue;
+  FFooterOptions.RowCount := AValue;
 end;
 
 procedure TRxDBGrid.SetKeyStrokes(const AValue: TRxDBGridKeyStrokes);
@@ -3304,15 +3374,15 @@ begin
     LayoutChanged;
   end
   else
-  if rdgFilter in OldOpt then
-  begin
-    FFilterListEditor.Hide;
-    FFilterColDlgButton.Hide;
-    FFilterSimpleEdit.Hide;
-    LayoutChanged;
-  end;
+    if rdgFilter in OldOpt then
+    begin
+      FFilterListEditor.Hide;
+      FFilterColDlgButton.Hide;
+      FFilterSimpleEdit.Hide;
+      LayoutChanged;
+    end;
 
-  FFooterOptions.FActive:=rdgFooterRows in FOptionsRx;
+  FFooterOptions.FActive := rdgFooterRows in FOptionsRx;
 
   if (rdgWordWrap in OldOpt) and not (rdgWordWrap in FOptionsRx) then
     ResetRowHeght;
@@ -3344,10 +3414,11 @@ end;
 
 function TRxDBGrid.DataSetNotEmpty: boolean;
 begin
-  Result := Assigned(DataSource) and Assigned(DataSource.DataSet) and (not DataSource.DataSet.IsEmpty);
+  Result := Assigned(DataSource) and Assigned(DataSource.DataSet) and
+    (not DataSource.DataSet.IsEmpty);
 end;
 
-procedure TRxDBGrid.AdjustEditorBounds(NewCol, NewRow: Integer);
+procedure TRxDBGrid.AdjustEditorBounds(NewCol, NewRow: integer);
 begin
   inherited AdjustEditorBounds(NewCol, NewRow);
   if EditorMode then
@@ -3396,7 +3467,7 @@ var
   FWC: SizeInt;
 begin
   //FDefRowH:=GetDefaultRowHeight;
-  FDefRowH:=DefaultRowHeight;
+  FDefRowH := DefaultRowHeight;
 
   { TODO -oalexs : need rewrite code - split to 2 step:
 1. make links between column
@@ -3415,7 +3486,7 @@ begin
         if Assigned(rxTit) then
         begin
           if rxTit.Orientation in [toVertical270, toVertical90] then
-//            H := Max((tmpCanvas.TextWidth(Columns[i].Title.Caption) + tmpCanvas.TextWidth('W')*2) div DefaultRowHeight, H)
+          //            H := Max((tmpCanvas.TextWidth(Columns[i].Title.Caption) + tmpCanvas.TextWidth('W')*2) div DefaultRowHeight, H)
           else
           begin
             rxColNext := nil;
@@ -3426,11 +3497,11 @@ begin
               rxTitleNext := TRxColumnTitle(rxColNext.Title);
             end;
 
-//            W := Max(rxCol.Width - 6, 1);
+            //            W := Max(rxCol.Width - 6, 1);
             if rxTit.CaptionLinesCount > 0 then
             begin
-//              H2 := 0;
-//              H1 := 0;
+              //              H2 := 0;
+              //              H1 := 0;
               for j := 0 to rxTit.CaptionLinesCount - 1 do
               begin
                 MLRec1 := rxTit.CaptionLine(j);
@@ -3460,7 +3531,7 @@ begin
 
                 H1 := H1 + H2;}
               end;
-            end
+            end;
 {            else
             begin
               H1 := Max((tmpCanvas.TextWidth(rxTit.Caption) + 2) div W + 1, H);
@@ -3501,7 +3572,7 @@ begin
           if rxTit.CaptionLinesCount = 0 then
           begin
             H1 := Max((tmpCanvas.TextWidth(rxTit.Caption) + 2) div W + 1, H);
-            FWC:=WordCount(rxTit.Caption, [' ']);
+            FWC := WordCount(rxTit.Caption, [' ']);
             if H1 > FWC then H1 := FWC;
           end
           else
@@ -3551,12 +3622,12 @@ begin
 
     if rdgFilter in OptionsRx then
     begin
-      H:=FDefRowH;
-      if  Assigned(FFilterListEditor) then
-        H:=Max(H, FFilterListEditor.Height);
+      H := FDefRowH;
+      if Assigned(FFilterListEditor) then
+        H := Max(H, FFilterListEditor.Height);
 
       if Assigned(FFilterSimpleEdit) then
-        H:=Max(H, FFilterSimpleEdit.Height);
+        H := Max(H, FFilterSimpleEdit.Height);
 
       RowHeights[0] := RowHeights[0] + H;
     end;
@@ -3605,7 +3676,7 @@ begin
     Result.Top := bRect.Bottom - FFilterListEditor.Height
   else
     Result.Top := bRect.Bottom - DefaultRowHeight;
-//    Result.Top := bRect.Bottom - GetDefaultRowHeight;
+  //    Result.Top := bRect.Bottom - GetDefaultRowHeight;
 end;
 
 function TRxDBGrid.getTitleRect(bRect: TRect): TRect;
@@ -3614,8 +3685,8 @@ begin
   if Assigned(FFilterListEditor) then
     Result.Bottom := bRect.Bottom - FFilterListEditor.Height
   else
-    Result.Bottom := bRect.Bottom - DefaultRowHeight
-//    Result.Bottom := bRect.Bottom - GetDefaultRowHeight;
+    Result.Bottom := bRect.Bottom - DefaultRowHeight;
+  //    Result.Bottom := bRect.Bottom - GetDefaultRowHeight;
 end;
 
 procedure TRxDBGrid.OutCaptionCellText(aCol, aRow: integer; const aRect: TRect;
@@ -3670,27 +3741,27 @@ procedure TRxDBGrid.OutCaptionSortMarker(const aRect: TRect;
   ASortMarker: TSortMarker; ASortPosition: integer);
 var
   X, Y, W: integer;
-  S:string;
-  F:TFont;
+  S: string;
+  F: TFont;
 begin
   if (dgHeaderPushedLook in Options) then
   begin
-    if (ASortMarker <> smNone) and (ASortPosition>0) then
+    if (ASortMarker <> smNone) and (ASortPosition > 0) then
     begin
-      F:=TFont.Create;
+      F := TFont.Create;
       F.Assign(Font);
 
       if Font.Size = 0 then
-        Font.Size:=7
+        Font.Size := 7
       else
-        Font.Size:=Font.Size-2;
-      S:='('+IntToStr(ASortPosition)+')';
-      W:=Canvas.TextWidth(S) + 10;
+        Font.Size := Font.Size - 2;
+      S := '(' + IntToStr(ASortPosition) + ')';
+      W := Canvas.TextWidth(S) + 10;
     end
     else
     begin
-      W:=6;
-      F:=nil;
+      W := 6;
+      F := nil;
     end;
 
     if ASortMarker = smDown then
@@ -3700,16 +3771,16 @@ begin
       Canvas.Draw(X, Y, FMarkerDown);
     end
     else
-    if ASortMarker = smUp then
-    begin
-      X := aRect.Right - FMarkerUp.Width - W;
-      Y := Trunc((aRect.Top + aRect.Bottom - FMarkerUp.Height) / 2);
-      Canvas.Draw(X, Y, FMarkerUp);
-    end;
+      if ASortMarker = smUp then
+      begin
+        X := aRect.Right - FMarkerUp.Width - W;
+        Y := Trunc((aRect.Top + aRect.Bottom - FMarkerUp.Height) / 2);
+        Canvas.Draw(X, Y, FMarkerUp);
+      end;
 
     if Assigned(F) then
     begin
-      Canvas.TextOut( X + FMarkerDown.Width, Y,  S);
+      Canvas.TextOut(X + FMarkerDown.Width, Y, S);
       Font.Assign(F);
       FreeAndNil(F);
     end;
@@ -3819,7 +3890,6 @@ var
   i, ACount: integer;
   S, S1, ColumName: string;
   C: TRxColumn;
-
 begin
   S := Owner.Name + '.' + Name;
   ACount := FPropertyStorageLink.Storage.ReadInteger(S + sVersion, FVersion);
@@ -3838,12 +3908,14 @@ begin
         C := ColumnByCaption(ColumName);
         if Assigned(C) then
         begin
-{$IFDEF FIX_WIDTH_WIDE_STRING96}
+          {$IFDEF FIX_WIDTH_WIDE_STRING96}
           if Screen.PixelsPerInch = 96 then
-{$ENDIF}
-          C.Width := FPropertyStorageLink.Storage.ReadInteger(S1 + sWidth, C.Width);
-          C.Visible := FPropertyStorageLink.Storage.ReadInteger(S1 + sVisible, Ord(C.Visible)) = 1;
-          C.Index := Min(FPropertyStorageLink.Storage.ReadInteger(S1 + sIndex, C.Index), Columns.Count - 1);
+            {$ENDIF}
+            C.Width := FPropertyStorageLink.Storage.ReadInteger(S1 + sWidth, C.Width);
+          C.Visible := FPropertyStorageLink.Storage.ReadInteger(S1 +
+            sVisible, Ord(C.Visible)) = 1;
+          C.Index := Min(FPropertyStorageLink.Storage.ReadInteger(S1 + sIndex, C.Index),
+            Columns.Count - 1);
         end;
       end;
     end;
@@ -3879,94 +3951,95 @@ begin
       DataSource.DataSet.BeforeDelete := F_EventOnBeforeDelete;
 
     if DataSource.DataSet.BeforePost = @BeforePo then
-      DataSource.DataSet.BeforePost:=F_EventOnBeforePost;
+      DataSource.DataSet.BeforePost := F_EventOnBeforePost;
 
     if DataSource.DataSet.OnDeleteError = @ErrorDel then
-      DataSource.DataSet.OnDeleteError:=F_EventOnDeleteError;
+      DataSource.DataSet.OnDeleteError := F_EventOnDeleteError;
 
     if DataSource.DataSet.OnPostError = @ErrorPo then
-      DataSource.DataSet.OnPostError:=F_EventOnPostError;
+      DataSource.DataSet.OnPostError := F_EventOnPostError;
 
     if Datalink.OnDataSetScrolled = @OnDataSetScrolled then
-      Datalink.OnDataSetScrolled:=FSaveOnDataSetScrolled;
+      Datalink.OnDataSetScrolled := FSaveOnDataSetScrolled;
 
-    F_EventOnPostError:=nil;
-    F_EventOnFilterRec:=nil;
-    F_EventOnBeforeDelete:=nil;
-    F_EventOnBeforePost:=nil;
-    F_EventOnDeleteError:=nil;
-    F_EventOnPostError:=nil;
-    FSaveOnDataSetScrolled:=nil;
+    F_EventOnPostError := nil;
+    F_EventOnFilterRec := nil;
+    F_EventOnBeforeDelete := nil;
+    F_EventOnBeforePost := nil;
+    F_EventOnDeleteError := nil;
+    F_EventOnPostError := nil;
+    FSaveOnDataSetScrolled := nil;
   end;
 end;
 
 procedure TRxDBGrid.CollumnSortListUpdate;
 var
-  i, J:integer;
-  C:TRxColumn;
+  i, J: integer;
+  C: TRxColumn;
 begin
   FSortColumns.Clear;
-  for i:=0 to Columns.Count - 1 do
+  for i := 0 to Columns.Count - 1 do
   begin
-    C:=TRxColumn(Columns[i]);
+    C := TRxColumn(Columns[i]);
     if C.SortOrder <> smNone then
     begin
       if FSortColumns.Count <> 0 then
       begin
-        for j:=0 to FSortColumns.Count-1 do
+        for j := 0 to FSortColumns.Count - 1 do
           if FSortColumns[j].FSortPosition > C.FSortPosition then
           begin
             FSortColumns.Insert(j, C);
-            C:=nil;
+            C := nil;
             Break;
           end;
       end;
-      if C<>nil then
+      if C <> nil then
         FSortColumns.Add(C);
     end;
   end;
 
-  for i:=0 to FSortColumns.Count - 1 do
-    FSortColumns[i].FSortPosition:=i;
+  for i := 0 to FSortColumns.Count - 1 do
+    FSortColumns[i].FSortPosition := i;
 end;
 
 procedure TRxDBGrid.CollumnSortListClear;
 var
-  i:integer;
+  i: integer;
 begin
   FSortColumns.Clear;
-  for i:=0 to Columns.Count - 1 do
+  for i := 0 to Columns.Count - 1 do
   begin
-    TRxColumn(Columns[i]).FSortOrder:=smNone;
-    TRxColumn(Columns[i]).FSortPosition:=0;
+    TRxColumn(Columns[i]).FSortOrder := smNone;
+    TRxColumn(Columns[i]).FSortPosition := 0;
   end;
 end;
 
 procedure TRxDBGrid.CollumnSortListApply;
 var
-  i:integer;
-  S:string;
-  Asc:array of boolean;
+  i: integer;
+  S: string;
+  Asc: array of boolean;
 begin
   if (FSortColumns.Count = 0) then exit;
-  S:='';
-  FSortingNow:=true;
-  if (FSortColumns.Count>1) or (Pos(';', FSortColumns[0].GetSortFields)>0) then
+  S := '';
+  FSortingNow := True;
+  if (FSortColumns.Count > 1) or (Pos(';', FSortColumns[0].GetSortFields) > 0) then
   begin
     SetLength(Asc, FSortColumns.Count);
     for i := 0 to FSortColumns.Count - 1 do
     begin
-      Asc[i]:=FSortColumns[i].FSortOrder = smUp;
-      if S<>'' then
-          S:=S+';';
-      S:=S + FSortColumns[i].GetSortFields;
+      Asc[i] := FSortColumns[i].FSortOrder = smUp;
+      if S <> '' then
+        S := S + ';';
+      S := S + FSortColumns[i].GetSortFields;
     end;
     { TODO : Необходимо добавить опцию регистронезависимого поиска }
     FSortEngine.SortList(S, DataSource.DataSet, Asc, SortEngineOptions);
   end
   else
-    FSortEngine.Sort(FSortColumns[0].GetSortFields, DataSource.DataSet, FSortColumns[0].FSortOrder = smUp, SortEngineOptions);
-  FSortingNow:=false;
+    FSortEngine.Sort(FSortColumns[0].GetSortFields, DataSource.DataSet,
+      FSortColumns[0].FSortOrder = smUp, SortEngineOptions);
+  FSortingNow := False;
 end;
 
 procedure TRxDBGrid.Notification(AComponent: TComponent; Operation: TOperation);
@@ -3979,60 +4052,61 @@ begin
     ShowMessage('i');
   end
   else
-  if (Operation = opRemove) then
-  begin
-    if (AComponent is TRxDBGridAbstractTools) then
-      RemoveTools(TRxDBGridAbstractTools(AComponent))
-    else
-    if (AComponent is TPopupMenu) then
+    if (Operation = opRemove) then
     begin
-      for C in Columns do
-        if C.PopupMenu = AComponent then
-          C.PopupMenu:=nil;
+      if (AComponent is TRxDBGridAbstractTools) then
+        RemoveTools(TRxDBGridAbstractTools(AComponent))
+      else
+        if (AComponent is TPopupMenu) then
+        begin
+          for C in Columns do
+            if C.PopupMenu = AComponent then
+              C.PopupMenu := nil;
+        end;
     end;
-  end;
 end;
 
 function TRxDBGrid.UpdateRowsHeight: integer;
 var
-  i, J, H, H1, H2:integer;
-  F:TField;
-  S:string;
-  CurActiveRecord: Integer;
-  R:TRxColumn;
+  i, J, H, H1, H2: integer;
+  F: TField;
+  S: string;
+  CurActiveRecord: integer;
+  R: TRxColumn;
   P: PtrInt;
-
 begin
-  Result:=0;
-  if (not (Assigned(DataLink) and DataLink.Active)) or ((GCache.VisibleGrid.Top=0) and (GCache.VisibleGrid.Bottom=0)) then
+  Result := 0;
+  if (not (Assigned(DataLink) and DataLink.Active)) or
+    ((GCache.VisibleGrid.Top = 0) and (GCache.VisibleGrid.Bottom = 0)) then
     exit;
 
-  CurActiveRecord:=DataLink.ActiveRecord;
-  H2:=0;
+  CurActiveRecord := DataLink.ActiveRecord;
+  H2 := 0;
 
-  for i:=GCache.VisibleGrid.Top to GCache.VisibleGrid.Bottom do
+  for i := GCache.VisibleGrid.Top to GCache.VisibleGrid.Bottom do
   begin
-    DataLink.ActiveRecord:=i - FixedRows;
-    P:=PtrInt(DataSource.DataSet.ActiveBuffer);
-    H:=1;
-    for j:=0 to Columns.Count-1 do
+    DataLink.ActiveRecord := i - FixedRows;
+    P := PtrInt(DataSource.DataSet.ActiveBuffer);
+    H := 1;
+    for j := 0 to Columns.Count - 1 do
     begin
-      R:=Columns[j] as TRxColumn;;
+      R := Columns[j] as TRxColumn;
+      ;
       if R.WordWrap then
       begin
-        F:=R.Field;
+        F := R.Field;
         if Assigned(F) then
-          S:=F.DisplayText
+          S := F.DisplayText
         else
-          S:='';
+          S := '';
 
         H1 := Max((Canvas.TextWidth(S) + 2) div R.Width + 1, H);
         if H1 > WordCount(S, [' ']) then
           H1 := WordCount(S, [' ']);
       end
       else
-        H1:=1;
-      H:=Max(H, H1);
+        H1 := 1;
+      H := Max(H, H1);
     end;
 
     if FGroupItems.Active and DatalinkActive then
@@ -4040,56 +4114,56 @@ begin
         Inc(H);
 
 
-    if i<RowCount then
+    if i < RowCount then
     begin
       if Assigned(FOnCalcRowHeight) then
         FOnCalcRowHeight(Self, H);
       //RowHeights[i] := GetDefaultRowHeight * H;
       RowHeights[i] := DefaultRowHeight * H;
 
-      H2:=H2 + RowHeights[i];
-      if H2<=ClientHeight  then
+      H2 := H2 + RowHeights[i];
+      if H2 <= ClientHeight then
         Inc(Result);
     end;
   end;
-  DataLink.ActiveRecord:=CurActiveRecord;
+  DataLink.ActiveRecord := CurActiveRecord;
 end;
 
 procedure TRxDBGrid.ResetRowHeght;
 var
-  i:integer;
+  i: integer;
 begin
-  for i:=1 to RowCount-1 do
-    RowHeights[i] := DefaultRowHeight
-//    RowHeights[i] := GetDefaultRowHeight;
+  for i := 1 to RowCount - 1 do
+    RowHeights[i] := DefaultRowHeight;
+  //    RowHeights[i] := GetDefaultRowHeight;
 end;
 
 procedure TRxDBGrid.DoClearInvalidTitle;
 var
-  i, j:integer;
-  FTitle:TRxColumnTitle;
+  i, j: integer;
+  FTitle: TRxColumnTitle;
 begin
-  for i:=0 to Columns.Count-1 do
+  for i := 0 to Columns.Count - 1 do
   begin
-    FTitle:=TRxColumnTitle(Columns[i].Title);
-    for j:=0 to FTitle.CaptionLinesCount-1 do
-      FTitle.CaptionLine(j).FInvalidDraw:=0;
+    FTitle := TRxColumnTitle(Columns[i].Title);
+    for j := 0 to FTitle.CaptionLinesCount - 1 do
+      FTitle.CaptionLine(j).FInvalidDraw := 0;
   end;
 end;
 
 procedure TRxDBGrid.DoDrawInvalidTitle;
 var
-  i, j:integer;
-  MLI:TMLCaptionItem;
-  FTitle:TRxColumnTitle;
+  i, j: integer;
+  MLI: TMLCaptionItem;
+  FTitle: TRxColumnTitle;
 begin
-  for i:=0 to Columns.Count-1 do
+  for i := 0 to Columns.Count - 1 do
   begin
-    FTitle:=TRxColumnTitle(Columns[i].Title);
-    for j:=0 to FTitle.CaptionLinesCount - 1 do
+    FTitle := TRxColumnTitle(Columns[i].Title);
+    for j := 0 to FTitle.CaptionLinesCount - 1 do
     begin
-      MLI:=FTitle.CaptionLine(j);
-      if MLI.FInvalidDraw<0 then
+      MLI := FTitle.CaptionLine(j);
+      if MLI.FInvalidDraw < 0 then
       begin
         exit;
       end;
@@ -4099,65 +4173,65 @@ end;
 
 procedure TRxDBGrid.DoSetColEdtBtn;
 var
-  R:TRxColumn;
-  i, w:integer;
-  SB:TGraphicControl;
+  R: TRxColumn;
+  i, w: integer;
+  SB: TGraphicControl;
 begin
-  R:=SelectedColumn as TRxColumn;
+  R := SelectedColumn as TRxColumn;
 
   if Assigned(Editor) and Assigned(R) then
   begin
-    W:=0;
-    for i:=0 to R.EditButtons.Count-1 do
+    W := 0;
+    for i := 0 to R.EditButtons.Count - 1 do
     begin
       if R.EditButtons[i].Visible and R.EditButtons[i].Enabled then
-        W:=W+R.EditButtons[i].Width;
+        W := W + R.EditButtons[i].Width;
     end;
 
-    if W>0 then
+    if W > 0 then
     begin
       if Editor.Name = 'ButtonEditor' then
       begin
-        Editor.Left:=Editor.Left - W;
-        W:=Editor.Width + Editor.Left;
+        Editor.Left := Editor.Left - W;
+        W := Editor.Width + Editor.Left;
       end
       else
       begin
-        Editor.Width:=Editor.Width - W;
-        W:=Editor.Width + Editor.Left;
+        Editor.Width := Editor.Width - W;
+        W := Editor.Width + Editor.Left;
       end;
 
-      for i:=0 to R.EditButtons.Count-1 do
-      if R.EditButtons[i].Visible and R.EditButtons[i].Enabled then
-      begin
-        if R.EditButtons[i].Style = ebsUpDownRx then
+      for i := 0 to R.EditButtons.Count - 1 do
+        if R.EditButtons[i].Visible and R.EditButtons[i].Enabled then
         begin
-          SB:=R.EditButtons[i].FSpinBtn;
-          TRxSpinButton(SB).FocusControl:=Editor;
-        end
-        else
-          SB:=R.EditButtons[i].FButton;
+          if R.EditButtons[i].Style = ebsUpDownRx then
+          begin
+            SB := R.EditButtons[i].FSpinBtn;
+            TRxSpinButton(SB).FocusControl := Editor;
+          end
+          else
+            SB := R.EditButtons[i].FButton;
 
-        SB.Parent:=Self;
-        SB.Left:=W;
-        SB.Top:=Editor.Top;
-        SB.Height:=Editor.Height;
-        SB.Visible:=true;
+          SB.Parent := Self;
+          SB.Left := W;
+          SB.Top := Editor.Top;
+          SB.Height := Editor.Height;
+          SB.Visible := True;
 
-        W:=W+R.EditButtons[i].Width;
-      end;
+          W := W + R.EditButtons[i].Width;
+        end;
     end;
   end;
 end;
 
 procedure TRxDBGrid.AddTools(ATools: TRxDBGridAbstractTools);
 var
-  i:integer;
+  i: integer;
   R: TMenuItem;
 begin
   if not Assigned(ATools) then Exit;
 
-  for i:=8 to F_PopupMenu.Items.Count - 1 do
+  for i := 8 to F_PopupMenu.Items.Count - 1 do
     if F_PopupMenu.Items[i].Tag = IntPtr(ATools) then
       exit;
 
@@ -4165,22 +4239,22 @@ begin
   F_PopupMenu.Items.Add(R);
   R.Caption := ATools.FCaption;
   R.OnClick := @(ATools.ExecTools);
-  R.Tag:=IntPtr(ATools);
-  R.Enabled:=ATools.Enabled;
+  R.Tag := IntPtr(ATools);
+  R.Enabled := ATools.Enabled;
 
-  if Assigned(FToolsList) and (FToolsList.IndexOf(ATools)<0) then
+  if Assigned(FToolsList) and (FToolsList.IndexOf(ATools) < 0) then
     FToolsList.Add(ATools);
 end;
 
 procedure TRxDBGrid.RemoveTools(ATools: TRxDBGridAbstractTools);
 var
-  i:integer;
+  i: integer;
   R: TMenuItem;
 begin
-  for i:=8 to F_PopupMenu.Items.Count - 1 do
+  for i := 8 to F_PopupMenu.Items.Count - 1 do
     if F_PopupMenu.Items[i].Tag = IntPtr(ATools) then
     begin
-      R:=F_PopupMenu.Items[i];
+      R := F_PopupMenu.Items[i];
       F_PopupMenu.Items.Delete(i);
       R.Free;
       exit;
@@ -4192,18 +4266,18 @@ end;
 
 procedure TRxDBGrid.UpdateToolsState(ATools: TRxDBGridAbstractTools);
 var
-  i: Integer;
+  i: integer;
 begin
   if not Assigned(ATools) then Exit;
-  for i:=8 to F_PopupMenu.Items.Count - 1 do
+  for i := 8 to F_PopupMenu.Items.Count - 1 do
     if F_PopupMenu.Items[i].Tag = IntPtr(ATools) then
     begin
-      F_PopupMenu.Items[i].Enabled:=ATools.Enabled;
+      F_PopupMenu.Items[i].Enabled := ATools.Enabled;
       exit;
     end;
 end;
 
-procedure TRxDBGrid.OnDataSetScrolled(aDataSet: TDataSet; Distance: Integer);
+procedure TRxDBGrid.OnDataSetScrolled(aDataSet: TDataSet; Distance: integer);
 begin
   if Assigned(FSaveOnDataSetScrolled) then
     FSaveOnDataSetScrolled(aDataSet, Distance);
@@ -4212,12 +4286,12 @@ begin
     UpdateRowsHeight;
 end;
 
-function TRxDBGrid.GetFieldDisplayText(AField: TField; ACollumn: TRxColumn
-  ): string;
+function TRxDBGrid.GetFieldDisplayText(AField: TField; ACollumn: TRxColumn): string;
 var
-  J, i: Integer;
+  J: integer;
+  //i: Integer;
 begin
-  Result:='';
+  Result := '';
   if Assigned(AField) then
   begin
     if AField.dataType <> ftBlob then
@@ -4227,15 +4301,16 @@ begin
       begin
         Result := AField.AsString;
         {$IFDEF RDBGridDisplayMemoText_ClearSC}
-        for i:=1 to Length(Result) do
+        for i := 1 to Length(Result) do
           if Result[i] < ' ' then
-            Result[i]:=' ';
+            Result[i] := ' ';
         {$ENDIF}
       end
       else
-      {$ENDIF}
+        {$ENDIF}
         Result := AField.DisplayText;
-      if Assigned(ACollumn) and (ACollumn.KeyList.Count > 0) and (ACollumn.PickList.Count > 0) then
+      if Assigned(ACollumn) and (ACollumn.KeyList.Count > 0) and
+        (ACollumn.PickList.Count > 0) then
       begin
         J := ACollumn.KeyList.IndexOf(Result);
         if (J >= 0) and (J < ACollumn.PickList.Count) then
@@ -4244,10 +4319,10 @@ begin
     end
     else
       Result := FColumnDefValues.FBlobText;
-  end
+  end;
 end;
 
-function CompareDates(List: TStringList; Index1, Index: Integer): Integer;
+function CompareDates(List: TStringList; Index1, Index: integer): integer;
 var
   d1, d2: TDateTime;
 begin
@@ -4268,10 +4343,9 @@ end;
 
 procedure TRxDBGrid.FillFilterData;
 var
-  i: Integer;
+  i: integer;
   C: TRxColumn;
   FBS, FAS: TDataSetNotifyEvent;
-
 begin
   for i := 0 to Columns.Count - 1 do
   begin
@@ -4279,7 +4353,7 @@ begin
     C.Filter.ValueList.SortStyle := sslAuto;
     C.Filter.ValueList.Clear;
     C.Filter.CurrentValues.Clear;
-    C.Filter.ManulEditValue:='';
+    C.Filter.ManulEditValue := '';
     C.Filter.ItemIndex := -1;
   end;
 
@@ -4287,25 +4361,27 @@ begin
   begin
     DataSource.DataSet.DisableControls;
     DataSource.DataSet.Filtered := True;
-    FBS:=DataSource.DataSet.BeforeScroll;
-    FAS:=DataSource.DataSet.AfterScroll;
-    DataSource.DataSet.BeforeScroll:=nil;
-    DataSource.DataSet.AfterScroll:=nil;
+    FBS := DataSource.DataSet.BeforeScroll;
+    FAS := DataSource.DataSet.AfterScroll;
+    DataSource.DataSet.BeforeScroll := nil;
+    DataSource.DataSet.AfterScroll := nil;
     DataSource.DataSet.First;
     while not DataSource.DataSet.EOF do
     begin
       for i := 0 to Columns.Count - 1 do
       begin
         C := TRxColumn(Columns[i]);
-        if C.Filter.Enabled and (C.Field <> nil) and (C.Filter.ValueList.IndexOf(C.Field.DisplayText) < 0) then
-          C.Filter.ValueList.Add(GetFieldDisplayText(C.Field, C)); // C.Field.DisplayText);
-          //C.Filter.ValueList.Add(C.Field.DisplayText);
+        if C.Filter.Enabled and (C.Field <> nil) and
+          (C.Filter.ValueList.IndexOf(C.Field.DisplayText) < 0) then
+          C.Filter.ValueList.Add(GetFieldDisplayText(C.Field, C));
+        // C.Field.DisplayText);
+        //C.Filter.ValueList.Add(C.Field.DisplayText);
       end;
       DataSource.DataSet.Next;
     end;
     DataSource.DataSet.First;
-    DataSource.DataSet.BeforeScroll:=FBS;
-    DataSource.DataSet.AfterScroll:=FAS;
+    DataSource.DataSet.BeforeScroll := FBS;
+    DataSource.DataSet.AfterScroll := FAS;
     DataSource.DataSet.EnableControls;
   end;
 
@@ -4337,11 +4413,11 @@ begin
   if Owner is TCustomForm then
     TCustomForm(Owner).ModalResult := mrOk
   else
-  if Owner is TCustomFrame then
-  begin
-    if TCustomFrame(Owner).Owner is TCustomForm then
-      ((TCustomFrame(Owner).Owner) as TCustomForm).ModalResult := mrOk
-  end;
+    if Owner is TCustomFrame then
+    begin
+      if TCustomFrame(Owner).Owner is TCustomForm then
+        ((TCustomFrame(Owner).Owner) as TCustomForm).ModalResult := mrOk;
+    end;
 end;
 
 procedure TRxDBGrid.DefaultDrawCellA(aCol, aRow: integer; aRect: TRect;
@@ -4360,14 +4436,14 @@ end;
 procedure TRxDBGrid.DefaultDrawTitle(aCol, aRow: integer; aRect: TRect;
   aState: TGridDrawState);
 
-procedure DoClearMLIInvalid(MLI1: TMLCaptionItem);
-begin
-  while Assigned(MLI1) do
+  procedure DoClearMLIInvalid(MLI1: TMLCaptionItem);
   begin
-    inc(MLI1.FInvalidDraw);
-    MLI1:=MLI1.Next;
+    while Assigned(MLI1) do
+    begin
+      Inc(MLI1.FInvalidDraw);
+      MLI1 := MLI1.Next;
+    end;
   end;
-end;
 
 var
   ASortMarker: TSortMarker;
@@ -4381,8 +4457,7 @@ var
   FTitle: TRxColumnTitle;
   GrdCol: TRxColumn;
 
-  MLI : TMLCaptionItem;
-
+  MLI: TMLCaptionItem;
 begin
   if (dgIndicator in Options) and (aCol = 0) then
   begin
@@ -4403,16 +4478,15 @@ begin
 
   GrdCol := TRxColumn(ColumnFromGridColumn(aCol));
 
-  Down := FPressed and (dgHeaderPushedLook in Options) and
-    (FPressedCol = GrdCol);
+  Down := FPressed and (dgHeaderPushedLook in Options) and (FPressedCol = GrdCol);
 
   if Assigned(GrdCol) then
   begin
     ASortMarker := GrdCol.FSortOrder;
-    if FSortColumns.Count>1 then
-      ASortPosition:=GrdCol.FSortPosition
+    if FSortColumns.Count > 1 then
+      ASortPosition := GrdCol.FSortPosition
     else
-      ASortPosition:=-1;
+      ASortPosition := -1;
   end
   else
     ASortMarker := smNone;
@@ -4444,85 +4518,84 @@ begin
           aState := aState + [gdPushed];
       end
       else
-      if (FTitle.CaptionLinesCount > 0) then
-      begin
-        aRect2.Left := aRect.Left;
-        aRect2.Right := aRect.Right;
-        aRect2.Top := aRect.Top;
-        for i := 0 to FTitle.CaptionLinesCount - 1 do
+        if (FTitle.CaptionLinesCount > 0) then
         begin
-          MLI := FTitle.CaptionLine(i);
+          aRect2.Left := aRect.Left;
           aRect2.Right := aRect.Right;
-
-          if i = FTitle.CaptionLinesCount - 1 then
+          aRect2.Top := aRect.Top;
+          for i := 0 to FTitle.CaptionLinesCount - 1 do
           begin
-            aRect2.Bottom := aRect.Bottom;
-            aRect.Top := ARect2.Top;
-            if Down then
-              aState := aState + [gdPushed]
-            else
-              aState := aState - [gdPushed]
-              ;
-          end
-          else
-          begin
-            aRect2.Bottom := aRect2.Top + MLI.Height * FDrawGetDefaultRowHeight;
-            aState := aState - [gdPushed];
-          end;
+            MLI := FTitle.CaptionLine(i);
+            aRect2.Right := aRect.Right;
 
-
-          if Assigned(MLI.Next) then
-          begin
-            if Assigned(MLI.Prior) then
+            if i = FTitle.CaptionLinesCount - 1 then
             begin
-              if aCol = LeftCol then
-              begin
-                OutCaptionMLCellText(aCol, aRow, aRect2, aState, MLI);
-                DoClearMLIInvalid(MLI);
-              end
+              aRect2.Bottom := aRect.Bottom;
+              aRect.Top := ARect2.Top;
+              if Down then
+                aState := aState + [gdPushed]
               else
-                Dec(MLI.FInvalidDraw);
+                aState := aState - [gdPushed];
             end
             else
             begin
-              OutCaptionMLCellText(aCol, aRow, aRect2, aState, MLI);
-              DoClearMLIInvalid(MLI);
+              aRect2.Bottom := aRect2.Top + MLI.Height * FDrawGetDefaultRowHeight;
+              aState := aState - [gdPushed];
             end;
-          end
-          else
-          begin
-            if not Assigned(MLI.Prior) then
+
+
+            if Assigned(MLI.Next) then
             begin
-              OutCaptionCellText(aCol, aRow, aRect2, aState, MLI.Caption);
-              DoClearMLIInvalid(MLI);
-            end
-            else
-            begin
-              if aCol = LeftCol then
+              if Assigned(MLI.Prior) then
+              begin
+                if aCol = LeftCol then
+                begin
+                  OutCaptionMLCellText(aCol, aRow, aRect2, aState, MLI);
+                  DoClearMLIInvalid(MLI);
+                end
+                else
+                  Dec(MLI.FInvalidDraw);
+              end
+              else
               begin
                 OutCaptionMLCellText(aCol, aRow, aRect2, aState, MLI);
                 DoClearMLIInvalid(MLI);
+              end;
+            end
+            else
+            begin
+              if not Assigned(MLI.Prior) then
+              begin
+                OutCaptionCellText(aCol, aRow, aRect2, aState, MLI.Caption);
+                DoClearMLIInvalid(MLI);
               end
               else
-                Dec(MLI.FInvalidDraw);
+              begin
+                if aCol = LeftCol then
+                begin
+                  OutCaptionMLCellText(aCol, aRow, aRect2, aState, MLI);
+                  DoClearMLIInvalid(MLI);
+                end
+                else
+                  Dec(MLI.FInvalidDraw);
+              end;
             end;
+            aRect2.Top := aRect2.Bottom;
           end;
-          aRect2.Top := aRect2.Bottom;
+        end
+        else
+        begin
+          if Down then
+            aState := aState + [gdPushed];
+          OutCaptionCellText(aCol, aRow, aRect, aState, FTitle.Caption);
         end;
-      end
-      else
-      begin
-        if Down then
-          aState := aState + [gdPushed];
-        OutCaptionCellText(aCol, aRow, aRect, aState, FTitle.Caption);
-      end;
     end
     else
     begin
       OutCaptionCellText(aCol, aRow, aRect, aState, GetDefaultColumnTitle(aCol));
     end;
 
-    OutCaptionSortMarker(aRect, ASortMarker, ASortPosition+1);
+    OutCaptionSortMarker(aRect, ASortMarker, ASortPosition + 1);
   end
   else
   begin
@@ -4540,8 +4613,7 @@ var
   ft: TFont;
   MyCol: integer;
   TxS: TTextStyle;
-  S: String;
-
+  S: string;
 begin
   if (dgIndicator in Options) and (aCol = 0) then
   begin
@@ -4568,16 +4640,16 @@ begin
   Inc(aRect.Top, 1);
   Dec(aRect.Bottom, 1);
 
-  if Columns.Count > (aCol - ord(dgIndicator in Options)) then
+  if Columns.Count > (aCol - Ord(dgIndicator in Options)) then
   begin
     bg := Canvas.Brush.Color;
     al := Canvas.TextStyle.Alignment;
-//    ft := Canvas.Font;
-    ft:=TFont.Create;
+    //    ft := Canvas.Font;
+    ft := TFont.Create;
     ft.Assign(Canvas.Font);
     TxS := Canvas.TextStyle;
 
-    MyCol := Columns.RealIndex(aCol - ord(dgIndicator in Options));
+    MyCol := Columns.RealIndex(aCol - Ord(dgIndicator in Options));
     with TRxColumn(Columns[MyCol]).Filter do
     begin
       if (TitleStyle <> tsNative) then
@@ -4586,7 +4658,7 @@ begin
         Canvas.FillRect(aRect);
       end;
 
-      S:=DisplayFilterValue;
+      S := DisplayFilterValue;
       if (aRect.Right - aRect.Left) >= Canvas.TextWidth(S) then
         TxS.Alignment := Alignment
       else
@@ -4638,7 +4710,7 @@ begin
       end; *)
     end;
 
-//    Canvas.Font := ft;
+    //    Canvas.Font := ft;
     Canvas.Font.Assign(ft);
     ft.Free;
     Canvas.Brush.Color := bg;
@@ -4657,88 +4729,92 @@ end;
 
 procedure TRxDBGrid.DefaultDrawCellData(aCol, aRow: integer; aRect: TRect;
   aState: TGridDrawState);
-procedure DoDrawHilightSearch(const ADisplayText:string);
-var
-  sHRec: TRect;
-  FSaveColor: TColor;
-  L: PtrInt;
-begin
-  L:=UTF8Pos(UTF8UpperCase(FQuickUTF8Search), UTF8UpperCase(ADisplayText));
-  if L = 0 then Exit;
-  sHRec:=aRect;
-  dec(sHRec.Right, varCellPadding);
-  Inc(sHRec.Left, varCellPadding);
 
-  case Canvas.TextStyle.Alignment of
-    Classes.taLeftJustify:
+  procedure DoDrawHilightSearch(const ADisplayText: string);
+  var
+    sHRec: TRect;
+    FSaveColor: TColor;
+    L: PtrInt;
+  begin
+    L := UTF8Pos(UTF8UpperCase(FQuickUTF8Search), UTF8UpperCase(ADisplayText));
+    if L = 0 then Exit;
+    sHRec := aRect;
+    Dec(sHRec.Right, varCellPadding);
+    Inc(sHRec.Left, varCellPadding);
+
+    case Canvas.TextStyle.Alignment of
+      Classes.taLeftJustify:
       begin
-        sHRec.Left:=sHRec.Left + Canvas.TextWidth(UTF8Copy(ADisplayText, 1, L-1));
-        sHRec.Width:=Canvas.TextWidth(FQuickUTF8Search);
+        sHRec.Left := sHRec.Left + Canvas.TextWidth(UTF8Copy(ADisplayText, 1, L - 1));
+        sHRec.Width := Canvas.TextWidth(FQuickUTF8Search);
       end;
-    Classes.taRightJustify:
+      Classes.taRightJustify:
       begin
-        sHRec.Left:=sHRec.Right - Canvas.TextWidth(UTF8Copy(ADisplayText, L, UTF8Length(ADisplayText)));
-        sHRec.Width:=Canvas.TextWidth(FQuickUTF8Search);
+        sHRec.Left := sHRec.Right -
+          Canvas.TextWidth(UTF8Copy(ADisplayText, L, UTF8Length(ADisplayText)));
+        sHRec.Width := Canvas.TextWidth(FQuickUTF8Search);
       end;
+    end;
+
+    FSaveColor := Canvas.Brush.Color;
+    Canvas.Brush.Color := FSearchOptions.HilightColor;
+    Canvas.FillRect(sHRec);
+    Canvas.Brush.Color := FSaveColor;
   end;
-
-  FSaveColor:=Canvas.Brush.Color;
-  Canvas.Brush.Color:=FSearchOptions.HilightColor;
-  Canvas.FillRect(sHRec);
-  Canvas.Brush.Color:=FSaveColor;
-end;
 
 var
   S: string;
   F: TField;
   C: TRxColumn;
-  j, DataCol, L, R: integer;
-  FIsMerged: Boolean;
+  //j,
+  DataCol, L, R: integer;
+  FIsMerged: boolean;
 begin
-  FIsMerged:=false;
+  FIsMerged := False;
 
-  C:=nil;
-  F:=nil;
+  C := nil;
+  F := nil;
 
   if rdgColSpanning in OptionsRx then
     if IsMerged(aCol, L, R, C) then
     begin
-      aCol:=L;
-      FIsMerged:=true;
+      aCol := L;
+      FIsMerged := True;
     end;
 
   if Assigned(OnDrawColumnCell) and not (CsDesigning in ComponentState) then
   begin
     DataCol := ColumnIndexFromGridColumn(aCol);
     if not Assigned(C) then
-      C:=TRxColumn(ColumnFromGridColumn(aCol));
-    OnDrawColumnCell(Self, aRect, DataCol, C, aState)
+      C := TRxColumn(ColumnFromGridColumn(aCol));
+    OnDrawColumnCell(Self, aRect, DataCol, C, aState);
   end
   else
   begin
 
-
     if not Assigned(C) then
       C := ColumnFromGridColumn(aCol) as TRxColumn;
     if Assigned(C) then
-      F:=C.Field;
+      F := C.Field;
 
     if Assigned(C) and Assigned(C.FOnDrawColumnCell) then
       C.OnDrawColumnCell(Self, aRect, aCol, TColumn(ColumnFromGridColumn(aCol)), aState)
     else
     begin
       case ColumnEditorStyle(aCol, F) of
-        cbsCheckBoxColumn:DrawCheckBoxBitmaps(aCol, aRect, F);
-      else
-        S:=GetFieldDisplayText(F, C);
-        if ((rdgWordWrap in FOptionsRx) and Assigned(C) and (C.WordWrap)) or (FIsMerged) then
-          WriteTextHeader(Canvas, aRect, S, C.Alignment)
+        cbsCheckBoxColumn: DrawCheckBoxBitmaps(aCol, aRect, F);
         else
-        begin
-          if FSearchOptions.HilightSearch and (SelectedField = F) and (FQuickUTF8Search<>'') then
-            DoDrawHilightSearch(S);
-          DrawCellText(aCol, aRow, aRect, aState, S);
-        end;
+          S := GetFieldDisplayText(F, C);
+          if ((rdgWordWrap in FOptionsRx) and Assigned(C) and (C.WordWrap)) or
+            (FIsMerged) then
+            WriteTextHeader(Canvas, aRect, S, C.Alignment)
+          else
+          begin
+            if FSearchOptions.HilightSearch and (SelectedField = F) and
+              (FQuickUTF8Search <> '') then
+              DoDrawHilightSearch(S);
+            DrawCellText(aCol, aRow, aRect, aState, S);
+          end;
       end;
     end;
   end;
@@ -4756,73 +4832,74 @@ begin
     DefaultDrawCellA(aCol, aRow, aRect, aState);
   end
   else
-  if not ((gdFixed in aState) or ((aCol = 0) and (dgIndicator in Options)) or
-    ((aRow = 0) and (dgTitles in Options))) then
-  begin
-
-    if rdgColSpanning in OptionsRx then
-      CalcCellExtent(acol, arow, aRect);
-
-    PrepareCanvas(aCol, aRow, aState);
-    if FGroupItems.Active and  Assigned(FGroupItemDrawCur) then
+    if not ((gdFixed in aState) or ((aCol = 0) and (dgIndicator in Options)) or
+      ((aRow = 0) and (dgTitles in Options))) then
     begin
-      gRect:=aRect;
-      aRect.Bottom:=aRect.Bottom - DefaultRowHeight - 1;
-      gRect.Top:=aRect.Bottom;
-      gRect.Bottom:=gRect.Bottom - 2;
-    end;
 
-    if Assigned(FOnGetCellProps) and not (gdSelected in aState) then
-    begin
-      FBackground := Canvas.Brush.Color;
-      FOnGetCellProps(Self, GetFieldFromGridColumn(aCol), Canvas.Font, FBackground);
-      Canvas.Brush.Color := FBackground;
-    end;
-    Canvas.FillRect(aRect);
+      if rdgColSpanning in OptionsRx then
+        CalcCellExtent(acol, arow, aRect);
 
-    DrawCellGrid(aCol, aRow, aRect, aState);
-
-    if DataSetNotEmpty then
-    begin
-      RxColumn := TRxColumn(ColumnFromGridColumn(aCol));
-      if Assigned(RxColumn) and Assigned(RxColumn.Field) and
-        Assigned(RxColumn.ImageList) then
+      PrepareCanvas(aCol, aRow, aState);
+      if FGroupItems.Active and Assigned(FGroupItemDrawCur) then
       begin
-        AImageIndex := StrToIntDef(RxColumn.KeyList.Values[RxColumn.Field.AsString],
-          RxColumn.NotInKeyListIndex);
-        if (AImageIndex > -1) and (AImageIndex < RxColumn.ImageList.Count) then
-          DrawCellBitmap(RxColumn, aRect, aState, AImageIndex);
-      end
-      else
-        DefaultDrawCellData(aCol, aRow, aRect, aState);
-
-      if FGroupItems.Active and  Assigned(FGroupItemDrawCur) then
-      begin
-        C := ColumnFromGridColumn(aCol) as TRxColumn;
-
-        if C.FGroupParam.Color <> clNone then
-          Canvas.Brush.Color := C.FGroupParam.Color
-        else
-        if FGroupItems.Color <> clNone then
-          Canvas.Brush.Color := FGroupItems.Color
-        else
-          Canvas.Brush.Color := Color;
-
-        Canvas.Font.Color:=Font.Color;
-
-        Canvas.FillRect(gRect);
-
-        if C.FGroupParam.FValueType <> fvtNon then
-          WriteTextHeader(Canvas, gRect, C.FGroupParam.DisplayText, C.FGroupParam.Alignment);
+        gRect := aRect;
+        aRect.Bottom := aRect.Bottom - DefaultRowHeight - 1;
+        gRect.Top := aRect.Bottom;
+        gRect.Bottom := gRect.Bottom - 2;
       end;
 
-    end;
-  end
-  else
-    inherited DrawCell(aCol, aRow, aRect, aState);
+      if Assigned(FOnGetCellProps) and not (gdSelected in aState) then
+      begin
+        FBackground := Canvas.Brush.Color;
+        FOnGetCellProps(Self, GetFieldFromGridColumn(aCol), Canvas.Font, FBackground);
+        Canvas.Brush.Color := FBackground;
+      end;
+      Canvas.FillRect(aRect);
+
+      DrawCellGrid(aCol, aRow, aRect, aState);
+
+      if DataSetNotEmpty then
+      begin
+        RxColumn := TRxColumn(ColumnFromGridColumn(aCol));
+        if Assigned(RxColumn) and Assigned(RxColumn.Field) and
+          Assigned(RxColumn.ImageList) then
+        begin
+          AImageIndex := StrToIntDef(RxColumn.KeyList.Values[RxColumn.Field.AsString],
+            RxColumn.NotInKeyListIndex);
+          if (AImageIndex > -1) and (AImageIndex < RxColumn.ImageList.Count) then
+            DrawCellBitmap(RxColumn, aRect, aState, AImageIndex);
+        end
+        else
+          DefaultDrawCellData(aCol, aRow, aRect, aState);
+
+        if FGroupItems.Active and Assigned(FGroupItemDrawCur) then
+        begin
+          C := ColumnFromGridColumn(aCol) as TRxColumn;
+
+          if C.FGroupParam.Color <> clNone then
+            Canvas.Brush.Color := C.FGroupParam.Color
+          else
+            if FGroupItems.Color <> clNone then
+              Canvas.Brush.Color := FGroupItems.Color
+            else
+              Canvas.Brush.Color := Color;
+
+          Canvas.Font.Color := Font.Color;
+
+          Canvas.FillRect(gRect);
+
+          if C.FGroupParam.FValueType <> fvtNon then
+            WriteTextHeader(Canvas, gRect, C.FGroupParam.DisplayText,
+              C.FGroupParam.Alignment);
+        end;
+
+      end;
+    end
+    else
+      inherited DrawCell(aCol, aRow, aRect, aState);
 end;
 
-procedure TRxDBGrid.LinkActive(Value: Boolean);
+procedure TRxDBGrid.LinkActive(Value: boolean);
 var
   S: string;
   Pos: integer;
@@ -4852,7 +4929,7 @@ end;
 
 procedure TRxDBGrid.SetDBHandlers(Value: boolean);
 begin
-   if Value then
+  if Value then
   begin
     if DataSource.DataSet.OnFilterRecord <> @FilterRec then
     begin
@@ -4910,30 +4987,30 @@ begin
   end;
 end;
 
-procedure TRxDBGrid.DrawRow(ARow: Integer);
+procedure TRxDBGrid.DrawRow(ARow: integer);
 var
   P: TBookMark;
 begin
-  FGroupItemDrawCur:=nil;
+  FGroupItemDrawCur := nil;
   if FGroupItems.Active and DatalinkActive then
   begin
-    if (ARow>=FixedRows) then
+    if (ARow >= FixedRows) then
     begin
-      DataLink.ActiveRecord:=ARow-FixedRows;
-      P:=DataSource.DataSet.Bookmark;
-      FGroupItemDrawCur:=FGroupItems.FindGroupItem(P);
+      DataLink.ActiveRecord := ARow - FixedRows;
+      P := DataSource.DataSet.Bookmark;
+      FGroupItemDrawCur := FGroupItems.FindGroupItem(P);
     end;
   end;
   inherited DrawRow(ARow);
 end;
 
-procedure TRxDBGrid.DrawFocusRect(aCol, aRow: Integer; ARect: TRect);
+procedure TRxDBGrid.DrawFocusRect(aCol, aRow: integer; ARect: TRect);
 begin
-    CalcCellExtent(acol, arow, aRect);
-    CalcCellExtent(ACol, ARow, ARect);
+  CalcCellExtent(acol, arow, aRect);
+  CalcCellExtent(ACol, ARow, ARect);
 
   if FGroupItems.Active and Assigned(FGroupItemDrawCur) then
-    ARect.Bottom:=ARect.Bottom - DefaultRowHeight;
+    ARect.Bottom := ARect.Bottom - DefaultRowHeight;
   inherited DrawFocusRect(aCol, aRow, ARect);
 end;
 
@@ -4948,17 +5025,19 @@ var
   Background: TColor;
   ClipArea: Trect;
   TxS: TTextStyle;
-  j: Integer;
+  j: integer;
   FItem: TRxColumnFooterItem;
-//FreeMan35 added
-  AText: String;
+  //FreeMan35 added
+  AText: string;
   ABrush: TBrush;
 begin
   TotalWidth := GCache.ClientWidth;
   //TotalYOffs := GCache.ClientHeight {- (GetDefaultRowHeight * FFooterOptions.RowCount)};
-  TotalYOffs := GCache.ClientRect.Bottom {- (GetDefaultRowHeight * FFooterOptions.RowCount)};
+  TotalYOffs := GCache.ClientRect.Bottom
+  {- (GetDefaultRowHeight * FFooterOptions.RowCount)};
 
-  FooterRect := Rect(0, TotalYOffs, TotalWidth, TotalYOffs + FDrawGetDefaultRowHeight * FFooterOptions.RowCount);
+  FooterRect := Rect(0, TotalYOffs, TotalWidth, TotalYOffs +
+    FDrawGetDefaultRowHeight * FFooterOptions.RowCount);
 
   Background := Canvas.Brush.Color;
   Canvas.Brush.Color := Color;
@@ -4985,7 +5064,7 @@ begin
     R.Top := TotalYOffs;
     R.Bottom := TotalYOffs + FDrawGetDefaultRowHeight;
 
-    for j:=0 to FFooterOptions.RowCount-1 do
+    for j := 0 to FFooterOptions.RowCount - 1 do
     begin
 
       for i := GCache.VisibleGrid.Left to GCache.VisibleGrid.Right do
@@ -5001,17 +5080,17 @@ begin
         C := ColumnFromGridColumn(i) as TRxColumn;
         if Assigned(C) then
         begin
-          FItem:=nil;
+          FItem := nil;
           if (J = 0) then
           begin
             if (C.Footers.Count = 0) then
-              FItem:=C.Footer
+              FItem := C.Footer
             else
-              FItem:=C.Footers[0];
+              FItem := C.Footers[0];
           end
           else
-          if J <= C.Footers.Count-1 then
-            FItem:=C.Footers[j];
+            if J <= C.Footers.Count - 1 then
+              FItem := C.Footers[j];
 
           if Assigned(FItem) then
           begin
@@ -5019,14 +5098,14 @@ begin
             TxS.Layout := FItem.Layout;
             Canvas.TextStyle := TxS;
             if not FItem.IsDefaultFont then
-              Canvas.Font:=FItem.Font
+              Canvas.Font := FItem.Font
             else
-              Canvas.Font:=Font;
+              Canvas.Font := Font;
 
             if FItem.Color <> clNone then
-              Canvas.Brush.Color:=FItem.Color
+              Canvas.Brush.Color := FItem.Color
             else
-              Canvas.Brush.Color:=FFooterOptions.FColor;
+              Canvas.Brush.Color := FFooterOptions.FColor;
 
             if not Assigned(OnRxColumnFooterDraw) then
             begin
@@ -5036,7 +5115,7 @@ begin
             end
             else
             begin
-              if not Assigned(ABrush)then
+              if not Assigned(ABrush) then
                 ABrush := TBrush.Create;
               ABrush.Assign(Canvas.Brush);//Backup Brush info
               AText := FItem.DisplayText;
@@ -5064,7 +5143,7 @@ begin
       R.Bottom := R.Bottom + FDrawGetDefaultRowHeight;
     end;
 
-    if assigned(ABrush)then FreeAndNil(ABrush);
+    if assigned(ABrush) then FreeAndNil(ABrush);
 
     if FFooterOptions.FDrawFullLine then
     begin
@@ -5102,18 +5181,18 @@ begin
         else
         begin
           ACollumn.FSortOrder := smNone;
-          ACollumn.FSortPosition:=0;
+          ACollumn.FSortPosition := 0;
         end;
       end
       else
       begin
         ACollumn.FSortOrder := smUp;
-        ACollumn.FSortPosition:=FSortColumns.Count;
+        ACollumn.FSortPosition := FSortColumns.Count;
       end;
     end
     else
     begin
-      if (FSortColumns.Count>0) and (FSortColumns[0] = ACollumn) then
+      if (FSortColumns.Count > 0) and (FSortColumns[0] = ACollumn) then
       begin
         if Assigned(FSortEngine) then
         begin
@@ -5182,7 +5261,8 @@ begin
   if FColumnResizing and (MouseToGridZone(X, Y) = gzFixedCols) then
   begin
     CalcTitle;
-    if FFooterOptions.Active and (dgColumnResize in Options) and (FFooterOptions.RowCount > 0) then
+    if FFooterOptions.Active and (dgColumnResize in Options) and
+      (FFooterOptions.RowCount > 0) then
       DrawFooterRows;
   end;
 end;
@@ -5191,8 +5271,8 @@ procedure TRxDBGrid.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: in
 var
   Cell: TGridCoord;
   Rect: TRect;
-  C:TRxColumn;
-  i: Integer;
+  C: TRxColumn;
+  i: integer;
 begin
   QuickUTF8Search := '';
 
@@ -5209,142 +5289,148 @@ begin
     InvalidateCell(0, 0);
   end
   else
-  if (Cell.Y = 0) and (Cell.X >= Ord(dgIndicator in Options)) then
-  begin
-    if (rdgFilter in OptionsRx) and DatalinkActive then
+    if (Cell.Y = 0) and (Cell.X >= Ord(dgIndicator in Options)) then
     begin
-      Cell := MouseCoord(X, Y);
-      Rect := getFilterRect(CellRect(Cell.x, Cell.y));
-      if (Cell.Y = 0) and (Cell.X >= Ord(dgIndicator in Options)) and (Rect.Top < Y) then
+      if (rdgFilter in OptionsRx) and DatalinkActive then
       begin
-        C:=TRxColumn (Columns[Columns.RealIndex(Cell.x - ord(dgIndicator in Options))]);
-        if (C.Filter.Enabled) and (C.Filter.ValueList.Count > 0)  then
+        Cell := MouseCoord(X, Y);
+        Rect := getFilterRect(CellRect(Cell.x, Cell.y));
+        if (Cell.Y = 0) and (Cell.X >= Ord(dgIndicator in Options)) and (Rect.Top < Y) then
         begin
-          if C.Filter.Style = rxfstSimple then
+          C := TRxColumn(Columns[Columns.RealIndex(Cell.x - Ord(dgIndicator in Options))]);
+          if (C.Filter.Enabled) and (C.Filter.ValueList.Count > 0) then
           begin
-            if FFilterSimpleEdit.Visible then
-              FFilterSimpleEdit.Hide;
-            if FFilterColDlgButton.Visible then
-              FFilterColDlgButton.Hide;
+            if C.Filter.Style = rxfstSimple then
+            begin
+              if FFilterSimpleEdit.Visible then
+                FFilterSimpleEdit.Hide;
+              if FFilterColDlgButton.Visible then
+                FFilterColDlgButton.Hide;
 
-            FFilterListEditor.Style := csDropDownList;
-            if C.Filter.DropDownRows>0 then
-              FFilterListEditor.DropDownCount := C.Filter.DropDownRows;
+              FFilterListEditor.Style := csDropDownList;
+              if C.Filter.DropDownRows > 0 then
+                FFilterListEditor.DropDownCount := C.Filter.DropDownRows;
 
-            FFilterListEditor.Parent := Self;
-            FFilterListEditor.Width := Rect.Right - Rect.Left;
-            FFilterListEditor.Height := Rect.Bottom - Rect.Top;
-            FFilterListEditor.BoundsRect := Rect;
+              FFilterListEditor.Parent := Self;
+              FFilterListEditor.Width := Rect.Right - Rect.Left;
+              FFilterListEditor.Height := Rect.Bottom - Rect.Top;
+              FFilterListEditor.BoundsRect := Rect;
 
-            FFilterListEditor.Items.Assign(C.Filter.ValueList);
+              FFilterListEditor.Items.Assign(C.Filter.ValueList);
 
-            if C.Filter.CurrentValues.Count>0 then
-              FFilterListEditor.Text := C.Filter.CurrentValues[0]
+              if C.Filter.CurrentValues.Count > 0 then
+                FFilterListEditor.Text := C.Filter.CurrentValues[0]
+              else
+                FFilterListEditor.Text := '';
+              FFilterListEditor.Show(Self, Cell.x - Ord(dgIndicator in Options));
+            end
             else
-              FFilterListEditor.Text := '';
-            FFilterListEditor.Show(Self, Cell.x - ord(dgIndicator in Options));
-          end
-          else
-          if C.Filter.Style = rxfstManualEdit then
-          begin
-            if FFilterListEditor.Visible then
-              FFilterListEditor.Hide;
+              if C.Filter.Style = rxfstManualEdit then
+              begin
+                if FFilterListEditor.Visible then
+                  FFilterListEditor.Hide;
 
-            if FFilterColDlgButton.Visible then
-              FFilterColDlgButton.Hide;
+                if FFilterColDlgButton.Visible then
+                  FFilterColDlgButton.Hide;
 
-            FFilterSimpleEdit.Parent := Self;
-            FFilterSimpleEdit.Width := Rect.Right - Rect.Left;
-            FFilterSimpleEdit.Height := Rect.Bottom - Rect.Top;
-            FFilterSimpleEdit.BoundsRect := Rect;
-            FFilterSimpleEdit.Show(Self, Cell.x - ord(dgIndicator in Options));
+                FFilterSimpleEdit.Parent := Self;
+                FFilterSimpleEdit.Width := Rect.Right - Rect.Left;
+                FFilterSimpleEdit.Height := Rect.Bottom - Rect.Top;
+                FFilterSimpleEdit.BoundsRect := Rect;
+                FFilterSimpleEdit.Show(Self, Cell.x - Ord(dgIndicator in Options));
 {            if C.Filter.CurrentValues.Count>0 then
               FFilterSimpleEdit.Text := C.Filter.CurrentValues[C.Filter.CurrentValues.Count - 1]
             else}
-            FFilterSimpleEdit.Text := C.Filter.ManulEditValue;
-          end
-          else
-          if C.Filter.Style = rxfstDialog then
-          begin
-            if FFilterListEditor.Visible then
-              FFilterListEditor.Hide;
+                FFilterSimpleEdit.Text := C.Filter.ManulEditValue;
+              end
+              else
+                if C.Filter.Style = rxfstDialog then
+                begin
+                  if FFilterListEditor.Visible then
+                    FFilterListEditor.Hide;
 
-            if FFilterSimpleEdit.Visible then
-              FFilterSimpleEdit.Hide;
+                  if FFilterSimpleEdit.Visible then
+                    FFilterSimpleEdit.Hide;
 
-            FFilterColDlgButton.Parent:=Self;
-            FFilterColDlgButton.Width := 32;
-            FFilterColDlgButton.Height := Rect.Bottom - Rect.Top;
-            FFilterColDlgButton.Top := Rect.Top;
-            FFilterColDlgButton.Left := Rect.Right - FFilterColDlgButton.Width;
-            FFilterColDlgButton.Show(Self, Cell.x - ord(dgIndicator in Options));
-          end
-          else
-          if C.Filter.Style = rxfstBoth then
-          begin
-            if FFilterListEditor.Visible then
-              FFilterListEditor.Hide;
+                  FFilterColDlgButton.Parent := Self;
+                  FFilterColDlgButton.Width := 32;
+                  FFilterColDlgButton.Height := Rect.Bottom - Rect.Top;
+                  FFilterColDlgButton.Top := Rect.Top;
+                  FFilterColDlgButton.Left := Rect.Right - FFilterColDlgButton.Width;
+                  FFilterColDlgButton.Show(Self, Cell.x - Ord(dgIndicator in Options));
+                end
+                else
+                  if C.Filter.Style = rxfstBoth then
+                  begin
+                    if FFilterListEditor.Visible then
+                      FFilterListEditor.Hide;
 
-            FFilterColDlgButton.Parent:=Self;
-            FFilterColDlgButton.Width := 32;
-            FFilterColDlgButton.Height := Rect.Bottom - Rect.Top;
-            FFilterColDlgButton.Top := Rect.Top;
-            FFilterColDlgButton.Left := Rect.Right - FFilterColDlgButton.Width;
-            FFilterColDlgButton.Show(Self, Cell.x - ord(dgIndicator in Options));
+                    FFilterColDlgButton.Parent := Self;
+                    FFilterColDlgButton.Width := 32;
+                    FFilterColDlgButton.Height := Rect.Bottom - Rect.Top;
+                    FFilterColDlgButton.Top := Rect.Top;
+                    FFilterColDlgButton.Left := Rect.Right - FFilterColDlgButton.Width;
+                    FFilterColDlgButton.Show(Self, Cell.x - Ord(dgIndicator in Options));
 
-            FFilterSimpleEdit.Parent := Self;
-            FFilterSimpleEdit.Width := Rect.Right - Rect.Left - FFilterColDlgButton.Width;
-            FFilterSimpleEdit.Height := Rect.Bottom - Rect.Top;
-            Rect.Width:=Rect.Width - FFilterColDlgButton.Width;
-            FFilterSimpleEdit.BoundsRect := Rect;
-            FFilterSimpleEdit.Show(Self, Cell.x - ord(dgIndicator in Options));
+                    FFilterSimpleEdit.Parent := Self;
+                    FFilterSimpleEdit.Width :=
+                      Rect.Right - Rect.Left - FFilterColDlgButton.Width;
+                    FFilterSimpleEdit.Height := Rect.Bottom - Rect.Top;
+                    Rect.Width := Rect.Width - FFilterColDlgButton.Width;
+                    FFilterSimpleEdit.BoundsRect := Rect;
+                    FFilterSimpleEdit.Show(Self, Cell.x - Ord(dgIndicator in Options));
 {            if C.Filter.CurrentValues.Count>0 then
               FFilterSimpleEdit.Text := C.Filter.CurrentValues[0]
             else}
-            FFilterSimpleEdit.Text := C.Filter.ManulEditValue;
-          end
+                    FFilterSimpleEdit.Text := C.Filter.ManulEditValue;
+                  end;
+          end;
+          exit;
         end;
-        exit;
       end;
-    end;
 
-    if dgColumnResize in Options then
-    begin
-      FColumnResizing := True;
-    end;
-
-    if FAutoSort then
-    begin
-      Cell := MouseCoord(X, Y);
-      if (Cell.Y = 0) and (Cell.X >= Ord(dgIndicator in Options)) then
+      if dgColumnResize in Options then
       begin
-        if (dgColumnResize in Options) and (Button = mbRight) then
+        FColumnResizing := True;
+      end;
+
+      if FAutoSort then
+      begin
+        Cell := MouseCoord(X, Y);
+        if (Cell.Y = 0) and (Cell.X >= Ord(dgIndicator in Options)) then
         begin
-          Shift := Shift + [ssLeft];
-          inherited MouseDown(Button, Shift, X, Y);
-        end
-        else
-        if Button = mbLeft then
-        begin
-          if (MouseToGridZone(X, Y) = gzFixedCols) and
-            (dgColumnResize in Options) and (Cursor = crHSplit) then
+          if (dgColumnResize in Options) and (Button = mbRight) then
           begin
-            if (ssDouble in Shift) and (rdgDblClickOptimizeColWidth in FOptionsRx) then
-            begin
-              if Assigned(ColumnFromGridColumn(Cell.X)) then
-                TRxColumn(ColumnFromGridColumn(Cell.X)).OptimizeWidth;
-            end
-            else
-              inherited MouseDown(Button, Shift, X, Y);
+            Shift := Shift + [ssLeft];
+            inherited MouseDown(Button, Shift, X, Y);
           end
           else
-          begin
-            MouseCapture := True;
-            FTracking := True;
-            FPressedCol := TRxColumn(ColumnFromGridColumn(Cell.X));
-            TrackButton(X, Y);
-            inherited MouseDown(Button, Shift, X, Y);
-          end;
+            if Button = mbLeft then
+            begin
+              if (MouseToGridZone(X, Y) = gzFixedCols) and
+                (dgColumnResize in Options) and (Cursor = crHSplit) then
+              begin
+                if (ssDouble in Shift) and (rdgDblClickOptimizeColWidth in FOptionsRx) then
+                begin
+                  if Assigned(ColumnFromGridColumn(Cell.X)) then
+                    TRxColumn(ColumnFromGridColumn(Cell.X)).OptimizeWidth;
+                end
+                else
+                  inherited MouseDown(Button, Shift, X, Y);
+              end
+              else
+              begin
+                MouseCapture := True;
+                FTracking := True;
+                FPressedCol := TRxColumn(ColumnFromGridColumn(Cell.X));
+                TrackButton(X, Y);
+                inherited MouseDown(Button, Shift, X, Y);
+              end;
+            end;
+        end
+        else
+        begin
+          inherited MouseDown(Button, Shift, X, Y);
         end;
       end
       else
@@ -5354,18 +5440,14 @@ begin
     end
     else
     begin
-      inherited MouseDown(Button, Shift, X, Y);
-    end;
-  end
-  else
-  begin
-    for i:=0 to FToolsList.Count-1 do
-      if (rxteMouseDown in TRxDBGridAbstractTools(FToolsList[i]).FToolsEvents) then
-        if TRxDBGridAbstractTools(FToolsList[i]).MouseDown(Button, Shift, X, Y) then
-          exit;
+      for i := 0 to FToolsList.Count - 1 do
+        if (rxteMouseDown in TRxDBGridAbstractTools(FToolsList[i]).FToolsEvents) then
+          if TRxDBGridAbstractTools(FToolsList[i]).MouseDown(Button, Shift, X, Y) then
+            exit;
 
-    if (rdgMrOkOnDblClik in FOptionsRx) and (Cell.Y > 0) and (Cell.X >= Ord(dgIndicator in Options)) and (ssDouble in Shift) then
-      DoCblClickMrOk;
+      if (rdgMrOkOnDblClik in FOptionsRx) and (Cell.Y > 0) and
+        (Cell.X >= Ord(dgIndicator in Options)) and (ssDouble in Shift) then
+        DoCblClickMrOk;
 (*    begin
       if (Cell.Y > 0) and (Cell.X >= Ord(dgIndicator in Options)) and
         (ssDouble in Shift) then
@@ -5374,8 +5456,8 @@ begin
           TCustomForm(Owner).ModalResult := mrOk;
       end;
     end; *)
-    inherited MouseDown(Button, Shift, X, Y);
-  end;
+      inherited MouseDown(Button, Shift, X, Y);
+    end;
 end;
 
 procedure TRxDBGrid.MouseUp(Button: TMouseButton; Shift: TShiftState; X, Y: integer);
@@ -5396,7 +5478,8 @@ begin
   begin
     Cell := MouseCoord(X, Y);
     DoClick := PtInRect(Rect(0, 0, ClientWidth, ClientHeight), Point(X, Y)) and
-      (Cell.Y < RowHeights[0]) and (FPressedCol = TRxColumn(ColumnFromGridColumn(Cell.X)));
+      (Cell.Y < RowHeights[0]) and
+      (FPressedCol = TRxColumn(ColumnFromGridColumn(Cell.X)));
     StopTracking;
     if DoClick then
     begin
@@ -5412,13 +5495,13 @@ begin
     end;
   end
   else
-  if FSwapButtons then
-  begin
-    FSwapButtons := False;
-    MouseCapture := False;
-    if Button = mbRight then
-      Button := mbLeft;
-  end;
+    if FSwapButtons then
+    begin
+      FSwapButtons := False;
+      MouseCapture := False;
+      if Button = mbRight then
+        Button := mbLeft;
+    end;
 
   if (DatalinkActive) and (DataSource.DataSet.State = dsBrowse) and
     (rdgAllowToolMenu in FOptionsRx) then
@@ -5441,7 +5524,7 @@ begin
     Rct := CellRect(0, 0);
     MPT.X := Rct.Left;
     if rdgFilter in FOptionsRx then
-//      MPT.Y := Rct.Bottom - GetDefaultRowHeight
+      //      MPT.Y := Rct.Bottom - GetDefaultRowHeight
       MPT.Y := Rct.Bottom - DefaultRowHeight
     else
       MPT.Y := Rct.Bottom;
@@ -5472,7 +5555,8 @@ begin
         begin
           //1.Вызываем процедурку поиска...
           if DataSetLocateThrough(Self.DataSource.DataSet,
-            Self.SelectedField.FieldName, AValue, FSearchOptions.FQuickSearchOptions, rsdAll, FSearchOptions.FFromStart) then
+            Self.SelectedField.FieldName, AValue, FSearchOptions.FQuickSearchOptions,
+            rsdAll, FSearchOptions.FFromStart) then
             Self.FQuickUTF8Search := AValue;
           ClearSearchValue := False;
         end;
@@ -5513,30 +5597,30 @@ end;
 
 procedure TRxDBGrid.KeyDown(var Key: word; Shift: TShiftState);
 
-procedure DoShowFindDlg;
-begin
-  if not (rdgAllowDialogFind in OptionsRx) then
-    exit;
-  if Length(QuickUTF8Search) > 0 then
-    QuickUTF8Search := '';
-  ShowFindDialog;
-end;
+  procedure DoShowFindDlg;
+  begin
+    if not (rdgAllowDialogFind in OptionsRx) then
+      exit;
+    if Length(QuickUTF8Search) > 0 then
+      QuickUTF8Search := '';
+    ShowFindDialog;
+  end;
 
-procedure DoShowColumnsDlg;
-begin
-  if not (rdgAllowColumnsForm in OptionsRx) then
-    exit;
-  if Length(QuickUTF8Search) > 0 then
-    QuickUTF8Search := '';
-  ShowColumnsDialog;
-end;
+  procedure DoShowColumnsDlg;
+  begin
+    if not (rdgAllowColumnsForm in OptionsRx) then
+      exit;
+    if Length(QuickUTF8Search) > 0 then
+      QuickUTF8Search := '';
+    ShowColumnsDialog;
+  end;
 
-procedure DoShowQuickFilter;
-begin
-  if not (rdgAllowQuickFilter in FOptionsRx) then
-    exit;
-  OnFilter(Self);
-end;
+  procedure DoShowQuickFilter;
+  begin
+    if not (rdgAllowQuickFilter in FOptionsRx) then
+      exit;
+    OnFilter(Self);
+  end;
 
 begin
   if (Key in CCancelQuickSearchKeys) then
@@ -5555,11 +5639,11 @@ begin
       rxgcShowSortDlg: OnSortBy(Self);
       rxgcSelectAll: SelectAllRows;
       rxgcDeSelectAll: DeSelectAllRows;
-      rxgcInvertSelection:InvertSelection;
-      rxgcOptimizeColumnsWidth:OptimizeColumnsWidthAll;
-      rxgcCopyCellValue:OnCopyCellValue(Self);
-    else
-      exit;
+      rxgcInvertSelection: InvertSelection;
+      rxgcOptimizeColumnsWidth: OptimizeColumnsWidthAll;
+      rxgcCopyCellValue: OnCopyCellValue(Self);
+      else
+        exit;
     end;
     Key := 0;
   end;
@@ -5568,10 +5652,11 @@ end;
 procedure TRxDBGrid.KeyPress(var Key: char);
 begin
   inherited KeyPress(Key);
-  if Assigned(SelectedColumn) and Assigned(SelectedColumn.Field) and (SelectedColumn.Field.DataType in [ftFloat, ftCurrency]) and
-     (coFixDecimalSeparator in TRxColumn(SelectedColumn).Options) then
+  if Assigned(SelectedColumn) and Assigned(SelectedColumn.Field) and
+    (SelectedColumn.Field.DataType in [ftFloat, ftCurrency]) and
+    (coFixDecimalSeparator in TRxColumn(SelectedColumn).Options) then
     if (Key in [',', '.']) then
-      Key:=DefaultFormatSettings.DecimalSeparator
+      Key := DefaultFormatSettings.DecimalSeparator;
 end;
 
 function TRxDBGrid.CreateColumns: TGridColumns;
@@ -5613,10 +5698,10 @@ var
   j, L, R: integer;
   S: string;
 begin
-  C:=nil;
+  C := nil;
   if (rdgColSpanning in OptionsRx) then
     if IsMerged(aCol, L, R, C) then
-      aCol:=L;
+      aCol := L;
 
   if not Assigned(C) then
     C := ColumnFromGridColumn(aCol) as TRxColumn;
@@ -5640,13 +5725,13 @@ begin
 end;
 
 procedure TRxDBGrid.Paint;
-var
-  P:TPoint;
+//var
+//P:TPoint;
 begin
   Inc(FInProcessCalc);
   DoClearInvalidTitle;
-//  FDrawGetDefaultRowHeight:=GetDefaultRowHeight;
-  FDrawGetDefaultRowHeight:=DefaultRowHeight;
+  //  FDrawGetDefaultRowHeight:=GetDefaultRowHeight;
+  FDrawGetDefaultRowHeight := DefaultRowHeight;
 
   inherited Paint;
 
@@ -5667,8 +5752,9 @@ end;
 
 function TRxDBGrid.GetBufferCount: integer;
 var
-  H, H1:integer;
-  i: LongInt;
+  H: integer;
+  //H1: Integer;
+  //i: longint;
 begin
   {      Result := ClientHeight div DefaultRowHeight;
         if dgTitles in Options then
@@ -5677,10 +5763,10 @@ begin
   //if GetDefaultRowHeight > 0 then
   if DefaultRowHeight > 0 then
   begin
-    H:=ClientHeight;
+    H := ClientHeight;
     if FFooterOptions.Active then
       //H:=H - GetDefaultRowHeight * FFooterOptions.RowCount;
-      H:=H - DefaultRowHeight * FFooterOptions.RowCount;
+      H := H - DefaultRowHeight * FFooterOptions.RowCount;
 
 
     //Result := H div GetDefaultRowHeight;
@@ -5692,7 +5778,7 @@ begin
     if dgTitles in Options then
       //Dec(Result, 1);
       //Result:=Result - RowHeights[0] div GetDefaultRowHeight;
-      Result:=Result - RowHeights[0] div DefaultRowHeight;
+      Result := Result - RowHeights[0] div DefaultRowHeight;
   end
   else
     Result := 1;
@@ -5720,25 +5806,25 @@ begin
           HintStr := TRxColumnTitle(tCol.Title).Hint;
       end
       else
-      if Cell.X >= Ord(dgIndicator in Options) then
-      begin
-        CellRect_ := CellRect(Cell.X, Cell.Y);
-        if (CellRect_.Bottom > CursorPos.Y) and (CellRect_.Right > CursorPos.X) then
-          if Assigned(FOnDataHintShow) then
-          begin
-            Processed := False;
-            rec := DataLink.ActiveRecord;
-            try
-              DataLink.ActiveRecord := Cell.y - 1;
-              HintStr_ := tCol.Field.DisplayText;
-              FOnDataHintShow(Self, CursorPos, Cell, tCol, HintStr_, Processed);
-            finally
-              DataLink.ActiveRecord := rec;
+        if Cell.X >= Ord(dgIndicator in Options) then
+        begin
+          CellRect_ := CellRect(Cell.X, Cell.Y);
+          if (CellRect_.Bottom > CursorPos.Y) and (CellRect_.Right > CursorPos.X) then
+            if Assigned(FOnDataHintShow) then
+            begin
+              Processed := False;
+              rec := DataLink.ActiveRecord;
+              try
+                DataLink.ActiveRecord := Cell.y - 1;
+                HintStr_ := tCol.Field.DisplayText;
+                FOnDataHintShow(Self, CursorPos, Cell, tCol, HintStr_, Processed);
+              finally
+                DataLink.ActiveRecord := rec;
+              end;
+              if Processed then
+                HintStr := HintStr_;
             end;
-            if Processed then
-              HintStr := HintStr_;
-          end;
-      end;
+        end;
     end;
   end;
   inherited CMHintShow(Message);
@@ -5756,22 +5842,22 @@ begin
       State:=rxfsEmpty;}
     end
     else
-    if (FFilterListEditor.Text = AllValue) {or (FFilterListEditor.Text = '')} then
-    begin
-      ClearFilter;
-      State:=rxfsAll;
-    end
-    else
-    begin
-      ClearFilter;
-      CurrentValues.Add(FFilterListEditor.Text);
-      State:=rxfsFilter;
-    end;
+      if (FFilterListEditor.Text = AllValue) {or (FFilterListEditor.Text = '')} then
+      begin
+        ClearFilter;
+        State := rxfsAll;
+      end
+      else
+      begin
+        ClearFilter;
+        CurrentValues.Add(FFilterListEditor.Text);
+        State := rxfsFilter;
+      end;
   end;
 
   DataSource.DataSet.DisableControls;
-  DataSource.DataSet.Filtered:=false;
-  DataSource.DataSet.Filtered:=true;
+  DataSource.DataSet.Filtered := False;
+  DataSource.DataSet.Filtered := True;
   CalcStatTotals;
   DataSource.DataSet.EnableControls;
 
@@ -5791,27 +5877,29 @@ var
   RxDBGrid_PopUpFilterForm: TRxDBGrid_PopUpFilterForm;
   R, P: TPoint;
   FRxCol: TRxColumn;
-  FRect: TRect;
+  //FRect: TRect;
 begin
-  FRxCol:=TRxColumn(Columns[Columns.RealIndex(FFilterColDlgButton.Col)]);
+  FRxCol := TRxColumn(Columns[Columns.RealIndex(FFilterColDlgButton.Col)]);
 
-  RxDBGrid_PopUpFilterForm:=TRxDBGrid_PopUpFilterForm.CreatePopUpFilterForm(FRxCol);
+  RxDBGrid_PopUpFilterForm := TRxDBGrid_PopUpFilterForm.CreatePopUpFilterForm(FRxCol);
 
 
-  P:=Point(FFilterColDlgButton.Left, FFilterColDlgButton.Top + FFilterColDlgButton.Width);
+  P := Point(FFilterColDlgButton.Left, FFilterColDlgButton.Top +
+    FFilterColDlgButton.Width);
 
 
   if RxDBGrid_PopUpFilterForm.Width < FRxCol.Width then
-    P.X:=FFilterColDlgButton.Left + FFilterColDlgButton.Width - RxDBGrid_PopUpFilterForm.Width
+    P.X := FFilterColDlgButton.Left + FFilterColDlgButton.Width -
+      RxDBGrid_PopUpFilterForm.Width
   else
-    P.X:=FFilterColDlgButton.Left + FFilterColDlgButton.Width - FRxCol.Width;
+    P.X := FFilterColDlgButton.Left + FFilterColDlgButton.Width - FRxCol.Width;
 
-  R:=ClientToScreen(P);
+  R := ClientToScreen(P);
   if R.X + RxDBGrid_PopUpFilterForm.Width > Screen.Width then
-    R.X:=Screen.Width - RxDBGrid_PopUpFilterForm.Width;
+    R.X := Screen.Width - RxDBGrid_PopUpFilterForm.Width;
 
-  RxDBGrid_PopUpFilterForm.Left:=R.X;
-  RxDBGrid_PopUpFilterForm.Top:=R.Y;
+  RxDBGrid_PopUpFilterForm.Left := R.X;
+  RxDBGrid_PopUpFilterForm.Top := R.Y;
   RxDBGrid_PopUpFilterForm.ShowModal;
   RxDBGrid_PopUpFilterForm.Free;
 end;
@@ -5823,16 +5911,16 @@ begin
     if (FFilterSimpleEdit.Text = '') and (Style = rxfstManualEdit) then
     begin
       CurrentValues.Clear;
-      State:=rxfsAll;
+      State := rxfsAll;
     end
     else
-      State:=rxfsFilter;
-    ManulEditValue:=FFilterSimpleEdit.Text;
+      State := rxfsFilter;
+    ManulEditValue := FFilterSimpleEdit.Text;
   end;
 
   DataSource.DataSet.DisableControls;
-  DataSource.DataSet.Filtered:=false;
-  DataSource.DataSet.Filtered:=true;
+  DataSource.DataSet.Filtered := False;
+  DataSource.DataSet.Filtered := True;
   CalcStatTotals;
   DataSource.DataSet.EnableControls;
 
@@ -5843,7 +5931,9 @@ end;
 procedure TRxDBGrid.InternalOptimizeColumnsWidth(AColList: TList);
 var
   P: TBookmark;
-  i, W, n: integer;
+  i: Integer;
+  W: Integer;
+  //n: Integer;
   WA: PIntegerArray;
   S: string;
 begin
@@ -5882,7 +5972,7 @@ begin
               if (n <> -1) and (n < PickList.Count) then
                 S := PickList.Strings[n];
             end; *)
-          S:=GetFieldDisplayText(TRxColumn(AColList[i]).Field, TRxColumn(AColList[i]));
+          S := GetFieldDisplayText(TRxColumn(AColList[i]).Field, TRxColumn(AColList[i]));
           W := Canvas.TextWidth(S) + 6;
           if WA^[i] < W then
             WA^[i] := W;
@@ -5911,42 +6001,43 @@ begin
 
   if FFooterOptions.Active and (FFooterOptions.RowCount > 0) then
   begin
-    P:=GCache.MaxClientXY;
+    P := GCache.MaxClientXY;
     with GCache do
       //MaxClientXY.Y:=MaxClientXY.Y - (GetDefaultRowHeight * FFooterOptions.RowCount + 2);
-      MaxClientXY.Y:=MaxClientXY.Y - (DefaultRowHeight * FFooterOptions.RowCount + 2);
+      MaxClientXY.Y := MaxClientXY.Y - (DefaultRowHeight * FFooterOptions.RowCount + 2);
   end;
 
-  if ((rdgWordWrap in FOptionsRx) or (Assigned(FGroupItems) and FGroupItems.Active)) and (HandleAllocated) then
+  if ((rdgWordWrap in FOptionsRx) or (Assigned(FGroupItems) and FGroupItems.Active)) and
+    (HandleAllocated) then
     UpdateRowsHeight;
 
   inherited VisualChange;
 end;
 
-procedure TRxDBGrid.EditorWidthChanged(aCol, aWidth: Integer);
+procedure TRxDBGrid.EditorWidthChanged(aCol, aWidth: integer);
 var
-  R:TRect;
+  R: TRect;
 begin
   inherited EditorWidthChanged(aCol, aWidth);
   if FFilterListEditor.Visible then
   begin
-    R:=CellRect(FFilterListEditor.Col+1,0);
-    FFilterListEditor.Width:=Columns[FFilterListEditor.Col].Width;
-    FFilterListEditor.Left:=R.Left;
+    R := CellRect(FFilterListEditor.Col + 1, 0);
+    FFilterListEditor.Width := Columns[FFilterListEditor.Col].Width;
+    FFilterListEditor.Left := R.Left;
   end
   else
-  if FFilterSimpleEdit.Visible then
-  begin
-    R:=CellRect(FFilterSimpleEdit.Col+1,0);
-    FFilterSimpleEdit.Width:=Columns[FFilterSimpleEdit.Col].Width;
-    FFilterSimpleEdit.Left:=R.Left;
-  end
-  else
-  if FFilterColDlgButton.Visible then
-  begin
-    R:=CellRect(FFilterColDlgButton.Col+1,0);
-    FFilterColDlgButton.Left := R.Right - FFilterColDlgButton.Width;
-  end;
+    if FFilterSimpleEdit.Visible then
+    begin
+      R := CellRect(FFilterSimpleEdit.Col + 1, 0);
+      FFilterSimpleEdit.Width := Columns[FFilterSimpleEdit.Col].Width;
+      FFilterSimpleEdit.Left := R.Left;
+    end
+    else
+      if FFilterColDlgButton.Visible then
+      begin
+        R := CellRect(FFilterColDlgButton.Col + 1, 0);
+        FFilterColDlgButton.Left := R.Right - FFilterColDlgButton.Width;
+      end;
 end;
 
 function TRxDBGrid.EditorByStyle(Style: TColumnButtonStyle): TWinControl;
@@ -5965,11 +6056,11 @@ begin
         exit;
       end
       else
-      if F.DataType in [ftDate, ftDateTime] then
-      begin
-        Result := FRxDbGridDateEditor;
-        exit;
-      end;
+        if F.DataType in [ftDate, ftDateTime] then
+        begin
+          Result := FRxDbGridDateEditor;
+          exit;
+        end;
     end;
   end;
   Result := inherited EditorByStyle(Style);
@@ -5977,9 +6068,9 @@ begin
   if (Style = cbsPickList) and (Result is TCustomComboBox) then
   begin
     if TRxColumn(SelectedColumn).DirectInput then
-      TCustomComboBox(Result).Style:=csDropDown
+      TCustomComboBox(Result).Style := csDropDown
     else
-      TCustomComboBox(Result).Style:=csDropDownList;
+      TCustomComboBox(Result).Style := csDropDownList;
   end;
 
 end;
@@ -5990,39 +6081,40 @@ var
   P_26: TBookmark;
   {$ENDIF}
   P: TBookmark;
-  i, cnt: integer;
-  APresent: boolean;
+  i, cnt: Integer;
+  APresent: Boolean;
 
-  DHS:THackDataSet;
+  DHS: THackDataSet;
 
-  SaveState:TDataSetState;
-  SavePos:integer;
-  SaveActiveRecord:integer;
+  SaveState: TDataSetState;
+  SavePos: integer;
+  SaveActiveRecord: integer;
 
-  SaveAfterScroll:TDataSetNotifyEvent;
-  SaveBeforeScroll:TDataSetNotifyEvent;
-  C:TRxColumn;
-  AValue:Variant;
+  SaveAfterScroll: TDataSetNotifyEvent;
+  SaveBeforeScroll: TDataSetNotifyEvent;
+  C: TRxColumn;
+  AValue: variant;
 
-  FCList, FCList2:TFPList;
-  j: Integer;
+  FCList, FCList2: TFPList;
+  //j: integer;
   F: TRxColumnFooterItem;
-  S: String;
+  //S: string;
 begin
-  if (not (DatalinkActive and (FGroupItems.Active or FFooterOptions.Active))) or (Columns.Count = 0) or (gsAddingAutoColumns in GridStatus) then
+  if (not (DatalinkActive and (FGroupItems.Active or FFooterOptions.Active))) or
+    (Columns.Count = 0) or (gsAddingAutoColumns in GridStatus) then
     Exit;
 
   if Datalink.ActiveRecord < 0 then exit;
 
-  if Assigned(OnRxCalcFooterValues)then
+  if Assigned(OnRxCalcFooterValues) then
   begin
     Inc(FInProcessCalc);
     for C in Columns do
     begin
       C.Footer.ResetTestValue;
-      AValue:=Null;
+      AValue := Null;
       OnRxCalcFooterValues(Self, C, AValue);
-      if AValue<>null then C.Footer.FTestValue := AValue;
+      if AValue <> null then C.Footer.FTestValue := AValue;
     end;
     Dec(FInProcessCalc);
     Exit;
@@ -6031,12 +6123,13 @@ begin
   APresent := False;
   for C in Columns do
   begin
-    APresent := (C.Footer.FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin, fvtCount]) {or (C.FGroupItems.Active)};
+    APresent := (C.Footer.FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin, fvtCount])
+    {or (C.FGroupItems.Active)};
     if not APresent then
     begin
       for F in C.Footers do
       begin
-        APresent:=F.FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin, fvtCount];
+        APresent := F.FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin, fvtCount];
         if APresent then
           break;
       end;
@@ -6050,7 +6143,7 @@ begin
 
   Inc(FInProcessCalc);
 
-  cnt:=0;
+  cnt := 0;
 
   if FGroupItems.Active then FGroupItems.Clear;
 
@@ -6060,40 +6153,40 @@ begin
     for F in C.Footers do F.ResetTestValue;
   end;
 
-  if (DataSource.DataSet.RecordCount<=0) then
+  if (DataSource.DataSet.RecordCount <= 0) then
   begin
     Dec(FInProcessCalc);
     exit;
   end;
 
-  DHS:=THackDataSet(DataSource.DataSet);
+  DHS := THackDataSet(DataSource.DataSet);
 
   {$IFDEF NoAutomatedBookmark}
-  P:=DataSource.DataSet.GetBookmark;
+  P := DataSource.DataSet.GetBookmark;
   {$ELSE}
   P := DHS.Bookmark;
   {$ENDIF}
 
-  SaveState:=DHS.SetTempState(dsBrowse);
+  SaveState := DHS.SetTempState(dsBrowse);
 
-  SaveAfterScroll:=DHS.AfterScroll;
-  SaveBeforeScroll:=DHS.BeforeScroll;
-  DHS.AfterScroll:=nil;
-  DHS.BeforeScroll:=nil;
+  SaveAfterScroll := DHS.AfterScroll;
+  SaveBeforeScroll := DHS.BeforeScroll;
+  DHS.AfterScroll := nil;
+  DHS.BeforeScroll := nil;
 
-  SaveActiveRecord:=Datalink.ActiveRecord;
-  Datalink.ActiveRecord:=0;
-  SavePos:=DHS.RecNo;
+  SaveActiveRecord := Datalink.ActiveRecord;
+  Datalink.ActiveRecord := 0;
+  SavePos := DHS.RecNo;
 
-  FCList:=TFPList.Create;
-  FCList2:=TFPList.Create;
+  FCList := TFPList.Create;
+  FCList2 := TFPList.Create;
 
   for C in Columns do
   begin
     if (C.Footer.ValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and C.Visible then
     begin
       FCList.Add(C);
-      C.Footer.FField:=DHS.FieldByName(C.Footer.FieldName);
+      C.Footer.FField := DHS.FieldByName(C.Footer.FieldName);
     end;
 
     for F in C.Footers do
@@ -6102,7 +6195,7 @@ begin
       begin
         if FCList.IndexOf(C) < 0 then
           FCList.Add(C);
-        F.FField:=DHS.FieldByName(F.FieldName);
+        F.FField := DHS.FieldByName(F.FieldName);
       end;
     end;
 
@@ -6118,27 +6211,28 @@ begin
 
   while not DHS.EOF do
   begin
-    for i:=0 to FCList.Count-1 do
+    for i := 0 to FCList.Count - 1 do
     begin
-      C:=TRxColumn(FCList[i]);
-      if (C.FFooter.FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and Assigned(C.FFooter.FField) then
+      C := TRxColumn(FCList[i]);
+      if (C.FFooter.FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and
+        Assigned(C.FFooter.FField) then
         C.FFooter.UpdateTestValueFromVar(C.FFooter.FField.AsVariant);
 
       for F in C.FFooters do
       begin
         if (F.FValueType in [fvtSum, fvtAvg, fvtMax, fvtMin]) and Assigned(F.FField) then
-          F.UpdateTestValueFromVar( F.FField.AsVariant)
+          F.UpdateTestValueFromVar(F.FField.AsVariant);
       end;
     end;
 
     if FGroupItems.Active then
     begin
       FGroupItems.UpdateValues;
-      for i:=0 to FCList2.Count-1 do
+      for i := 0 to FCList2.Count - 1 do
         TRxColumn(FCList2[i]).FGroupParam.UpdateValues;
     end;
 
-    inc(cnt);
+    Inc(cnt);
     DHS.Next;
   end;
 
@@ -6146,18 +6240,18 @@ begin
   for C in Columns do
   begin
     if C.Footer.ValueType = fvtCount then
-        C.FFooter.FCountRec:=Cnt
+      C.FFooter.FCountRec := Cnt
     else
-    if C.Footer.ValueType = fvtAvg then
-      C.FFooter.FTestValue:=C.FFooter.FTestValue / Cnt;
+      if C.Footer.ValueType = fvtAvg then
+        C.FFooter.FTestValue := C.FFooter.FTestValue / Cnt;
 
     for F in C.Footers do
     begin
       if F.ValueType = fvtCount then
-          F.FCountRec:=Cnt
+        F.FCountRec := Cnt
       else
-      if F.ValueType = fvtAvg then
-        F.FTestValue:=F.FTestValue / Cnt;
+        if F.ValueType = fvtAvg then
+          F.FTestValue := F.FTestValue / Cnt;
     end;
   end;
 
@@ -6178,24 +6272,24 @@ begin
     DHS.Prior;
   end;
 
-  for i:=0 to Columns.Count-1 do
-    TRxColumn(Columns[i]).Footer.FField:=nil;
+  for i := 0 to Columns.Count - 1 do
+    TRxColumn(Columns[i]).Footer.FField := nil;
 
-  Datalink.ActiveRecord:=SaveActiveRecord;
+  Datalink.ActiveRecord := SaveActiveRecord;
   DHS.RestoreState(SaveState);
 
-  DHS.AfterScroll  := SaveAfterScroll;
+  DHS.AfterScroll := SaveAfterScroll;
   DHS.BeforeScroll := SaveBeforeScroll;
 
   {$IFDEF NoAutomatedBookmark}
-  P_26:=DHS.GetBookmark;
-  if DHS.CompareBookmarks(P_26, P)<>0 then
+  P_26 := DHS.GetBookmark;
+  if DHS.CompareBookmarks(P_26, P) <> 0 then
     DHS.GotoBookmark(P); //workaround for fix navigation problem
   DHS.FreeBookmark(P);
   DHS.FreeBookmark(P_26);
   {$ELSE}
-  if DHS.BookmarkValid(P) and (DHS.CompareBookmarks(DHS.Bookmark, P)<>0) then
-    DHS.Bookmark:=P; //workaround for fix navigation problem
+  if DHS.BookmarkValid(P) and (DHS.CompareBookmarks(DHS.Bookmark, P) <> 0) then
+    DHS.Bookmark := P; //workaround for fix navigation problem
   {$ENDIF}
 
 
@@ -6261,23 +6355,23 @@ var
   Filter: TRxColumnFilter;
   F: TField;
   C: TRxColumn;
-  S: String;
+  S: string;
 begin
   Accept := True;
   for i := 0 to Columns.Count - 1 do
   begin
-    C:=Columns[i];
-    Filter:=TRxColumn(C).Filter;
-    F:=TRxColumn(C).Field;
+    C := Columns[i];
+    Filter := TRxColumn(C).Filter;
+    F := TRxColumn(C).Field;
     if Filter.State = rxfsAll then
-      Accept:=true
+      Accept := True
     else
-    if Filter.State = rxfsEmpty then
-      Accept:=F.IsNull
-    else
-    if Filter.State = rxfsNonEmpty then
-      Accept:=not F.IsNull
-    else
+      if Filter.State = rxfsEmpty then
+        Accept := F.IsNull
+      else
+        if Filter.State = rxfsNonEmpty then
+          Accept := not F.IsNull
+        else
 {      if Filter.State = rxfsTopXXXX then
       begin
         if DataSet.State = dsFilter then
@@ -6288,13 +6382,14 @@ begin
           Break;
       end
       else}
-    begin
-      S:=GetFieldDisplayText(F, C);
-      if Filter.CurrentValues.Count > 0 then
-        Accept := Filter.CurrentValues.IndexOf(S) >= 0;
+        begin
+          S := GetFieldDisplayText(F, C);
+          if Filter.CurrentValues.Count > 0 then
+            Accept := Filter.CurrentValues.IndexOf(S) >= 0;
 
-      if Accept and (Filter.Style in [rxfstBoth, rxfstManualEdit]) and (Filter.ManulEditValue<>'') then
-        Accept := UTF8Pos(UTF8UpperCase(Filter.ManulEditValue), UTF8UpperCase(S)) > 0;
+          if Accept and (Filter.Style in [rxfstBoth, rxfstManualEdit]) and
+            (Filter.ManulEditValue <> '') then
+            Accept := UTF8Pos(UTF8UpperCase(Filter.ManulEditValue), UTF8UpperCase(S)) > 0;
 (*
       if Filter.CurrentValues.Count > 0 then
         Accept := Filter.CurrentValues.IndexOf(F.DisplayText) >= 0;
@@ -6302,9 +6397,9 @@ begin
       if Accept and (Filter.Style in [rxfstBoth, rxfstManualEdit]) and (Filter.ManulEditValue<>'') then
         Accept := UTF8Pos(UTF8UpperCase(Filter.ManulEditValue), UTF8UpperCase(F.DisplayText)) > 0;
 *)
-      if not Accept then
-        Break;
-    end;
+          if not Accept then
+            Break;
+        end;
   end;
   if Assigned(F_EventOnFilterRec) then
     F_EventOnFilterRec(DataSet, Accept);
@@ -6328,27 +6423,27 @@ end;
 procedure TRxDBGrid.BeforePo(DataSet: TDataSet);
 var
   i: integer;
-  C:TRxColumn;
+  C: TRxColumn;
 begin
   if DatalinkActive then
   begin
-    if FooterOptions.Active  then
-    for i := 0 to Columns.Count - 1 do
-    begin
-      if not TRxColumn(Columns[i]).Footer.PostTestValue then
+    if FooterOptions.Active then
+      for i := 0 to Columns.Count - 1 do
       begin
+        if not TRxColumn(Columns[i]).Footer.PostTestValue then
+        begin
           FInProcessCalc := -1;
           Break;
+        end;
       end;
-    end;
 
     if rdgFilter in OptionsRx then
-    for i := 0 to Columns.Count - 1 do
-    begin
-      C:=TRxColumn(Columns[i]);
-      if Assigned(C.Field) and (C.Filter.ValueList.IndexOf(C.Field.DisplayText)<  0) then
-        C.Filter.ValueList.Add(C.Field.DisplayText);
-    end;
+      for i := 0 to Columns.Count - 1 do
+      begin
+        C := TRxColumn(Columns[i]);
+        if Assigned(C.Field) and (C.Filter.ValueList.IndexOf(C.Field.DisplayText) < 0) then
+          C.Filter.ValueList.Add(C.Field.DisplayText);
+      end;
   end;
 
   if Assigned(F_EventOnBeforePost) then
@@ -6381,8 +6476,8 @@ begin
   if FFooterOptions.Active and (DatalinkActive) then
     for i := 0 to Columns.Count - 1 do
     begin
-      R:=TRxColumn(Columns[i]);
-      F:=TRxColumn(Columns[i]).Footer;
+      R := TRxColumn(Columns[i]);
+      F := TRxColumn(Columns[i]).Footer;
       if not TRxColumn(Columns[i]).Footer.ErrorTestValue then
       begin
         FInProcessCalc := -1;
@@ -6426,10 +6521,10 @@ begin
 end;
 
 procedure TRxDBGrid.OnFilter(Sender: TObject);
-var
-  C: TRxColumn;
-  i: integer;
-  FBS, FAS:TDataSetNotifyEvent;
+//var
+  //C: TRxColumn;
+  //i: integer;
+  //FBS, FAS: TDataSetNotifyEvent;
 begin
   BeginUpdate;
   OptionsRx := OptionsRx + [rdgFilter];
@@ -6484,34 +6579,34 @@ procedure TRxDBGrid.OnSortBy(Sender: TObject);
 var
   i: integer;
   S1: string;
-  FSortListField:TStringList;
-  FColumn:TRxColumn;
+  FSortListField: TStringList;
+  FColumn: TRxColumn;
 begin
   if DatalinkActive then
   begin
-    FSortListField:=TStringList.Create;
+    FSortListField := TStringList.Create;
     try
       rxSortByForm := TrxSortByForm.Create(Application);
       rxSortByForm.CheckBox1.Checked := rdgCaseInsensitiveSort in FOptionsRx;
       if rxSortByForm.Execute(Self, FSortListField) then
       begin
-        for i:=0 to Columns.Count-1 do
+        for i := 0 to Columns.Count - 1 do
         begin
-          FColumn:=Columns[i];
-          FColumn.FSortPosition:=0;
-          FColumn.FSortOrder:=smNone;
+          FColumn := Columns[i];
+          FColumn.FSortPosition := 0;
+          FColumn.FSortOrder := smNone;
         end;
 
         for i := 0 to FSortListField.Count - 1 do
         begin
-          S1:=FSortListField.Strings[i];
-          FColumn:=TRxColumn(ColumnByFieldName(Copy(S1, 2, Length(S1))));
+          S1 := FSortListField.Strings[i];
+          FColumn := TRxColumn(ColumnByFieldName(Copy(S1, 2, Length(S1))));
           if S1[1] = '1' then
             FColumn.FSortOrder := smUp
           else
             FColumn.FSortOrder := smDown;
 
-          FColumn.FSortPosition:=i;
+          FColumn.FSortPosition := i;
         end;
 
         CollumnSortListUpdate;
@@ -6551,61 +6646,61 @@ end;
 
 procedure TRxDBGrid.OnCopyCellValue(Sender: TObject);
 var
-  P:TBookMark;
-  S:string;
-  i, k, j:integer;
+  P: TBookMark;
+  S: string;
+  i, k, j: integer;
 begin
   if DatalinkActive then
   begin
-    if (dgMultiselect in Options) and (SelectedRows.Count>1) then
+    if (dgMultiselect in Options) and (SelectedRows.Count > 1) then
     begin
-      S:='';
+      S := '';
       DataSource.DataSet.DisableControls;
       {$IFDEF NoAutomatedBookmark}
-      P:=DataSource.DataSet.GetBookmark;
+      P := DataSource.DataSet.GetBookmark;
       {$ELSE}
-      P:=DataSource.DataSet.Bookmark;
+      P := DataSource.DataSet.Bookmark;
       {$ENDIF}
       try
-        for j:=0 to SelectedRows.Count-1 do
+        for j := 0 to SelectedRows.Count - 1 do
         begin
-          DataSource.DataSet.Bookmark:=SelectedRows[j];
-          if S<>'' then
-            S:=S+LineEnding;
-          K:=0;
-          for i:=0 to Columns.Count-1 do
+          DataSource.DataSet.Bookmark := SelectedRows[j];
+          if S <> '' then
+            S := S + LineEnding;
+          K := 0;
+          for i := 0 to Columns.Count - 1 do
           begin
             if Assigned(Columns[i].Field) then
             begin
-              if K<>0 then
-                S:=S+#9;
+              if K <> 0 then
+                S := S + #9;
 
-              S:=S + GetFieldDisplayText(Columns[i].Field, Columns[i]);
+              S := S + GetFieldDisplayText(Columns[i].Field, Columns[i]);
 (*              {$IF lcl_fullversion >= 1090000}
               if CheckDisplayMemo(Columns[i].Field) then
                 S :=S + Columns[i].Field.AsString
               else
               {$ENDIF}
                 S:=S+Columns[i].Field.DisplayText; *)
-              inc(K);
+              Inc(K);
             end;
           end;
         end;
       finally
-      {$IFDEF NoAutomatedBookmark}
+        {$IFDEF NoAutomatedBookmark}
         DataSource.DataSet.GotoBookmark(P);
         DataSource.DataSet.FreeBookmark(P);
-      {$ELSE}
-        DataSource.DataSet.Bookmark:=P;
-      {$ENDIF}
+        {$ELSE}
+        DataSource.DataSet.Bookmark := P;
+        {$ENDIF}
         DataSource.DataSet.EnableControls;
       end;
       Invalidate;
-      if S<>'' then
+      if S <> '' then
       begin
         try
           Clipboard.Open;
-          Clipboard.AsText:=S;
+          Clipboard.AsText := S;
         finally
           Clipboard.Close;
         end;
@@ -6661,19 +6756,19 @@ begin
       end;
     end   *)
     else
-    if Assigned(SelectedField) then
-    try
-      Clipboard.Open;
+      if Assigned(SelectedField) then
+      try
+        Clipboard.Open;
 
-      {$IF lcl_fullversion >= 1090000}
-      if CheckDisplayMemo(SelectedField) then
-        Clipboard.AsText:=SelectedField.AsString
-      else
-      {$ENDIF}
-        Clipboard.AsText:=SelectedField.DisplayText;
-    finally
-      Clipboard.Close;
-    end;
+        {$IF lcl_fullversion >= 1090000}
+        if CheckDisplayMemo(SelectedField) then
+          Clipboard.AsText := SelectedField.AsString
+        else
+          {$ENDIF}
+          Clipboard.AsText := SelectedField.DisplayText;
+      finally
+        Clipboard.Close;
+      end;
   end;
 end;
 
@@ -6696,37 +6791,38 @@ begin
     begin
       if (FOldDataSetState in dsEditModes) and (DataSource.State = dsBrowse) then
         CalcStatTotals;
-      FOldDataSetState:=DataSource.State;
+      FOldDataSetState := DataSource.State;
     end;
   end
   else
-    FOldDataSetState:=dsInactive;
+    FOldDataSetState := dsInactive;
 end;
 
 procedure TRxDBGrid.DoEditorHide;
 var
-  R:TRxColumn;
-  i:integer;
+  R: TRxColumn;
+  i: integer;
 begin
   inherited DoEditorHide;
-  R:=SelectedColumn as TRxColumn;
+  R := SelectedColumn as TRxColumn;
 
   if Assigned(Editor) and Assigned(R) then
-  for i:=0 to R.EditButtons.Count-1 do
-  begin
-    if R.EditButtons[i].Style = ebsUpDownRx then
-      R.EditButtons[i].FSpinBtn.Visible:=false
-    else
-      R.EditButtons[i].FButton.Visible:=false;
-  end;
+    for i := 0 to R.EditButtons.Count - 1 do
+    begin
+      if R.EditButtons[i].Style = ebsUpDownRx then
+        R.EditButtons[i].FSpinBtn.Visible := False
+      else
+        R.EditButtons[i].FButton.Visible := False;
+    end;
 end;
 
 procedure TRxDBGrid.DoEditorShow;
 var
-  R, R1: TRect;
-  FSaveRow: Integer;
-  P: TBookMark;
-  FG: TColumnGroupItem;
+  R: TRect;
+  //R1: TRect;
+  //FSaveRow: Integer;
+  //P: TBookMark;
+  //FG: TColumnGroupItem;
 begin
   inherited DoEditorShow;
 
@@ -6753,7 +6849,7 @@ begin
     if IsMerged(Col) then
     begin
       CalcCellExtent(Col, Row, R);
-      Editor.SetBounds(R.Left, R.Top, R.Right-R.Left-1, R.Bottom-R.Top-1);
+      Editor.SetBounds(R.Left, R.Top, R.Right - R.Left - 1, R.Bottom - R.Top - 1);
     end;
   end;
 
@@ -6766,16 +6862,21 @@ begin
 
   if FFooterOptions.Active then
   begin
-//    AGCache.ClientHeight:=AGCache.ClientHeight - DefaultRowHeight * FFooterOptions.RowCount;
-    AGCache.ScrollHeight:=AGCache.ScrollHeight - DefaultRowHeight * FFooterOptions.RowCount;
-    AGCache.ClientRect.Bottom:=AGCache.ClientRect.Bottom - DefaultRowHeight * FFooterOptions.RowCount;
+    //    AGCache.ClientHeight:=AGCache.ClientHeight - DefaultRowHeight * FFooterOptions.RowCount;
+    AGCache.ScrollHeight := AGCache.ScrollHeight - DefaultRowHeight *
+      FFooterOptions.RowCount;
+    AGCache.ClientRect.Bottom := AGCache.ClientRect.Bottom - DefaultRowHeight *
+      FFooterOptions.RowCount;
   end;
 
 end;
 
-procedure TRxDBGrid.CalcCellExtent(ACol, ARow: Integer; var ARect: TRect);
+procedure TRxDBGrid.CalcCellExtent(ACol, ARow: integer; var ARect: TRect);
 var
-  L, T, R, B: Integer;
+  L: integer;
+  //  T: Integer;
+  R: integer;
+  //  : Integer;
   C: TRxColumn;
 begin
   if IsMerged(ACol, L, R, C) then
@@ -6785,93 +6886,96 @@ begin
   end;
 end;
 
-function TRxDBGrid.IsMerged(ACol: Integer): Boolean;
+function TRxDBGrid.IsMerged(ACol: integer): boolean;
 var
-  L, R: Integer;
+  L, R: integer;
   C: TRxColumn;
 begin
   Result := IsMerged(ACol, L, R, C);
 end;
 
-function TRxDBGrid.IsMerged(ACol: Integer; out ALeft, ARight: Integer; out
-  AColumn: TRxColumn): Boolean;
+function TRxDBGrid.IsMerged(ACol: integer; out ALeft, ARight: integer;
+  out AColumn: TRxColumn): boolean;
 begin
-  Result := false;
-  AColumn:=nil;
+  Result := False;
+  AColumn := nil;
   ALeft := ACol;
   ARight := ACol;
 
   if (rdgColSpanning in OptionsRx) and Assigned(FOnMergeCells) then
   begin
-    inc(FMergeLock);
+    Inc(FMergeLock);
     FOnMergeCells(Self, ACol, ALeft, ARight, AColumn);
     if ALeft > ARight then
       SwapValues(ALeft, ARight);
     Result := (ALeft <> ARight);
-    dec(FMergeLock);
+    Dec(FMergeLock);
   end;
 end;
 
-function TRxDBGrid.GetEditMask(aCol, aRow: Longint): string;
+function TRxDBGrid.GetEditMask(aCol, aRow: longint): string;
 var
-  L, R: Integer;
+  L, R: integer;
   C: TRxColumn;
 begin
   if (rdgColSpanning in OptionsRx) then
     if IsMerged(aCol, L, R, C) then
     begin
       if Assigned(C) then
-        aCol:=C.Index
+        aCol := C.Index
       else
-        aCol:=L;
+        aCol := L;
     end;
-  Result:=inherited GetEditMask(aCol, aRow);
+  Result := inherited GetEditMask(aCol, aRow);
 end;
 
-function TRxDBGrid.GetEditText(aCol, aRow: Longint): string;
+function TRxDBGrid.GetEditText(aCol, aRow: longint): string;
 var
-  R, L: Integer;
+  R, L: integer;
   C: TRxColumn;
 begin
   if (rdgColSpanning in OptionsRx) then
     if IsMerged(aCol, L, R, C) then
     begin
       if Assigned(C) then
-        aCol:=C.Index
+        aCol := C.Index
       else
-        aCol:=L;
+        aCol := L;
     end;
-  Result:=inherited GetEditText(aCol, aRow);
+  Result := inherited GetEditText(aCol, aRow);
 end;
 
-function TRxDBGrid.GetDefaultEditor(Column: Integer): TWinControl;
+function TRxDBGrid.GetDefaultEditor(Column: integer): TWinControl;
 var
-  L, R: Integer;
+  L, R: integer;
   C: TRxColumn;
 begin
   if (rdgColSpanning in OptionsRx) then
     if IsMerged(Column, L, R, C) then
     begin
       if Assigned(C) then
-        Column:=C.Index
+        Column := C.Index
       else
-        Column:=L;
+        Column := L;
     end;
-  Result:=inherited GetDefaultEditor(Column);
+  Result := inherited GetDefaultEditor(Column);
 end;
 
-procedure TRxDBGrid.PrepareCanvas(aCol, aRow: Integer; AState: TGridDrawState);
-function  IsCellButtonColumn(ACell: TPoint): boolean;
-var
-  Column: TGridColumn;
-begin
-  Column := ColumnFromGridColumn(ACell.X);
-  result := (Column<>nil) and (Column.ButtonStyle=cbsButtonColumn) and
-            (ACell.y>=FixedRows);
-end;
+procedure TRxDBGrid.PrepareCanvas(aCol, aRow: integer; AState: TGridDrawState);
+
+  function IsCellButtonColumn(ACell: TPoint): boolean;
+  var
+    Column: TGridColumn;
+  begin
+    Column := ColumnFromGridColumn(ACell.X);
+    Result := (Column <> nil) and (Column.ButtonStyle = cbsButtonColumn) and
+      (ACell.y >= FixedRows);
+  end;
 
 var
-  L, R, RR: Integer;
+  L: Integer;
+  R: Integer;
+  //RR: Integer;
   C: TRxColumn;
 begin
   if (rdgColSpanning in OptionsRx) then
@@ -6884,10 +6988,10 @@ begin
 
   if (gdSelected in AState) then
   begin
-    if not IsCellButtonColumn(point(aCol,aRow)) then
+    if not IsCellButtonColumn(point(aCol, aRow)) then
       if not FIsSelectedDefaultFont then
       begin
-        Canvas.Font:=FSelectedFont;
+        Canvas.Font := FSelectedFont;
         if FSelectedFont.Color = clDefault then
           Canvas.Font.Color := clHighlightText;
       end;
@@ -6902,73 +7006,74 @@ var
 begin
   if not (csDestroying in ComponentState) then
   begin
-    R:=ScreenToClient(Mouse.CursorPos);
-    C1:=MouseCoord(R.X, R.Y);
-    C:=TRxColumn(ColumnFromGridColumn(C1.X));
+    R := ScreenToClient(Mouse.CursorPos);
+    C1 := MouseCoord(R.X, R.Y);
+    C := TRxColumn(ColumnFromGridColumn(C1.X));
     if Assigned(C) and Assigned(C.PopupMenu) then
-      Result:=C.PopupMenu
+      Result := C.PopupMenu
     else
-      Result:=inherited GetPopupMenu;
+      Result := inherited GetPopupMenu;
   end
   else
-    Result:=inherited GetPopupMenu;
+    Result := inherited GetPopupMenu;
 end;
 
 {$IFDEF DEVELOPER_RX}
 type
-  THackDataLink = class(TDataLink)
+  THackDataLink = class (TDataLink)
 
   end;
 
 procedure TRxDBGrid.InternalAdjustRowCount(var RecCount: integer);
 var
-  CurActiveRecord, j, H1, FRec, H, H2: Integer;
-  i: LongInt;
+  CurActiveRecord, j, H1, FRec, H, H2: integer;
+  i: longint;
   R: TRxColumn;
   F: TField;
-  S: String;
+  S: string;
 begin
   inherited InternalAdjustRowCount(RecCount);
 
-  if (not (Assigned(DataLink) and DataLink.Active)) or ((GCache.VisibleGrid.Top=0) and (GCache.VisibleGrid.Bottom=0)) then
+  if (not (Assigned(DataLink) and DataLink.Active)) or
+    ((GCache.VisibleGrid.Top = 0) and (GCache.VisibleGrid.Bottom = 0)) then
     exit;
 
-  CurActiveRecord:=DataLink.ActiveRecord;
+  CurActiveRecord := DataLink.ActiveRecord;
 
   if dgTitles in Options then
   begin
-    FRec:=1;
-    H2:=1;
+    FRec := 1;
+    H2 := 1;
   end
   else
   begin
-    FRec:=0;
-    H2:=0;
+    FRec := 0;
+    H2 := 0;
   end;
 
-  for i:=GCache.VisibleGrid.Top to GCache.VisibleGrid.Bottom do
+  for i := GCache.VisibleGrid.Top to GCache.VisibleGrid.Bottom do
   begin
-    DataLink.ActiveRecord:=i - FixedRows;
-//    P:=PtrInt(DataSource.DataSet.ActiveBuffer);
-    H:=1;
-    for j:=0 to Columns.Count-1 do
+    DataLink.ActiveRecord := i - FixedRows;
+    //    P:=PtrInt(DataSource.DataSet.ActiveBuffer);
+    H := 1;
+    for j := 0 to Columns.Count - 1 do
     begin
-      R:=Columns[j] as TRxColumn;
+      R := Columns[j] as TRxColumn;
       if R.WordWrap then
       begin
-        F:=R.Field;
+        F := R.Field;
         if Assigned(F) then
-          S:=F.DisplayText
+          S := F.DisplayText
         else
-          S:='';
+          S := '';
 
         H1 := Max((Canvas.TextWidth(S) + 2) div R.Width + 1, H);
         if H1 > WordCount(S, [' ']) then
           H1 := WordCount(S, [' ']);
       end
       else
-        H1:=1;
-      H:=Max(H, H1);
+        H1 := 1;
+      H := Max(H, H1);
     end;
 
 
@@ -6991,28 +7096,29 @@ begin
 
     if H2 + H > RecCount then
     begin
-//      RecCount:=FRec;
-      if (FRec < FixedRows + CurActiveRecord) {and (CurActiveRecord = DataLink.ActiveRecord)} then
+      //      RecCount:=FRec;
+      if (FRec < FixedRows + CurActiveRecord)
+      {and (CurActiveRecord = DataLink.ActiveRecord)} then
       begin
-        TopRow:=1;
-//        THackDataLink(DataLink).FirstRecord:=THackDataLink(DataLink).FirstRecord + 1;
+        TopRow := 1;
+        //        THackDataLink(DataLink).FirstRecord:=THackDataLink(DataLink).FirstRecord + 1;
 {        H:=CurActiveRecord - DataLink.ActiveRecord;
         THackDataLink(DataLink).FirstRecord:=THackDataLink(DataLink).FirstRecord + 1;
         THackDataSet(DataLink.DataSet).RecalcBufListSize;}
-//        THackDataLink(DataLink).BufferCount:=FRec;
-        H:=0;
+        //        THackDataLink(DataLink).BufferCount:=FRec;
+        H := 0;
       end;
-//      DataLink.BufferCount:=FRec;
-//      break;
+      //      DataLink.BufferCount:=FRec;
+      //      break;
     end
     else
     begin
-      FRec:=FRec + 1;
-      H2:=H2 + H;
+      FRec := FRec + 1;
+      H2 := H2 + H;
     end;
   end;
 
-  DataLink.ActiveRecord:=CurActiveRecord;
+  DataLink.ActiveRecord := CurActiveRecord;
 
 end;
 {$ENDIF}
@@ -7031,30 +7137,30 @@ end;
 
 procedure TRxDBGrid.SelectAllRows;
 var
-  P:TBookMark;
+  P: TBookMark;
 begin
   if DatalinkActive then
   begin
     DataSource.DataSet.DisableControls;
-{$IFDEF NoAutomatedBookmark}
-    P:=DataSource.DataSet.GetBookmark;
-{$ELSE}
-    P:=DataSource.DataSet.Bookmark;
-{$ENDIF}
+    {$IFDEF NoAutomatedBookmark}
+    P := DataSource.DataSet.GetBookmark;
+    {$ELSE}
+    P := DataSource.DataSet.Bookmark;
+    {$ENDIF}
     try
       DataSource.DataSet.First;
       while not DataSource.DataSet.EOF do
       begin
-        SelectedRows.CurrentRowSelected:=true;
+        SelectedRows.CurrentRowSelected := True;
         DataSource.DataSet.Next;
       end;
     finally
-{$IFDEF NoAutomatedBookmark}
+      {$IFDEF NoAutomatedBookmark}
       DataSource.DataSet.GotoBookmark(P);
       DataSource.DataSet.FreeBookmark(P);
-{$ELSE}
-      DataSource.DataSet.Bookmark:=P;
-{$ENDIF}
+      {$ELSE}
+      DataSource.DataSet.Bookmark := P;
+      {$ENDIF}
       DataSource.DataSet.EnableControls;
     end;
     Invalidate;
@@ -7063,30 +7169,30 @@ end;
 
 procedure TRxDBGrid.DeSelectAllRows;
 var
-  P:TBookMark;
+  P: TBookMark;
 begin
   if DatalinkActive then
   begin
     DataSource.DataSet.DisableControls;
-{$IFDEF NoAutomatedBookmark}
-    P:=DataSource.DataSet.GetBookmark;
-{$ELSE}
-    P:=DataSource.DataSet.Bookmark;
-{$ENDIF}
+    {$IFDEF NoAutomatedBookmark}
+    P := DataSource.DataSet.GetBookmark;
+    {$ELSE}
+    P := DataSource.DataSet.Bookmark;
+    {$ENDIF}
     try
       DataSource.DataSet.First;
       while not DataSource.DataSet.EOF do
       begin
-        SelectedRows.CurrentRowSelected:=false;
+        SelectedRows.CurrentRowSelected := False;
         DataSource.DataSet.Next;
       end;
     finally
-{$IFDEF NoAutomatedBookmark}
+      {$IFDEF NoAutomatedBookmark}
       DataSource.DataSet.GotoBookmark(P);
       DataSource.DataSet.FreeBookmark(P);
-{$ELSE}
-      DataSource.DataSet.Bookmark:=P;
-{$ENDIF}
+      {$ELSE}
+      DataSource.DataSet.Bookmark := P;
+      {$ENDIF}
       DataSource.DataSet.EnableControls;
     end;
     Invalidate;
@@ -7095,21 +7201,21 @@ end;
 
 procedure TRxDBGrid.InvertSelection;
 var
-  P:TBookMark;
+  P: TBookMark;
 begin
   if DatalinkActive then
   begin
     DataSource.DataSet.DisableControls;
     {$IFDEF NoAutomatedBookmark}
-    P:=DataSource.DataSet.GetBookmark;
+    P := DataSource.DataSet.GetBookmark;
     {$ELSE}
-    P:=DataSource.DataSet.Bookmark;
+    P := DataSource.DataSet.Bookmark;
     {$ENDIF}
     try
       DataSource.DataSet.First;
       while not DataSource.DataSet.EOF do
       begin
-        SelectedRows.CurrentRowSelected:=not SelectedRows.CurrentRowSelected;
+        SelectedRows.CurrentRowSelected := not SelectedRows.CurrentRowSelected;
         DataSource.DataSet.Next;
       end;
     finally
@@ -7117,7 +7223,7 @@ begin
       DataSource.DataSet.GotoBookmark(P);
       DataSource.DataSet.FreeBookmark(P);
       {$ELSE}
-      DataSource.DataSet.Bookmark:=P;
+      DataSource.DataSet.Bookmark := P;
       {$ENDIF}
       DataSource.DataSet.EnableControls;
     end;
@@ -7130,10 +7236,10 @@ begin
   OnCopyCellValue(Self);
 end;
 
-procedure TRxDBGrid.SetSort(AFields: array of String;
-  ASortMarkers: array of TSortMarker; PreformSort: Boolean);
+procedure TRxDBGrid.SetSort(AFields: array of string;
+  ASortMarkers: array of TSortMarker; PreformSort: boolean);
 var
-  I: Integer;
+  I: integer;
   C: TRxColumn;
 begin
   CollumnSortListClear;
@@ -7166,28 +7272,29 @@ end;
 
 constructor TRxDBGrid.Create(AOwner: TComponent);
 begin
-  FFooterOptions:=TRxDBGridFooterOptions.Create(Self);
+  FFooterOptions := TRxDBGridFooterOptions.Create(Self);
   inherited Create(AOwner);
-{$IFDEF RXDBGRID_OPTIONS_WO_CANCEL_ON_EXIT}
+  {$IFDEF RXDBGRID_OPTIONS_WO_CANCEL_ON_EXIT}
   Options := Options - [dgCancelOnExit];
-{$ENDIF}
-  FSaveOnDataSetScrolled:=Datalink.OnDataSetScrolled;
-  Datalink.OnDataSetScrolled:=@OnDataSetScrolled;
+  {$ENDIF}
+  FSaveOnDataSetScrolled := Datalink.OnDataSetScrolled;
+  Datalink.OnDataSetScrolled := @OnDataSetScrolled;
 
-  FToolsList:=TFPList.Create;
-  FColumnDefValues:=TRxDBGridColumnDefValues.Create(Self);
-  FSearchOptions:=TRxDBGridSearchOptions.Create(Self);
+  FToolsList := TFPList.Create;
+  FColumnDefValues := TRxDBGridColumnDefValues.Create(Self);
+  FSearchOptions := TRxDBGridSearchOptions.Create(Self);
 
-  FSortColumns:=TRxDbGridColumnsSortList.Create;
-  FGroupItems:=TColumnGroupItems.Create(Self);
+  FSortColumns := TRxDbGridColumnsSortList.Create;
+  FGroupItems := TColumnGroupItems.Create(Self);
   F_MenuBMP := TBitmap.Create;
   RxAssignBitmap(F_MenuBMP, 'rx_menu_grid');
 
   Options := Options - [dgTabs];
 
-//  TDrawGrid(Self).Options:=TDrawGrid(Self).Options + [goColSpanning];
+  //  TDrawGrid(Self).Options:=TDrawGrid(Self).Options + [goColSpanning];
 
-  OptionsRx := OptionsRx + [rdgAllowColumnsForm, rdgAllowDialogFind, rdgAllowQuickFilter];
+  OptionsRx := OptionsRx + [rdgAllowColumnsForm, rdgAllowDialogFind,
+    rdgAllowQuickFilter];
 
   FAutoSort := True;
 
@@ -7213,14 +7320,14 @@ begin
   FFilterListEditor.OnChange := @FFilterListEditorOnChange;
   FFilterListEditor.OnCloseUp := @FFilterListEditorOnCloseUp;
 
-  FFilterColDlgButton:=TFilterColDlgButton.Create(nil);
+  FFilterColDlgButton := TFilterColDlgButton.Create(nil);
   FFilterColDlgButton.Name := 'FilterColDlgButton';
   FFilterColDlgButton.Visible := False;
   FFilterColDlgButton.OnClick := @FFilterColDlgButtonOnClick;
   FFilterColDlgButton.Glyph.Assign(FEllipsisRxBMP);
 
 
-  FFilterSimpleEdit:=TFilterSimpleEdit.Create(nil);
+  FFilterSimpleEdit := TFilterSimpleEdit.Create(nil);
   FFilterSimpleEdit.Name := 'FFilterSimpleEdit';
   FFilterSimpleEdit.Visible := False;
   FFilterSimpleEdit.OnChange := @FFilterSimpleEditOnChange;
@@ -7235,8 +7342,8 @@ begin
   FRxDbGridDateEditor.Name := 'RxDbGridDateEditor';
   FRxDbGridDateEditor.Visible := False;
 
-  FSelectedFont:=TFont.Create;
-  FSelectedFont.OnChange:=@SelectedFontChanged;
+  FSelectedFont := TFont.Create;
+  FSelectedFont.OnChange := @SelectedFontChanged;
   FillDefaultFonts;
   UpdateJMenuKeys;
 
@@ -7341,14 +7448,14 @@ begin
   // The correct implementation is doing nothing
 end;
 
-function TRxDbGridColumns.GetColumn(Index: Integer): TRxColumn;
+function TRxDbGridColumns.GetColumn(Index: integer): TRxColumn;
 begin
-  Result:=TRxColumn( inherited Items[Index] );
+  Result := TRxColumn(inherited Items[Index]);
 end;
 
-procedure TRxDbGridColumns.SetColumn(Index: Integer; AValue: TRxColumn);
+procedure TRxDbGridColumns.SetColumn(Index: integer; AValue: TRxColumn);
 begin
-  Items[Index].Assign( AValue );
+  Items[Index].Assign(AValue);
 end;
 
 procedure TRxDbGridColumns.Notify(Item: TCollectionItem;
@@ -7366,7 +7473,7 @@ end;
 
 function TRxDbGridColumns.GetEnumerator: TRxDbGridColumnsEnumerator;
 begin
-  Result:=TRxDbGridColumnsEnumerator.Create(Self);
+  Result := TRxDbGridColumnsEnumerator.Create(Self);
 end;
 
 { TRxColumn }
@@ -7379,9 +7486,9 @@ end;
 function TRxColumn.GetSortFields: string;
 begin
   if FSortFields = '' then
-    Result:=FieldName
+    Result := FieldName
   else
-    Result:=FSortFields;
+    Result := FSortFields;
 end;
 
 procedure TRxColumn.SetConstraints(AValue: TRxDBGridCollumnConstraints);
@@ -7406,12 +7513,12 @@ end;
 
 function TRxColumn.GetFooters: TRxColumnFooterItems;
 begin
-  Result:=FFooters;
+  Result := FFooters;
 end;
 
 function TRxColumn.GetConstraints: TRxDBGridCollumnConstraints;
 begin
-  Result:=FConstraints;
+  Result := FConstraints;
 end;
 
 procedure TRxColumn.SetFooter(const AValue: TRxColumnFooterItem);
@@ -7452,8 +7559,8 @@ end;
 
 procedure TRxColumn.SetWordWrap(AValue: boolean);
 begin
-  if FWordWrap=AValue then Exit;
-  FWordWrap:=AValue;
+  if FWordWrap = AValue then Exit;
+  FWordWrap := AValue;
 end;
 
 function TRxColumn.CreateTitle: TGridColumnTitle;
@@ -7464,11 +7571,13 @@ end;
 procedure TRxColumn.ColumnChanged;
 begin
   inherited ColumnChanged;
-  if Assigned(FConstraints) and (FConstraints.MinWidth <> 0) and (FConstraints.MinWidth > Width) then
-    Width:=FConstraints.MinWidth;
+  if Assigned(FConstraints) and (FConstraints.MinWidth <> 0) and
+    (FConstraints.MinWidth > Width) then
+    Width := FConstraints.MinWidth;
 
-  if Assigned(FConstraints) and (FConstraints.MaxWidth <> 0) and (FConstraints.MaxWidth < Width) then
-    Width:=FConstraints.MaxWidth;
+  if Assigned(FConstraints) and (FConstraints.MaxWidth <> 0) and
+    (FConstraints.MaxWidth < Width) then
+    Width := FConstraints.MaxWidth;
 end;
 
 constructor TRxColumn.Create(ACollection: TCollection);
@@ -7476,17 +7585,17 @@ begin
   inherited Create(ACollection);
   FKeyList := TStringList.Create;
   FNotInKeyListIndex := -1;
-  FConstraints:=TRxDBGridCollumnConstraints.Create(Self);
+  FConstraints := TRxDBGridCollumnConstraints.Create(Self);
   FFooter := TRxColumnFooterItem.Create(nil);
-  FFooter.FOwner:=Self;
+  FFooter.FOwner := Self;
   FFooter.FillDefaultFont;
 
   FFilter := TRxColumnFilter.Create(Self);
-  FDirectInput := true;
-  FEditButtons:=TRxColumnEditButtons.Create(Self);
-  FOptions:=[coCustomizeVisible, coCustomizeWidth];
-  FFooters:=TRxColumnFooterItems.Create(Self);
-  FGroupParam:=TRxColumnGroupParam.Create(Self);
+  FDirectInput := True;
+  FEditButtons := TRxColumnEditButtons.Create(Self);
+  FOptions := [coCustomizeVisible, coCustomizeWidth];
+  FFooters := TRxColumnFooterItems.Create(Self);
+  FGroupParam := TRxColumnGroupParam.Create(Self);
 end;
 
 destructor TRxColumn.Destroy;
@@ -7585,9 +7694,9 @@ end;
 constructor TRxColumnTitle.Create(TheColumn: TGridColumn);
 begin
   inherited Create(TheColumn);
-{$IFDEF NEW_STYLE_TITLE_ALIGNMENT_RXDBGRID}
+  {$IFDEF NEW_STYLE_TITLE_ALIGNMENT_RXDBGRID}
   Alignment := taCenter;
-{$ENDIF}
+  {$ENDIF}
   FCaptionLines := TFPList.Create;
 end;
 
@@ -7649,46 +7758,46 @@ begin
     Result := -1;
 end;
 
-function TRxColumnFilter.IsEmptyFontStored: Boolean;
+function TRxColumnFilter.IsEmptyFontStored: boolean;
 begin
-  Result:=FIsEmptyFontStored;
+  Result := FIsEmptyFontStored;
 end;
 
-function TRxColumnFilter.IsFontStored: Boolean;
+function TRxColumnFilter.IsFontStored: boolean;
 begin
-  Result:=FIsFontStored;
+  Result := FIsFontStored;
 end;
 
 procedure TRxColumnFilter.FontChanged(Sender: TObject);
 begin
   if Sender = FFont then
-    FIsFontStored:=not FFont.IsDefault
+    FIsFontStored := not FFont.IsDefault
   else
-    FIsEmptyFontStored:=not FEmptyFont.IsDefault;
+    FIsEmptyFontStored := not FEmptyFont.IsDefault;
   FOwner.ColumnChanged;
 end;
 
 function TRxColumnFilter.GetDisplayFilterValue: string;
 begin
-  Result:='';
+  Result := '';
   if CurrentValues.Count > 0 then
   begin
-    Result:=CurrentValues[0];
+    Result := CurrentValues[0];
     if CurrentValues.Count > 1 then
-      Result:=Result + '(...)';
+      Result := Result + '(...)';
   end
   else
-  if (Style in [rxfstManualEdit, rxfstBoth]) and (ManulEditValue<>'') then
-    Result:=ManulEditValue
-  else
-  if State = rxfsEmpty then
-    Result:=EmptyValue
-  else
-  if State = rxfsNonEmpty then
-    Result:=NotEmptyValue
-  else
-  if State = rxfsAll then
-    Result:=AllValue;
+    if (Style in [rxfstManualEdit, rxfstBoth]) and (ManulEditValue <> '') then
+      Result := ManulEditValue
+    else
+      if State = rxfsEmpty then
+        Result := EmptyValue
+      else
+        if State = rxfsNonEmpty then
+          Result := NotEmptyValue
+        else
+          if State = rxfsAll then
+            Result := AllValue;
 end;
 
 procedure TRxColumnFilter.SetColor(const AValue: TColor);
@@ -7729,24 +7838,24 @@ begin
   FOwner := Owner;
 
   FFont := TFont.Create;
-  FFont.OnChange:=@FontChanged;
+  FFont.OnChange := @FontChanged;
   FEmptyFont := TFont.Create;
-  FEmptyFont.OnChange:=@FontChanged;
+  FEmptyFont.OnChange := @FontChanged;
 
   FValueList := TStringList.Create;
   FValueList.Sorted := True;
-  FCurrentValues:=TStringList.Create;
-  FCurrentValues.Sorted:=true;
+  FCurrentValues := TStringList.Create;
+  FCurrentValues.Sorted := True;
 
   FColor := clWhite;
-  State:=rxfsAll;
-  Style:=rxfstSimple;
+  State := rxfsAll;
+  Style := rxfstSimple;
 
   FEmptyFont.Style := [fsItalic];
   FEmptyValue := sRxDBGridEmptyFilter;
   FAllValue := sRxDBGridAllFilter;
-  FNotEmptyValue:=sRxDBGridNotEmptyFilter;
-  FEnabled:=true;
+  FNotEmptyValue := sRxDBGridNotEmptyFilter;
+  FEnabled := True;
 end;
 
 destructor TRxColumnFilter.Destroy;
@@ -7761,8 +7870,8 @@ end;
 procedure TRxColumnFilter.ClearFilter;
 begin
   CurrentValues.Clear;
-  FManulEditValue:='';
-  FState:=rxfsEmpty;
+  FManulEditValue := '';
+  FState := rxfsEmpty;
 end;
 
 { TExDBGridSortEngine }
@@ -7825,7 +7934,8 @@ end;
 procedure TRxDBGridKeyStrokes.Update(Item: TCollectionItem);
 begin
   inherited Update(Item);
-  if (UpdateCount = 0) and Assigned(Owner) and Assigned(TRxDBGrid(Owner).FKeyStrokes) then
+  if (UpdateCount = 0) and Assigned(Owner) and
+    Assigned(TRxDBGrid(Owner).FKeyStrokes) then
     TRxDBGrid(Owner).UpdateJMenuKeys;
 end;
 
@@ -7842,7 +7952,7 @@ begin
   if Source is TRxDBGridKeyStrokes then
   begin
     Clear;
-    for i := 0 to TRxDBGridKeyStrokes(Source).Count-1 do
+    for i := 0 to TRxDBGridKeyStrokes(Source).Count - 1 do
     begin
       with Add do
         Assign(TRxDBGridKeyStrokes(Source)[i]);
@@ -7918,21 +8028,22 @@ begin
 end;
 
 initialization
-  RegisterPropertyToSkip( TRxDBGrid, 'AllowedOperations', 'This property duplicated standart DBGrid.Options', '');
-  RegisterPropertyToSkip( TRxColumnFilter, 'IsNull', 'depricated property', '');
-  RegisterPropertyToSkip( TRxColumnFilter, 'IsAll', 'depricated property', '');
-  RegisterPropertyToSkip( TRxColumnFilter, 'Value', 'depricated property', '');
+  RegisterPropertyToSkip(TRxDBGrid, 'AllowedOperations',
+    'This property duplicated standart DBGrid.Options', '');
+  RegisterPropertyToSkip(TRxColumnFilter, 'IsNull', 'depricated property', '');
+  RegisterPropertyToSkip(TRxColumnFilter, 'IsAll', 'depricated property', '');
+  RegisterPropertyToSkip(TRxColumnFilter, 'Value', 'depricated property', '');
 
   RxDBGridSortEngineList := TStringList.Create;
   RxDBGridSortEngineList.Sorted := True;
 
   FMarkerUp := TBitmap.Create;
   FMarkerDown := TBitmap.Create;
-  FEllipsisRxBMP:=TBitmap.Create;
-  FGlyphRxBMP:=TBitmap.Create;
-  FUpDownRxBMP:=TBitmap.Create;
-  FPlusRxBMP:=TBitmap.Create;
-  FMinusRxBMP:=TBitmap.Create;
+  FEllipsisRxBMP := TBitmap.Create;
+  FGlyphRxBMP := TBitmap.Create;
+  FUpDownRxBMP := TBitmap.Create;
+  FPlusRxBMP := TBitmap.Create;
+  FMinusRxBMP := TBitmap.Create;
 
   RxAssignBitmap(FMarkerUp, 'rx_markerup');
   RxAssignBitmap(FMarkerDown, 'rx_markerdown');
@@ -7959,4 +8070,3 @@ finalization
   FreeAndNil(FPlusRxBMP);
   FreeAndNil(FMinusRxBMP);
 end.
-
