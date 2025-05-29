@@ -35,12 +35,16 @@ unit register_rxtools;
 interface
 
 uses
-  Classes, SysUtils;
+  System.UITypes,
+  Classes,
+  SysUtils;
 
 procedure Register;
 implementation
-uses Forms, LazarusPackageIntf, RxTextHolder, ComponentEditors, RxTextHolder_Editor,
-  rxconst, StrHolder, PropEdits, StringsPropEditDlg, UITypes;
+uses
+  Forms, LazarusPackageIntf, RxTextHolder, ComponentEditors, RxTextHolder_Editor,
+  rxconst, StrHolder, PropEdits, StringsPropEditDlg
+  ;
 
 type
 
