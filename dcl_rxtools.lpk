@@ -10,6 +10,16 @@
         <OtherUnitFiles Value="dcl_rxtools"/>
         <UnitOutputDirectory Value="lib/dcl_rxtools/$(TargetCPU)-$(TargetOS)/$(LCLWidgetType)"/>
       </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerMessages>
+          <IgnoredMessages idx5028="True"/>
+        </CompilerMessages>
+      </Other>
     </CompilerOptions>
     <License Value="LGPL 2"/>
     <Version Major="1" Release="2" Build="5"/>

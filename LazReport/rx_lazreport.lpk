@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <Name Value="rx_LazReport"/>
     <Type Value="RunAndDesignTime"/>
     <Author Value="Lagunov Aleksey"/>
@@ -11,6 +11,16 @@
         <OtherUnitFiles Value="."/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <UseAnsiStrings Value="False"/>
+        </SyntaxOptions>
+      </Parsing>
+      <Other>
+        <CompilerMessages>
+          <IgnoredMessages idx5024="True"/>
+        </CompilerMessages>
+      </Other>
     </CompilerOptions>
     <License Value="LGPL"/>
     <Version Major="1" Release="1"/>
@@ -25,6 +35,7 @@
         <UnitName Value="lrRxControls"/>
       </Item2>
     </Files>
+    <CompatibilityMode Value="True"/>
     <LazDoc Paths="docs"/>
     <RequiredPkgs Count="4">
       <Item1>
