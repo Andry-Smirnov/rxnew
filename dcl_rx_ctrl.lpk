@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <Name Value="dcl_rx_ctrl"/>
     <Type Value="DesignTime"/>
     <Author Value="Lagunov A.A."/>
@@ -10,11 +10,6 @@
         <OtherUnitFiles Value="dcl_rx_ctrl"/>
         <UnitOutputDirectory Value="lib/dcl_rx_ctrl/$(TargetCPU)-$(TargetOS)/$(LCLWidgetType)"/>
       </SearchPaths>
-      <Parsing>
-        <SyntaxOptions>
-          <UseAnsiStrings Value="False"/>
-        </SyntaxOptions>
-      </Parsing>
     </CompilerOptions>
     <Description Value="Design time packet for rx lib"/>
     <Version Major="3" Minor="3" Release="1" Build="4"/>
@@ -29,6 +24,7 @@
         <UnitName Value="rxceEditLookupFields"/>
       </Item2>
     </Files>
+    <CompatibilityMode Value="True"/>
     <RequiredPkgs Count="2">
       <Item1>
         <PackageName Value="rxnew"/>

@@ -17,7 +17,6 @@
       <Parsing>
         <SyntaxOptions>
           <CStyleOperator Value="False"/>
-          <UseAnsiStrings Value="False"/>
         </SyntaxOptions>
       </Parsing>
       <Other>

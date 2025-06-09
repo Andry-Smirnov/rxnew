@@ -10,11 +10,6 @@
         <OtherUnitFiles Value="rxdbgrid_export_spreadsheet"/>
         <UnitOutputDirectory Value="lib/rxdbgrid_export_spreadsheet/$(TargetCPU)-$(TargetOS)/$(LCLWidgetType)"/>
       </SearchPaths>
-      <Parsing>
-        <SyntaxOptions>
-          <UseAnsiStrings Value="False"/>
-        </SyntaxOptions>
-      </Parsing>
     </CompilerOptions>
     <License Value="LGPL"/>
     <Version Major="1" Release="1" Build="6"/>
