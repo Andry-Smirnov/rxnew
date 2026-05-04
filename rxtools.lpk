@@ -10,6 +10,12 @@
         <OtherUnitFiles Value="rxtools"/>
         <UnitOutputDirectory Value="lib/rxtools/$(TargetCPU)-$(TargetOS)/$(LCLWidgetType)"/>
       </SearchPaths>
+      <CodeGeneration>
+        <SmartLinkUnit Value="True"/>
+        <Optimizations>
+          <OptimizationLevel Value="4"/>
+        </Optimizations>
+      </CodeGeneration>
     </CompilerOptions>
     <Description Value="
 "/>

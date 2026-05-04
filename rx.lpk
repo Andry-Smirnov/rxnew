@@ -11,6 +11,12 @@
         <OtherUnitFiles Value="rx_laz"/>
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)/$(LCLWidgetType)/$(LCLWidgetType)"/>
       </SearchPaths>
+      <CodeGeneration>
+        <SmartLinkUnit Value="True"/>
+        <Optimizations>
+          <OptimizationLevel Value="4"/>
+        </Optimizations>
+      </CodeGeneration>
     </CompilerOptions>
     <Description Value="Delphi VCL Extensions (RX)"/>
     <Version Major="1"/>
